@@ -1,0 +1,40 @@
+<div class="container" style="margin-top: 80px;">
+    <div class="row">
+        
+        <div class="col-md-12 col-lg-12" style="padding: 0px; margin: 0;">
+            
+            <div class="registration-form">
+                <div class="head">
+                    <label><i class="fa fa-user" aria-hidden="true"></i></label>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="col-md-12 col-lg-12">
+            
+            <div class="registration-form">
+
+                <div class="form-ele">
+                    <form [formGroup]="loginDetails" (ngSubmit) = "userData(email.value)">
+                        <ul>
+                            <li>
+                                <!-- <input type="text" name="email" formControlName="email" placeholder="Enter Your Email" required> -->
+                                <select name="email" #email>
+                                    <option *ngFor="let data of dataarray" value="{{data.email}}">{{data.name}}</option>
+                                </select>
+                            </li>
+                            <li style="text-align: center;">
+                                <!-- <button [disabled]="loginDetails.invalid">Go</button> -->
+                                <button>Go</button>
+                            </li>
+                        </ul>
+                    </form>
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+</div>

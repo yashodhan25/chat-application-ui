@@ -1,0 +1,39 @@
+
+<div class="container">
+    <div class="row">
+  
+      <div class="col-md-12 col-lg-12" style="padding: 0px; margin: 0;">
+        
+        <div id="container">
+  
+          <div id="header" style="top:0;position: absolute;width: 100%;">
+        
+            <div class="avatarSection">
+              <div class="nameSection"><a [routerLink]="['./../gpchatroom', email]" >&nbsp;&larr;</a></div>
+            </div>
+
+            <div class="avatarSection" style="padding-right: 20px;">
+                <div class="nameSection"><a (click)="download(imgurl)"><i class="fa fa-download" style="font-size:24px"></i></a></div>
+            </div>
+        
+          </div>
+
+          <div id="body">
+            
+
+            <div class="port" *ngIf="portrait != '' " style="justify-content: center;display: flex;">
+              <img [src]="imgurl" *ngIf="imgurl != null" />
+            </div>
+
+            <div class="land" *ngIf="landscape != '' " style="justify-content: center;display: flex;">
+              <img [src]="imgurl" *ngIf="imgurl != null" />
+            </div>
+
+          </div>
+  
+        </div>
+  
+      </div>
+  
+    </div>
+</div>

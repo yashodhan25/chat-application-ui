@@ -1,0 +1,192 @@
+<div class="container">
+  <div class="row">
+
+    <div class="col-md-12 col-lg-12" style="padding: 0px; margin: 0;">
+      
+      <div id="container">
+
+        <div id="header" style="top:0;position: absolute;width: 100%;">
+      
+          <div class="avatarSection">
+            <div class="nameSection"><a routerLink="/chats" >&nbsp;&larr;</a></div>
+            <div class="picture">
+              <img src="../../assets/images/noPic.svg" />
+            </div>
+            <div class="nameSection" *ngFor="let userName of user">{{userName.name}}</div>
+          </div>
+      
+        </div>
+        
+        <div id="body" (click)="clear()" style="margin-top: 50px;margin-bottom: 60px;" #scrollMe [scrollTop]="scrollMe.scrollHeight" >
+           
+            <div class="containtLoader" *ngIf="loadingstart">
+              <div class="spinner"></div>
+            </div>
+
+            <!-- Get Message -->
+            <div *ngFor="let msg of textmsg">
+              
+              <div class="message me" *ngIf="msg.sender == myemail; else receiver">
+                <div class="messageContent">
+                  
+                  <div *ngIf="msg.type == 'image';" >
+                    <img (click)="download(msg.uploadfiles)" src="{{msg.uploadfiles}}" width="200px" height="auto">
+                    <br>
+                    {{msg.caption}}
+                    <br>
+                  </div>
+
+                  <div *ngIf="msg.type == 'doc';" style="color: black;">
+                    <img src="./../../assets/images/folder.png" width="100px" height="auto">
+                    <br>
+                    {{msg.caption}}&nbsp;&nbsp;<a (click)="save(msg.uploadfiles)"><i class="fa fa-download" style="font-size:18px"></i></a>
+                    <br>
+                  </div>
+
+                  <div *ngIf="msg.uploadfiles == null;" style="color: black;" >
+                    {{msg.message}}
+                    <br>
+                  </div>
+
+                  <!-- *ngIf="msg.seen == 'false' " -->
+                  <div class="time">
+                    {{msg.time}}&nbsp;
+                    <img src="../../assets/images/doubleTick.svg" />
+                  </div>
+
+                </div>
+              </div>
+
+              <ng-template #receiver>
+                <div class="message message.me" >
+                  <div class="messageContent">
+                    
+                    <div *ngIf="msg.type == 'image';" >
+                      <img (click)="download(msg.uploadfiles)" src="{{msg.uploadfiles}}" width="200px" height="auto">
+                      <br>
+                      <label style="color: #FFFFFF; font-weight: lighter;">{{msg.caption}}</label>
+                      <br>
+                    </div>
+
+                    <div *ngIf="msg.type == 'doc';" style="color: #FFFFFF;">
+                      <img src="./../../assets/images/folder.png" width="100px" height="auto">
+                      <br>
+                      <label style="color: #FFFFFF;font-weight: lighter;">{{msg.caption}}</label>&nbsp;&nbsp;<a (click)="save(msg.uploadfiles)"><i class="fa fa-download" style="font-size:18px"></i></a>
+                      <br>
+                    </div>
+  
+                    <div *ngIf="msg.uploadfiles == null;" style="color: #FFFFFF;">
+                      {{msg.message}}
+                      <br>
+                    </div>
+
+                    <div class="time" style="color: #FFFFFF;">
+                      {{msg.time}}
+                    </div>
+                  </div>
+                </div>
+              </ng-template>
+
+            </div>
+
+            <!-- Temp Msg -->
+            <div *ngFor="let tempmsg of tempdata">
+
+              <div class="message message.me" >
+                <div class="messageContent">
+
+                  <div *ngIf="tempmsg.file == 'image';" >
+                    <img (click)="download(tempmsg.message)" src="{{tempmsg.message}}" width="200px" height="auto">
+                    <br>
+                    <label style="color: #FFFFFF; font-weight: lighter;">{{tempmsg.caption}}</label>
+                    <br>
+                  </div>
+
+                  <div *ngIf="tempmsg.file == 'doc';" style="color: #FFFFFF;">
+                    <img src="./../../assets/images/folder.png" width="100px" height="auto">
+                    <br>
+                    <label style="color: #FFFFFF;font-weight: lighter;">{{tempmsg.caption}}</label>&nbsp;&nbsp;<a (click)="save(tempmsg.message)"><i class="fa fa-download" style="font-size:18px"></i></a>
+                    <br>
+                  </div>
+
+                  <div *ngIf="tempmsg.file == 'false' && tempmsg.file != 'doc' && tempmsg.file != 'image';" style="color: #FFFFFF;" >
+                    {{tempmsg.message}}
+                    <br>
+                  </div>
+
+                  <div class="time" style="color: #FFFFFF;">
+                    {{tempmsg.time}}
+                  </div>
+                  
+                </div>
+              </div>
+              
+            </div>
+
+        </div>
+
+        <!-- file Selection Buttons  -->
+        <div *ngIf="option != '' " class="uploadoptions">
+          <div class="options">
+
+            <div class="photos">
+              <label>
+                <i class="fa fa-image" style="font-size: 16px;"></i>
+                <input type="file" style="display: none;" accept=".jpg, .jpeg, .png" (change)="getIMG($event)">
+              </label>
+            </div>
+
+            <div class="documents">
+              <label>
+                <i class="fa fa-file" style="font-size: 16px;"></i>
+                <input type="file" style="display: none;" accept=".pdf, .xls, .doc" (change)="getFILE($event)">
+              </label>
+            </div>
+          
+          </div>
+        </div>
+      
+        <!-- Text input platform -->
+        <div id="footer" style="bottom: 0;position: absolute; width: 100%;">
+      
+          <div id="smileyIcon">
+            
+            <img (click)="emojiPickerVisible = !emojiPickerVisible" src="../../assets/images/smileIcon.png"/>
+
+            <emoji-mart
+              (emojiClick)="emojiClicked($event)"
+              *ngIf="emojiPickerVisible"
+              [darkMode]="false"
+              style="position: absolute;bottom: 50px;left: 50px;"
+              title="Pick your emoji…"
+              emoji="point_up"
+            ></emoji-mart>
+
+          </div>
+
+          <div id="micIcon">
+            <img (click)="options()" src="../../assets/images/attached.png" />
+          </div>
+      
+          <div id="textarea">
+            <textarea #text [(ngModel)]="message" style="color: black;" (keydown.enter)="send(text.value)"></textarea>
+          </div>
+
+          <div id="micIcon">
+            <a (click)="send(text.value)">
+              <img src="../../assets/images/send.png" />
+            </a>
+          </div>
+      
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+</div>
+
+<div class="containtLoad" *ngIf=" start ">
+  <div class="spinner"></div>
+</div>

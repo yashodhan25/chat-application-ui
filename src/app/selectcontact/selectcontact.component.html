@@ -1,0 +1,73 @@
+<div class="loader" *ngIf="loader">
+    <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+</div>
+
+<div class="container">
+    <div class="row">
+    <div class="col-md-12 col-lg-12" style="padding: 0px; margin: 0;">
+
+            <div id="sidebar">
+
+                <div id="row1" >
+                    
+                    <div id="sidebarHeader" >
+                    
+                        <div class="avatarSection">
+                            <div class="nameSection"><a routerLink="/chats" >&nbsp;&larr;&nbsp;&nbsp;&nbsp;<label>Select Contact</label></a></div>
+                        </div>
+            
+                    </div>
+                    
+                    <div id="searchBox">
+                    <img width="19" src="../../assets/images/searchIcon.svg" />
+                    <input
+                        [(ngModel)]="searchText"
+                        type="text"
+                        placeholder="Search Contacts"
+                    />
+                    </div>
+                
+                </div>
+                
+                <div id="sidebarContent">
+
+                    <form [formGroup]="form" (ngSubmit)="submitForm()" novalidate>
+                
+                        <div class="conversation" *ngFor="let people of contactlist">
+
+                            <div class="selected-contact">
+                                <label class="container1">
+                                    <input type="checkbox" type="checkbox" [value]="people.email" (change)="onCheckboxChange($event)">
+                                    <span class="checkmark"></span>
+                                </label>
+                            </div>
+
+                            <div class="picture">
+                                <img src="../../assets/images/noPic.svg" />
+                            </div>
+                            
+                            <div class="content">
+                                <div class="conversationHeader">
+                                <div class="name"><a>{{people.name}}</a></div>
+                                </div>
+                            </div>
+
+                        </div>
+
+                        <div class="mybutton">
+                            <button>&#8594;</button>
+                        </div>
+
+                    </form>
+            
+                </div>
+            
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<div class="containtLoad" *ngIf=" start ">
+    <div class="spinner"></div>
+</div>

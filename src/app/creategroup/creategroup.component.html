@@ -1,0 +1,57 @@
+<div class="container">
+    <div class="row">
+  
+      <div class="col-md-12 col-lg-12" style="padding: 0px; margin: 0;">
+        
+        <div id="container">
+  
+          <div id="header" style="top:0;position: absolute;width: 100%;">
+        
+            <div class="avatarSection">
+              <div class="nameSection"><a routerLink="/chats" >&nbsp;&larr;</a></div>
+              <div class="picture">
+                <img src="../../assets/images/noPic.svg" />
+              </div>
+              <div class="nameSection">Create Group</div>
+            </div>
+        
+          </div>
+          
+          <div id="body" style="margin-top: 50px;margin-bottom: 60px;">
+            
+            <div class="registration-form">
+
+                <div class="form-ele">
+                    
+                        <ul>
+                            <li style="display: flex;">
+                                <div id="smileyIcon">
+                                    <img (click)="emojiPickerVisible = !emojiPickerVisible" src="../../assets/images/smileIcon.png" style="width: 25px; height: auto;margin-top: 10px;"/>
+                                </div>
+                                <input type="text" #value [(ngModel)]="message" [ngClass]='{alerttext}' name="email" placeholder="Type Group Subject Here..." (keyup)="clearemogi()" required>
+                                <button (click)="getvalue(value.value)" >Go</button>
+                            </li>
+                        </ul>
+                    
+                </div>
+
+            </div>
+          </div>
+
+  
+        </div>
+  
+      </div>
+  
+    </div>
+</div>
+
+<div style="display: flex; justify-content: center;">
+    <emoji-mart
+        (emojiClick)="emojiClicked($event)"
+        *ngIf="emojiPickerVisible"
+        [darkMode]="false"
+        title="Pick your emoji…"
+        emoji="point_up"
+    ></emoji-mart>
+</div>
