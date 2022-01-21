@@ -153,7 +153,7 @@ export class ChatroomComponent implements OnInit {
 
   ngOnInit(): void {
 
-    console.log(this.groupchatdata)
+    // console.log(this.groupchatdata)
 
     this.receive.getGroupName(this.route.snapshot.params.id).subscribe(r=>{
 

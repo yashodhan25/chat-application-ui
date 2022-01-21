@@ -15,12 +15,13 @@
               <div class="nameSection" *ngFor="let userName of user">{{userName.groupName}}</div>
             </div>
 
-            <div class="actionsContainer dropdown" *ngIf="admin == 'true' ">
+            <div class="actionsContainer dropdown">
               <a href="#" data-toggle="dropdown" style="margin-right: 20px;">
                   <a><i class="fa fa-bars" style="font-size:24px;margin-left: 80px;color: white;"></i></a>
               </a>
               <ul class="dropdown-menu" style="margin-left: -50px;">
-                  <li><a [routerLink]="['./../../addgroupmember', groupID]">Add New Member</a></li>
+                <li><a [routerLink]="['./../../groupinformation', groupID]">Group Information</a></li>  
+                <li *ngIf="admin == 'true' "><a [routerLink]="['./../../addgroupmember', groupID]">Add New Member</a></li>
               </ul>
             </div>
         

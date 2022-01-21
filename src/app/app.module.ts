@@ -27,6 +27,7 @@ import { ChatroomComponent } from './chatroom/chatroom.component';
 import { Fileupload2Component } from './fileupload2/fileupload2.component';
 import { Viewer2Component } from './viewer2/viewer2.component';
 import { AddgroupmemberComponent } from './addgroupmember/addgroupmember.component';
+import { GroupinformationComponent } from './groupinformation/groupinformation.component';
 
 
 
@@ -46,7 +47,8 @@ import { AddgroupmemberComponent } from './addgroupmember/addgroupmember.compone
     ChatroomComponent,
     Fileupload2Component,
     Viewer2Component,
-    AddgroupmemberComponent
+    AddgroupmemberComponent,
+    GroupinformationComponent
   ],
   imports: [
     BrowserModule,

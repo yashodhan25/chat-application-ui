@@ -13,12 +13,14 @@ import { ChatroomComponent } from './chatroom/chatroom.component';
 import { Fileupload2Component } from './fileupload2/fileupload2.component';
 import { Viewer2Component } from './viewer2/viewer2.component';
 import { AddgroupmemberComponent } from './addgroupmember/addgroupmember.component';
+import { GroupinformationComponent } from './groupinformation/groupinformation.component';
 
 const routes: Routes = [
   { path: '',   redirectTo: 'register', pathMatch: 'full' },
   { path: 'personal/:email' , component:PersonalComponent, canActivate:[EmailGuard]},
   { path: 'gpchatroom/:id', component:ChatroomComponent, canActivate:[EmailGuard]},
   { path: 'addgroupmember/:id', component:AddgroupmemberComponent, canActivate:[EmailGuard]},
+  { path: 'groupinformation/:id', component:GroupinformationComponent, canActivate:[EmailGuard]},
   { path: 'register' , component:RegisterComponent},
   { path: 'mycontacts', component:MycontactsComponent, canActivate:[EmailGuard]},
   { path: 'upload', component:FileuploadComponent, canActivate:[EmailGuard]},

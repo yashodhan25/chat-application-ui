@@ -1,0 +1,68 @@
+<div class="container">
+    <div class="row">
+        <div class="col-md-12 col-lg-12" style="padding: 0px; margin: 0;">
+            <div id="container">
+
+                <div id="header" style="top:0;position: fixed;width: 100%;">
+
+                    <div class="nameSection"><a [routerLink]="['./../../gpchatroom', group_id]" >&nbsp;&larr;</a></div>
+
+                    <div id="grouppic">
+                        <div class="logo">
+                            <img src="../../assets/images/noPic.svg" />
+                        </div>
+                    </div>
+
+                    <div id="groupinfo">
+                        <div class="groupdata">
+                            <div class="text">
+                                <div class="nameSection1">{{group_name}}</div>
+                                <div class="nameSection2">{{no_of_participants}} Participants</div>
+                                <div class="nameSection2">Created on {{group_create_date}}</div>
+                            </div>
+                        </div>
+                    </div>
+        
+                </div>
+                
+                <div id="sidebarContent">
+                    <div class="conversation" *ngFor="let data of participant_info">
+                        
+                        <div class="picture">
+                            <img src="../../assets/images/noPic.svg" />
+                        </div>
+
+                        <div class="content">
+                            <div class="conversationHeader">
+                                <div class="name">
+                                  <a>{{data.name}}</a>
+                                </div>
+                                <div class="time" *ngIf="data.Admin == 'true' ">Group Admin</div>
+                            </div>
+                            <div class="message">
+                                {{data.Email}}
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="containtLoad" *ngIf=" start ">
+    <div class="spinner"></div>
+</div>
+
+<!-- <div style="margin-top: -50px;">
+    <div class="actionsContainer dropdown">
+        <a href="#" data-toggle="dropdown" style="margin-right: 20px;">
+            <a><i class="fa fa-bars" style="font-size:24px;margin-left: 80px;color: white;"></i></a>
+        </a>
+        <ul class="dropdown-menu" style="margin-left: -50px;">
+        <li></li>  
+        </ul>
+    </div>
+</div> -->
