@@ -76,10 +76,18 @@
                       </div>
 
                       <div class="message" *ngIf="group.type == 'notification' && group.message != '' && group.me == 'true' ">
-                        You Created Group
+                        {{group.message}}
                       </div>
 
                       <div class="message" *ngIf="group.type == 'notification' && group.message != '' && group.me == 'false' ">
+                        {{group.message}}
+                      </div>
+
+                      <div class="message" *ngIf="group.type == 'notification' && group.message == '' && group.me == 'true' ">
+                        You Created Group
+                      </div>
+
+                      <div class="message" *ngIf="group.type == 'notification' && group.message == '' && group.me == 'false' ">
                         You were Added
                       </div>
               
