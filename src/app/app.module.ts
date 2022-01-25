@@ -28,7 +28,7 @@ import { Fileupload2Component } from './fileupload2/fileupload2.component';
 import { Viewer2Component } from './viewer2/viewer2.component';
 import { AddgroupmemberComponent } from './addgroupmember/addgroupmember.component';
 import { GroupinformationComponent } from './groupinformation/groupinformation.component';
-
+import { HashLocationStrategy, LocationStrategy } from '@angular/common';
 
 
 
@@ -60,7 +60,7 @@ import { GroupinformationComponent } from './groupinformation/groupinformation.c
     BrowserAnimationsModule,
     MatProgressBarModule
   ],
-  providers: [],
+  providers: [{provide: LocationStrategy, useClass: HashLocationStrategy}],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

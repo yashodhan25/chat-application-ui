@@ -65,12 +65,12 @@
                         {{group.message}}
                       </div>
 
-                      <div class="message" *ngIf="group.message != '' && group.type == 'image' ">
+                      <div class="message" *ngIf="group.message == '' && group.type == 'image' ">
                         <img *ngIf="group.me == 'true'" src="../../assets/images/doubleTick.svg" />&nbsp;
                         Image
                       </div>
 
-                      <div class="message" *ngIf="group.message != '' && group.type == 'doc' ">
+                      <div class="message" *ngIf="group.message == '' && group.type == 'doc' ">
                         <img *ngIf="group.me == 'true'" src="../../assets/images/doubleTick.svg" />&nbsp;
                         file
                       </div>

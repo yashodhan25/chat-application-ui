@@ -110,7 +110,7 @@ export class ChatsComponent implements OnInit {
         }
       }
 
-      // console.log(this.final);
+      console.log(this.final);
 
     })
 

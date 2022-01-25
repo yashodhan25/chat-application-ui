@@ -86,7 +86,8 @@
         margin-top: 276px;
         border-top: #242323 4px solid;
         @media (max-width: 700px) {
-          height: 49vh;
+          margin-top: 274px;
+          height: 60vh;
         }
         .conversation {
           height: 70px;
@@ -96,6 +97,7 @@
           padding: 0px 40px;
           @media (max-width: 700px) {
             padding: 0px 0px;
+            height: 60px;
           }
           .picture {
             flex-basis: 73px;

@@ -47,8 +47,7 @@ export class SelectcontactComponent implements OnInit {
   submitForm() {
     this.start = true;
     this.createGroup.createGroup().subscribe(responce=>{
-      console.log(responce.data.id)
-      
+      // console.log(responce.data.id)
       this.finallist = [];
       this.finallist.push({'groupName':responce.data.groupName, 'groupTableId':responce.data.id, 'userEmail': localStorage.getItem("username")});
       this.mySelectedPeople = this.form.value.checkArray;
