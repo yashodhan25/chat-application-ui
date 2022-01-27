@@ -27,7 +27,9 @@ export class RegisterComponent implements OnInit {
 
   userData(getemail:any){
     if(localStorage.getItem("username") != null){
-      alert('Someone is already logged In !');
+      localStorage.clear();
+      localStorage.setItem("username", getemail);
+      this.routeDirect.navigate(['chats']);
     }else{
       localStorage.setItem("username", getemail);
       this.routeDirect.navigate(['chats']);

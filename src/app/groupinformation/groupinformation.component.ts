@@ -44,7 +44,6 @@ export class GroupinformationComponent implements OnInit {
     formData.append("id", this.route.snapshot.params.id);
     this.http.post(`${apiserverurl}getGroupName/`, formData ).subscribe(response=>{
       this.groupname_Array = response;
-      this.group_name = this.groupname_Array.data[0].gpTableDate
       this.group_create_date = this.groupname_Array.data[0].gpTableDate.dayOfMonth+"/"+this.groupname_Array.data[0].gpTableDate.monthValue+"/"+this.groupname_Array.data[0].gpTableDate.year
       this.group_name = this.groupname_Array.data[0].groupName;
       this.group_admin_email = this.groupname_Array.data[0].createdByUserEmail;

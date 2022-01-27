@@ -220,6 +220,7 @@ export class ChatroomComponent implements OnInit {
     formData.append("email", chatdata[count].sender);
     this.http.post(`${apiserverurl}getContactName/`, formData ).subscribe(r=>{
       this.newData = r;
+
       let finaldata = {
         'id': chatdata[count].id,
         'name': this.newData.data[0].name,

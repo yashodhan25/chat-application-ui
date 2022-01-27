@@ -65,7 +65,6 @@ export class AddgroupmemberComponent implements OnInit {
     }
     this.createGroup.addPeople(this.finallist).subscribe(res=>{
       for(var i = 0; i<res.data.length; i++){
-        // console.log(res.data[i].userEmail)
         const formData = new FormData(); 
         formData.append("email", res.data[i].userEmail);
         this.http.post(`${apiserverurl}getContactName/`, formData ).subscribe(r=>{

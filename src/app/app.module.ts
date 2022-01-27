@@ -29,6 +29,7 @@ import { Viewer2Component } from './viewer2/viewer2.component';
 import { AddgroupmemberComponent } from './addgroupmember/addgroupmember.component';
 import { GroupinformationComponent } from './groupinformation/groupinformation.component';
 import { HashLocationStrategy, LocationStrategy } from '@angular/common';
+import { LinkPipe } from './link.pipe';
 
 
 
@@ -48,7 +49,8 @@ import { HashLocationStrategy, LocationStrategy } from '@angular/common';
     Fileupload2Component,
     Viewer2Component,
     AddgroupmemberComponent,
-    GroupinformationComponent
+    GroupinformationComponent,
+    LinkPipe
   ],
   imports: [
     BrowserModule,
