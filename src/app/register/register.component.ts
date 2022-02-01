@@ -26,20 +26,19 @@ export class RegisterComponent implements OnInit {
   )
 
   userData(getemail:any){
-    if(localStorage.getItem("username") != null){
-      localStorage.clear();
-      localStorage.setItem("username", getemail);
-      this.routeDirect.navigate(['chats']);
-    }else{
-      localStorage.setItem("username", getemail);
-      this.routeDirect.navigate(['chats']);
-    }
+    localStorage.setItem("username", getemail);
+    this.routeDirect.navigate(['chats']);
   }
 
   ngOnInit(): void {
     this.getemail.getall().subscribe(responce => {
       this.dataarray = responce.data;
     })
+
+    if(localStorage.getItem("username") != null){
+      this.routeDirect.navigate(['chats']);
+    }
+    
   }
 
 }

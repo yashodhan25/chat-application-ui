@@ -17,11 +17,21 @@ body {
   }
 
   a.colortext{
-    color: #21618C;
+    color: #FFFFFF;
+    text-decoration: underline;
   }
 
   a.colortext:hover{
-    color: #5DADE2;
+    color: #21618C;
+  }
+
+  .me a.colortext{
+    color: #111111;
+    text-decoration: underline;
+  }
+
+  .me a.colortext:hover{
+    color: #21618C;
   }
 
 }

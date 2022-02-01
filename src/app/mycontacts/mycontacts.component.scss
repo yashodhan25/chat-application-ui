@@ -1,15 +1,36 @@
+.mybutton{
+  position: fixed;
+  z-index:9999999;
+  bottom: 6%;
+  right: 4%;
+  display:block !important;
+}
+
+.mybutton button{
+  background: #009CC3;
+  border: none;
+  color: white;
+  padding: 12px 12px;
+  border-radius: 50%;
+  font-size: 36px;
+  font-weight: 400;
+}
+
+.mybutton button:hover{
+  background: #0589aa;
+}
 
 ::-webkit-scrollbar {
   width: 10px;
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #AAB7B8; 
+  background: #009CC3; 
   border-radius: 10px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: #AAB7B8; 
+  background: #057794; 
 }
 
 .loader{
@@ -19,7 +40,7 @@
 }
 
 .mat-progress-bar .mat-progress-bar-fill::after{
-  background-color: #1B2631;
+  background-color: #009CC3;
 }
 
 .backclick a{
@@ -46,13 +67,14 @@
         
         #sidebarHeader {
           flex-basis: 67px;
-          background-color: #242323;
+          background-color: #009CC3;
           display: flex;
           flex-direction: row;
           align-items: center;
           padding-left: 20px;
           padding-right: 20px;
           justify-content: space-between;
+
           .avatarSection {
             display: flex;
             .picture {
@@ -103,8 +125,8 @@
     
         #searchBox {
           flex-basis: 54px;
-          background-color: #3a3838;
-          border-bottom: 1px solid #3a3838;
+          background-color: #F4F7F9;
+          border-bottom: 1px solid #FFFFFF;
           display: flex;
           align-items: center;
           justify-content: center;
@@ -122,7 +144,7 @@
             padding: 8px 20px 8px 20px;
             color: #a4a4a4;
             outline: none;
-            box-shadow: 0px 0px 3px #3a3838;
+            box-shadow: 0px 0px 3px #F4F7F9;
             &::placeholder {
               color: #a4a4a4;
               font-weight: 100;
@@ -143,7 +165,7 @@
         height: 80vh;
         overflow-y: auto;
         margin-top: 120px;
-        background: #1B2631;
+        background: #FFFFFF;
         margin-right: -2px;
         @media (max-width: 700px) {
           height: 80vh;
@@ -153,10 +175,10 @@
           display: flex;
           padding-right: 0px;
           transition: all 0.4s ease-in-out;
-          background: #575454;
+          background: #FFFFFF;
           cursor: pointer;
           &:hover {
-            background-color: #3a3838;
+            background-color: #F4F7F9;
           }
           .picture {
             flex-basis: 73px;
@@ -170,7 +192,7 @@
             }
           }
           .content {
-            border-bottom: 1px solid #3a3838;
+            border-bottom: 1px solid #e2e4e6;
             flex-grow: 1;
             padding: 20px 0px;
             padding-right: 10px;
@@ -179,21 +201,21 @@
               flex-direction: row;
               justify-content: space-between;
               .name a{
-                color: #FFFFFF;
+                color: #242323;
                 font-size: 18px;
                 margin-top: 6px;
                 font-weight: lighter;
                 font-family: 'Abhaya Libre';
               }
               .time {
-                color: #979797;
+                color: #242323;
                 font-size: 13px;
                 padding-top: 2px;
               }
             }
     
             .message {
-              color: #717171;
+              color: #242323;
               font-size: 13px;
               padding-top: 5px;
               display: flex;
@@ -205,4 +227,4 @@
           }
         }
       }
-    }  
+    }

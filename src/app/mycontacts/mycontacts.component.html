@@ -15,13 +15,6 @@
                       <div class="avatarSection">
                         <div class="nameSection"><a routerLink="/chats" >&nbsp;&larr;&nbsp;&nbsp;&nbsp;<label>Select Contact</label></a></div>
                       </div>
-
-                      <!-- <div class="avatarSection">
-                        <div class="nameSection"><a routerLink="/chats" >&nbsp;&larr;</a></div>
-                        <div class="picture">
-                          <img src="../../assets/images/noPic.svg" />
-                        </div>
-                      </div> -->
               
                       <div class="actionsContainer dropdown">
                           <a href="#" data-toggle="dropdown">
@@ -54,9 +47,9 @@
                         <img src="../../assets/images/noPic.svg" />
                       </div>
                       
-                      <div class="content">
+                      <div class="content" [routerLink]="['./../personal', people.email]">
                         <div class="conversationHeader">
-                          <div class="name"><a [routerLink]="['./../personal', people.email]">{{people.name}}</a></div>
+                          <div class="name"><a >{{people.name}}</a></div>
                         </div>
                       </div>
 
