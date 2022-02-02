@@ -129,6 +129,9 @@ export class PersonalComponent implements OnInit {
         this.message = "";  
       });
 
+    }else{
+      this.start = false;
+      alert("Please Type Something !")
     }
 
   }

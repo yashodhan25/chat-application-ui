@@ -132,6 +132,9 @@ export class ChatroomComponent implements OnInit {
         
       });
 
+    }else{
+      this.start = false;
+      alert("Please Type Something !")
     }
 
   }
