@@ -74,7 +74,7 @@ export class Fileupload2Component implements OnInit {
         let dataset = [this.otherEmail, res.data.sender, this.groupusers, res.data.uploadfiles, res.data.caption , this.currenttime ,  this.type];
         //console.log(dataset);
         this.uploadfile.senddata2(dataset)
-        this.routeDirect.navigate([`gpchatroom`,this.otherEmail]);
+        this.routeDirect.navigate([`chats/gpchatroom`,this.otherEmail]);
       })
 
     })

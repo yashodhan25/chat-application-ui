@@ -42,6 +42,8 @@ export class PersonalComponent implements OnInit {
   start:any;
   loadingstart:any;
   tempdata:any[] = [];
+  sub:any;
+  user_receiver_email:any;
 
   constructor( private transfer : TransferService, private routeDirect: Router, private route:ActivatedRoute, private sendmessage:SendService, private receive: ReceiveService, private http: HttpClient, private downloadfile: DownloadService ){}
 
@@ -52,18 +54,27 @@ export class PersonalComponent implements OnInit {
   download(filename:any){
     this.nameoffile = filename
     let imgurl = filename;
-    this.downloadfile.downloadfile(this.route.snapshot.params.email, this.nameoffile, imgurl)
-    this.routeDirect.navigate(['view']);
+    this.downloadfile.downloadfile(this.user_receiver_email, this.nameoffile, imgurl)
+    this.routeDirect.navigate(['chats/view']);
+    if(this.screen < 700){
+      this.routeDirect.navigate(['view']);
+    }
   }
 
   getIMG(event: any) {
-    this.transfer.getfile(event,this.route.snapshot.params.email);
-    this.routeDirect.navigate(['upload']);
+    this.transfer.getfile(event,this.user_receiver_email);
+    this.routeDirect.navigate(['chats/upload']);
+    if(this.screen < 700){
+      this.routeDirect.navigate(['upload']);
+    }
   }
 
   getFILE(event: any) {
-    this.transfer.getDocfile(event,this.route.snapshot.params.email);
-    this.routeDirect.navigate(['upload']);
+    this.transfer.getDocfile(event,this.user_receiver_email);
+    this.routeDirect.navigate(['chats/upload']);
+    if(this.screen < 700){
+      this.routeDirect.navigate(['upload']);
+    }
   }
 
   options(){
@@ -100,11 +111,11 @@ export class PersonalComponent implements OnInit {
         this.timemode = "AM";
       }
       this.currenttime = this.gethour+":"+minute+" "+this.timemode;
-      this.receiver_email = this.route.snapshot.params.email;
+      this.receiver_email = this.user_receiver_email;
       this.sender_email = localStorage.getItem("username");
       this.textmessages = messages;
 
-      this.socket.emit('sendresponce', {'sender': localStorage.getItem("username"), 'receiver': this.route.snapshot.params.email, 'message': this.message, 'time': this.currenttime,'caption':'' , 'file': 'false' }  );
+      this.socket.emit('sendresponce', {'sender': localStorage.getItem("username"), 'receiver': this.user_receiver_email, 'message': this.message, 'time': this.currenttime,'caption':'' , 'file': 'false' }  );
 
       let dataset:any = {
         "caption": "",
@@ -116,7 +127,7 @@ export class PersonalComponent implements OnInit {
       }
       
       this.sendmessage.sendMessage(dataset).subscribe((response)=>{
-        this.socket.emit('trigger', { 'sender': localStorage.getItem("username"), 'receiver': this.route.snapshot.params.email }  );    
+        this.socket.emit('trigger', { 'sender': localStorage.getItem("username"), 'receiver': this.user_receiver_email }  );    
         this.socket.on('mymessage', (data:any)=>{
             this.tempdata = [];
             this.textmsg = data.data;
@@ -141,48 +152,61 @@ export class PersonalComponent implements OnInit {
     this.option = '';
     this.message += event.emoji.native;
   }
-  
+
+  screen:any
   ngOnInit(): void {
-    
+    this.screen = window.innerWidth;
     this.loadingstart = true;
     this.myemail = localStorage.getItem("username");
 
-    this.receive.getName(this.route.snapshot.params.email).subscribe(r=>{
-      this.user = r.data;
-    })
+    this.sub = this.route.params.subscribe(params => {
+      this.loadingstart = true;
+      this.textmsg = [];
+      this.user_receiver_email = params['email'];
 
-    // Socket URL
-    this.socket = io(`${socketserverurl}`);
-    
-    // Send Connection Request
-    this.socket.emit('connected',localStorage.getItem("username"))
-
-    // Display default Messages
-    this.socket.emit('trigger', { 'sender': localStorage.getItem("username"), 'receiver': this.route.snapshot.params.email }  );
-
-    // get responce from client
-    this.socket.on('getMessage', (data:any)=>{
-
-      // Logic for unique message identifier
-      if(data.sender == this.route.snapshot.params.email && data.receiver == localStorage.getItem("username")){
-        this.tempdata.push(data);
+      if(window.innerWidth < 700){
+        this.routeDirect.navigate([`personal`,params['email']]);
       }
 
-    })
+      this.receive.getName(this.route.snapshot.params.email).subscribe(r=>{
+        this.user = r.data;
+      })
+  
+      // Socket URL
+      this.socket = io(`${socketserverurl}`);
+      
+      // Send Connection Request
+      this.socket.emit('connected',localStorage.getItem("username"))
+  
+      // Display default Messages
+      this.socket.emit('trigger', { 'sender': localStorage.getItem("username"), 'receiver': this.route.snapshot.params.email }  );
+  
+      // get responce from client
+      this.socket.on('getMessage', (data:any)=>{
+  
+        // Logic for unique message identifier
+        if(data.sender == this.route.snapshot.params.email && data.receiver == localStorage.getItem("username")){
+          this.tempdata.push(data);
+        }
+  
+      })
+  
+      // Load the messages after open activity
+      this.socket.on('mymessage', (data:any)=>{
+        this.textmsg = data.data;
+        if(data != null){
+          this.loadingstart = false;
+        }else{
+          this.loadingstart = false;
+        }
+      })
 
-    // Load the messages after open activity
-    this.socket.on('mymessage', (data:any)=>{
-      this.textmsg = data.data;
-      if(data != null){
-        this.loadingstart = false;
-      }else{
-        this.loadingstart = false;
-      }
     })
 
   }
 
   ngOnDestroy() {
+    this.sub.unsubscribe();
   }
 
 

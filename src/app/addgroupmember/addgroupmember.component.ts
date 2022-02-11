@@ -15,6 +15,8 @@ import { HttpClient } from '@angular/common/http';
 })
 export class AddgroupmemberComponent implements OnInit {
 
+  term:any;
+
   searchText: any;
   contactlist:any = [];
   senderemail = localStorage.getItem("username");
@@ -80,7 +82,7 @@ export class AddgroupmemberComponent implements OnInit {
           }
           this.sendmessage.sendMessage(dataset).subscribe((response)=>{
             this.start = false;
-            this.routeDirect.navigate([`gpchatroom`,this.route.snapshot.params.id]);
+            this.routeDirect.navigate([`chats/gpchatroom`,this.route.snapshot.params.id]);
           })
         })
       }

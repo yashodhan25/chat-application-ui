@@ -8,7 +8,7 @@
         <div id="header" style="top:0;position: absolute;width: 100%;">
       
           <div class="avatarSection">
-            <div class="nameSection"><a routerLink="/chats" >&nbsp;&larr;</a></div>
+            <div class="nameSection" *ngIf="screen < 700"><a routerLink="/mobileview" >&nbsp;&larr;</a></div>
             <div class="picture">
               <img src="../../assets/images/noPic.svg" />
             </div>

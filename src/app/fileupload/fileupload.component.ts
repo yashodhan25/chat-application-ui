@@ -74,13 +74,14 @@ export class FileuploadComponent implements OnInit {
         let dataset = [res.data.sender, res.data.receiver, res.data.uploadfiles, res.data.caption , this.currenttime ,  this.type];
         this.uploadfile.senddata(dataset)
         //console.log(dataset)
-        this.routeDirect.navigate([`personal`,this.otherEmail]);
+        this.routeDirect.navigate([`chats/personal`,this.otherEmail]);
       })
 
     })
     
 
   }
+
 
   ngOnInit(): void {
 

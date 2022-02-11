@@ -4,16 +4,17 @@ import { HttpClient } from '@angular/common/http';
 import { ReceiveService } from '../services/receive.service';
 import { apiserverurl } from 'src/environments/environment.prod';
 import { observable } from 'rxjs';
-import { TransferService } from '../services/transfer.service';
 
 @Component({
-  selector: 'app-chats',
-  templateUrl: './chats.component.html',
-  styleUrls: ['./chats.component.scss']
+  selector: 'app-mobile-home',
+  templateUrl: './mobile-home.component.html',
+  styleUrls: ['./mobile-home.component.scss']
 })
-export class ChatsComponent implements OnInit {
+export class MobileHomeComponent implements OnInit {
+
 
   term:any;
+
   searchText: any;
   loader:any;
   homechadata:any = [];
@@ -24,13 +25,7 @@ export class ChatsComponent implements OnInit {
   newData1:any = [];
   newData2:any = [];
 
-  logo:any = null;
-
-  constructor(private transfer : TransferService, private routeDirect: Router,private routeReverse:Router, private http: HttpClient, private receive: ReceiveService ) { }
-
-  status(){
-    this.logo = 1;
-  }
+  constructor(private routeDirect: Router, private routeReverse:Router, private http: HttpClient, private receive: ReceiveService ) { }
 
   logOut(){
     localStorage.clear();
@@ -66,11 +61,11 @@ export class ChatsComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    if(window.innerWidth < 700){
-      this.routeDirect.navigate(['mobileview']);
+    if(window.innerWidth > 700){
+      this.routeDirect.navigate(['chats']);
     }
-
     this.loader = true;
+
     this.receive.getGroups(localStorage.getItem("username")).subscribe(response=>{
       this.loader = false;
       for (let i = 0; i < response.data.length; i++){
@@ -119,6 +114,9 @@ export class ChatsComponent implements OnInit {
           })
         }
       }
+
+      console.log(this.final);
+
     })
 
   }

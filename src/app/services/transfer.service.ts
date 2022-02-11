@@ -21,4 +21,10 @@ export class TransferService {
     this.email = myemail;
   }
 
+  id:any;
+
+  setID(id:any){
+    this.id = id;
+  }
+
 }

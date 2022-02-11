@@ -26,6 +26,7 @@
     background-color: #FFFFFF;
 
     #header {
+        margin-top: -10px;
         min-height: 67px;
         background-color: #f4f7f9;
         justify-content: space-between;
@@ -83,10 +84,8 @@
         overflow-y: auto;
         background: #FFFFFF;
         margin-right: -2px;
-        margin-top: 276px;
         border-top: #FFFFFF 4px solid;
         @media (max-width: 700px) {
-          margin-top: 274px;
           height: 60vh;
         }
         .conversation {

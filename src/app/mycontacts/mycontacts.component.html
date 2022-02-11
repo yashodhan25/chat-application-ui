@@ -31,7 +31,7 @@
                     <div id="searchBox">
                       <img width="19" src="../../assets/images/searchIcon.svg" />
                       <input
-                        [(ngModel)]="searchText"
+                        [(ngModel)]="term"
                         type="text"
                         placeholder="Search Contacts"
                       />
@@ -41,7 +41,7 @@
                 
                   <div id="sidebarContent">
                 
-                    <div class="conversation" *ngFor="let people of contactlist">
+                    <div class="conversation" *ngFor="let people of contactlist | filter:term">
                       
                       <div class="picture">
                         <img src="../../assets/images/noPic.svg" />

@@ -12,6 +12,7 @@ import { SendService } from '../services/send.service';
   styleUrls: ['./selectcontact.component.scss']
 })
 export class SelectcontactComponent implements OnInit {
+  term:any;
 
   searchText: any;
   contactlist:any;

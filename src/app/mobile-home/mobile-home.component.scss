@@ -1,0 +1,200 @@
+.mybutton{
+    position: fixed;
+    z-index:9999999;
+    bottom: 6%;
+    right: 4%;
+    display:block !important;
+  }
+  
+  .mybutton button{
+    background: #009CC3;
+    border: none;
+    color: white;
+    padding: 12px 12px;
+    border-radius: 50%;
+    font-size: 36px;
+    font-weight: 400;
+  }
+  
+  .mybutton button:hover{
+    background: #0589aa;
+  }
+  
+  ::-webkit-scrollbar {
+    width: 10px;
+  }
+  
+  ::-webkit-scrollbar-thumb {
+    background: #009CC3; 
+    border-radius: 10px;
+  }
+  
+  ::-webkit-scrollbar-thumb:hover {
+    background: #057794; 
+  }
+  
+  .loader{
+    position: fixed;
+    width: 100%;
+    z-index: 99;
+  }
+  
+  .mat-progress-bar .mat-progress-bar-fill::after{
+    background-color: #009CC3;
+  }
+  
+  .backclick a{
+    color: #fbfbfb;
+    font-size: 24px;
+  }
+  
+  .dropdown-menu li a{
+      cursor: pointer;
+    }
+    
+    #sidebar {
+        width: 100%;
+        height: 100%;
+        border-right: 1px solid #e1e4e5;
+        display: flex;
+        flex-direction: column;
+      
+        #row1 {
+          display: flex;
+          flex-direction: column;
+          position: fixed; 
+          width: 100%;
+          
+          #sidebarHeader {
+            flex-basis: 67px;
+            background-color: #009CC3;
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            padding-left: 20px;
+            padding-right: 20px;
+            justify-content: space-between;
+            .avatarContainer {
+              flex-basis: 43px;
+              height: 43px;
+              img {
+                height: 100%;
+              }
+            }
+      
+            .actionsContainer {
+              height: 100%;
+              display: flex;
+              align-items: center;
+              width: 110px;
+              display: flex;
+              align-items: center;
+              justify-content: space-between;
+            }
+          }
+      
+          #searchBox {
+            flex-basis: 54px;
+            background-color: #F4F7F9;
+            border-bottom: 1px solid #FFFFFF;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            img {
+              position: absolute;
+              left: 30px;
+            }
+      
+            input {
+              width: calc(90% - 60px);
+              border: none;
+              border-radius: 20px;
+              height: 70%;
+              margin-left: 20px;
+              padding: 8px 20px 8px 20px;
+              color: #a4a4a4;
+              outline: none;
+              box-shadow: 0px 0px 3px #F4F7F9;
+              &::placeholder {
+                color: #a4a4a4;
+                font-weight: 100;
+              }
+            }
+          }
+        }
+      
+        #noConversations {
+          padding-top: 30px;
+          text-align: center;
+          color: #b9b9b9;
+          font-size: 18px;
+          font-weight: 100;
+        }
+        #sidebarContent {
+          flex-grow: 1;
+          height: 80vh;
+          overflow-y: auto;
+          margin-top: 120px;
+          background: #FFFFFF;
+          margin-right: -2px;
+          @media (max-width: 700px) {
+            height: 80vh;
+          }
+          .conversation {
+            height: 70px;
+            display: flex;
+            padding-right: 0px;
+            transition: all 0.4s ease-in-out;
+            background: #FFFFFF;
+            cursor: pointer;
+            &:hover {
+              background-color: #F4F7F9;
+            }
+            .picture {
+              flex-basis: 73px;
+              height: 100%;
+              display: flex;
+              align-items: center;
+              justify-content: center;
+              img {
+                max-width: 100%;
+                width: 48px;
+              }
+            }
+            .content {
+              border-bottom: 1px solid #e2e4e6;
+              flex-grow: 1;
+              padding: 20px 0px;
+              padding-right: 10px;
+              .conversationHeader {
+                display: flex;
+                flex-direction: row;
+                justify-content: space-between;
+                .name a{
+                  color: #242323;
+                  font-size: 18px;
+                  margin-top: 6px;
+                  font-weight: lighter;
+                  font-family: 'Abhaya Libre';
+                }
+                .time {
+                  color: #242323;
+                  font-size: 13px;
+                  padding-top: 2px;
+                }
+              }
+      
+              .message {
+                color: #242323;
+                font-size: 13px;
+                padding-top: 5px;
+                display: flex;
+                align-items: center;
+                img {
+                  margin-right: 2px;
+                }
+              }
+            }
+          }
+        }
+      }  

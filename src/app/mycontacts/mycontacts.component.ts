@@ -9,6 +9,8 @@ import { GetService } from '../services/get.service';
 })
 export class MycontactsComponent implements OnInit {
 
+  term:any;
+
   searchText: any;
   contactlist:any;
   senderemail = localStorage.getItem("username");

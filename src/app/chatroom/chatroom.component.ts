@@ -49,9 +49,9 @@ export class ChatroomComponent implements OnInit {
   admindata:any =[];
   groupinfo:any;
   admin:any;
-  groupID:any = this.route.snapshot.params.id;
+  groupID:any;
 
-  constructor( private transfer : TransferService, private routeDirect: Router, private route:ActivatedRoute, private sendmessage:SendService, private receive: ReceiveService, private http: HttpClient, private downloadfile: DownloadService ) { }
+  
 
   save(datadocname:any){
     saveAs(datadocname, datadocname );
@@ -60,18 +60,27 @@ export class ChatroomComponent implements OnInit {
   download(filename:any){
     this.nameoffile = filename
     let imgurl = filename;
-    this.downloadfile.downloadfile(this.route.snapshot.params.id, this.nameoffile, imgurl)
-    this.routeDirect.navigate(['view2']);
+    this.downloadfile.downloadfile(this.groupID, this.nameoffile, imgurl)
+    this.routeDirect.navigate(['chats/view2']);
+    if(this.screen < 700){
+      this.routeDirect.navigate(['view2']);
+    }
   }
 
   getIMG(event: any) {
-    this.transfer.getfile(event,this.route.snapshot.params.id);
-    this.routeDirect.navigate(['upload2']);
+    this.transfer.getfile(event,this.groupID);
+    this.routeDirect.navigate(['chats/upload2']);
+    if(this.screen < 700){
+      this.routeDirect.navigate(['upload2']);
+    }
   }
 
   getFILE(event: any) {
-    this.transfer.getDocfile(event,this.route.snapshot.params.id);
-    this.routeDirect.navigate(['upload2']);
+    this.transfer.getDocfile(event,this.groupID);
+    this.routeDirect.navigate(['chats/upload2']);
+    if(this.screen < 700){
+      this.routeDirect.navigate(['upload2']);
+    }
   }
 
   options(){
@@ -105,17 +114,17 @@ export class ChatroomComponent implements OnInit {
       this.currenttime = this.gethour+":"+minute+" "+this.timemode;
       this.sender_email = localStorage.getItem("username");
       this.textmessages = messages;
-      this.socket.emit('sendresponcetogroup', {'id':this.route.snapshot.params.id, 'sender': localStorage.getItem("username"), 'receiver': this.groupusers, 'message': this.message, 'time': this.currenttime,'caption':'' , 'file': 'false' }  );
+      this.socket.emit('sendresponcetogroup', {'id':this.groupID, 'sender': localStorage.getItem("username"), 'receiver': this.groupusers, 'message': this.message, 'time': this.currenttime,'caption':'' , 'file': 'false' }  );
       let dataset:any = {
         "caption": "",
         "id": 0,
         "message": this.textmessages,
-        "receiver": this.route.snapshot.params.id,
+        "receiver": this.groupID,
         "sender": this.sender_email,
         "type": ""
       }      
       this.sendmessage.sendMessage(dataset).subscribe((response)=>{
-        this.socket.emit('trigger1', { 'receiver': this.route.snapshot.params.id }  );    
+        this.socket.emit('trigger1', { 'receiver': this.groupID }  );    
         this.socket.on('mymessage1', (data:any)=>{
             this.groupchatdata = [];
             this.tempdata = [];
@@ -154,57 +163,80 @@ export class ChatroomComponent implements OnInit {
     })
   }
 
+  constructor( private transfer : TransferService, private routeDirect: Router, private route:ActivatedRoute, private sendmessage:SendService, private receive: ReceiveService, private http: HttpClient, private downloadfile: DownloadService ) { }
+
+  sub:any;
+  screen:any;
   ngOnInit(): void {
 
-    // console.log(this.groupchatdata)
+    this.screen = window.innerWidth;
 
-    this.receive.getGroupName(this.route.snapshot.params.id).subscribe(r=>{
+    this.sub = this.route.params.subscribe(params => {
 
-      if(localStorage.getItem("username") != r.data[0].createdByUserEmail){
-        this.adminName(r.data[0].createdByUserEmail);
-      }else{
-        this.admin = 'true';
-        this.groupinfo = 'You has created group.';
+      this.loadingstart = true;
+
+      this.groupID = params['id'];
+
+      if(window.innerWidth < 700){
+        this.routeDirect.navigate([`gpchatroom`,params['id']]);
       }
-    })
+      
+      this.groupchatdata = [];
+       
+      this.receive.getGroupName(this.route.snapshot.params.id).subscribe(r=>{
+        this.user = r.data;
+      })
 
-    // Socket URL
-    this.socket = io(`${socketserverurl}`);
-    this.loadingstart = true;
-    this.myemail = localStorage.getItem("username");
+      this.receive.getGroupName(this.route.snapshot.params.id).subscribe(r=>{
 
-    this.receive.getGroupName(this.route.snapshot.params.id).subscribe(r=>{
-      this.user = r.data;
-    })
-
-    this.receive.getGroupDetails(this.route.snapshot.params.id).subscribe(res=>{
-      for( var i = 0; i < res.data.length; i++){
-        if(localStorage.getItem("username") != res.data[i].userEmail){
-          this.groupusers.push(res.data[i].userEmail);
+        if(localStorage.getItem("username") != r.data[0].createdByUserEmail){
+          this.adminName(r.data[0].createdByUserEmail);
+        }else{
+          this.admin = 'true';
+          this.groupinfo = 'You has created group.';
         }
-      }
-    })
+      })
 
-    this.socket.emit('trigger1', { 'receiver': this.route.snapshot.params.id }  );  
-    this.socket.on('mymessage1', (data:any)=>{
-      if(data != null){
-        this.loadingstart = false;
-      }else{
-        this.loadingstart = false;
-      }
-      for(var i=0; i<data.data.length; i++){
-        this.coverter(i,data.data)
-      }
-    })
-    
-    this.socket.emit('connected',localStorage.getItem("username"));
-    this.socket.on('getMessageFromSender', (data:any)=>{
-      if(data.id == this.route.snapshot.params.id && data.sender != localStorage.getItem("username") ){
-        this.tempdata.push(data);
-        this.tempcoverter(this.tempdata.length, data.sender);
-      }
-    })
+      // Socket URL
+      this.socket = io(`${socketserverurl}`);
+      this.loadingstart = true;
+      this.myemail = localStorage.getItem("username");
 
+      this.socket.emit('trigger1', { 'receiver': this.route.snapshot.params.id }  );  
+      this.socket.on('mymessage1', (data:any)=>{
+        if(data != null){
+          this.loadingstart = false;
+        }else{
+          this.loadingstart = false;
+        }
+
+        for(var i=0; i<data.data.length; i++){
+          this.coverter(i,data.data)
+        }
+      })
+
+      this.receive.getGroupDetails(this.route.snapshot.params.id).subscribe(res=>{
+        for( var i = 0; i < res.data.length; i++){
+          if(localStorage.getItem("username") != res.data[i].userEmail){
+            this.groupusers.push(res.data[i].userEmail);
+          }
+        }
+      })
+      
+      this.socket.emit('connected',localStorage.getItem("username"));
+      this.socket.on('getMessageFromSender', (data:any)=>{
+        if(data.id == this.route.snapshot.params.id && data.sender != localStorage.getItem("username") ){
+          this.tempdata.push(data);
+          this.tempcoverter(this.tempdata.length, data.sender);
+        }
+      })
+
+    });
+
+  }
+
+  ngOnDestroy() {
+    this.sub.unsubscribe();
   }
 
   tempcoverter(count:any, email:any){

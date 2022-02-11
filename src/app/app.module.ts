@@ -30,6 +30,8 @@ import { AddgroupmemberComponent } from './addgroupmember/addgroupmember.compone
 import { GroupinformationComponent } from './groupinformation/groupinformation.component';
 import { HashLocationStrategy, LocationStrategy } from '@angular/common';
 import { LinkPipe } from './link.pipe';
+import { Ng2SearchPipeModule } from 'ng2-search-filter';
+import { MobileHomeComponent } from './mobile-home/mobile-home.component';
 
 
 
@@ -50,7 +52,8 @@ import { LinkPipe } from './link.pipe';
     Viewer2Component,
     AddgroupmemberComponent,
     GroupinformationComponent,
-    LinkPipe
+    LinkPipe,
+    MobileHomeComponent
   ],
   imports: [
     BrowserModule,
@@ -60,7 +63,8 @@ import { LinkPipe } from './link.pipe';
     ReactiveFormsModule,
     HttpClientModule,
     BrowserAnimationsModule,
-    MatProgressBarModule
+    MatProgressBarModule,
+    Ng2SearchPipeModule
   ],
   providers: [{provide: LocationStrategy, useClass: HashLocationStrategy}],
   bootstrap: [AppComponent]
