@@ -30,13 +30,8 @@ export class FileuploadComponent implements OnInit {
   socket:any;
 
   constructor(private trans: TransferService, private uploadfile:UploadService, private routeDirect: Router) { }
-
-  
   
   getdata(value:any){
-
-    
-    
     this.start = true;
     if(this.localUrl != null){
       this.type = 'image';

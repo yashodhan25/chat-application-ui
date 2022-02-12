@@ -10,7 +10,6 @@ import { GetService } from '../services/get.service';
 export class MycontactsComponent implements OnInit {
 
   term:any;
-
   searchText: any;
   contactlist:any;
   senderemail = localStorage.getItem("username");
@@ -18,17 +17,17 @@ export class MycontactsComponent implements OnInit {
 
   constructor(private routeReverse:Router, private getpeople:GetService) { }
 
-  logOut(){
-    localStorage.clear();
-    this.routeReverse.navigate(['register']);
-  }
-
   ngOnInit(): void {    
     this.loader = true;
     this.getpeople.getall(this.senderemail).subscribe((users:any)=>{
       this.contactlist = users.data;
       this.loader = false;
     });
+  }
+
+  logOut(){
+    localStorage.clear();
+    this.routeReverse.navigate(['register']);
   }
 
 }

@@ -16,7 +16,6 @@ import { HttpClient } from '@angular/common/http';
 export class AddgroupmemberComponent implements OnInit {
 
   term:any;
-
   searchText: any;
   contactlist:any = [];
   senderemail = localStorage.getItem("username");
@@ -59,7 +58,6 @@ export class AddgroupmemberComponent implements OnInit {
 
   submitForm() {
 
-    ///*
     this.start = true;
     this.mySelectedPeople = this.form.value.checkArray;
     for(var i=0; i<this.mySelectedPeople.length; i++){
@@ -87,7 +85,6 @@ export class AddgroupmemberComponent implements OnInit {
         })
       }
     })
-    //*/
   }
 
   datafilter(data:any){

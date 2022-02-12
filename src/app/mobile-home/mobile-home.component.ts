@@ -14,7 +14,6 @@ export class MobileHomeComponent implements OnInit {
 
 
   term:any;
-
   searchText: any;
   loader:any;
   homechadata:any = [];
@@ -26,13 +25,6 @@ export class MobileHomeComponent implements OnInit {
   newData2:any = [];
 
   constructor(private routeDirect: Router, private routeReverse:Router, private http: HttpClient, private receive: ReceiveService ) { }
-
-  logOut(){
-    localStorage.clear();
-    this.routeReverse.navigate(['register']);
-  }
-
-  socket:any;
 
   mapper(alldata:any){
     const formData1 = new FormData();
@@ -65,7 +57,6 @@ export class MobileHomeComponent implements OnInit {
       this.routeDirect.navigate(['chats']);
     }
     this.loader = true;
-
     this.receive.getGroups(localStorage.getItem("username")).subscribe(response=>{
       this.loader = false;
       for (let i = 0; i < response.data.length; i++){
@@ -115,7 +106,7 @@ export class MobileHomeComponent implements OnInit {
         }
       }
 
-      console.log(this.final);
+      // console.log(this.final);
 
     })
 
@@ -125,6 +116,11 @@ export class MobileHomeComponent implements OnInit {
     return this.final.sort((a:any, b:any) => {
       return <any>b.id - <any>a.id;
     });
+  }
+
+  logOut(){
+    localStorage.clear();
+    this.routeReverse.navigate(['register']);
   }
 
 }

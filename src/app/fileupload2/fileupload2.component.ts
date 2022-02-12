@@ -33,8 +33,6 @@ export class Fileupload2Component implements OnInit {
 
   constructor(private receive: ReceiveService ,private trans: TransferService, private uploadfile:UploadService, private routeDirect: Router) { }
 
-  
-  
   getdata(value:any){
 
     this.start = true;

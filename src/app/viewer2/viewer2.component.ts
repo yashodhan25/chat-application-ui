@@ -15,11 +15,11 @@ export class Viewer2Component implements OnInit {
   portrait:any = "";
   filename:any = "";
 
+  constructor( private filedownload: DownloadService ) { }
+
   download(url:any){
     saveAs(url, this.filename );
   }
-
-  constructor( private filedownload: DownloadService ) { }
 
   ngOnInit(): void {
     this.filedownload.data

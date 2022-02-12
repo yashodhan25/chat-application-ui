@@ -42,5 +42,18 @@ export class ReceiveService {
     formData.append("email", email);
     return this.http.post(`${apiserverurl}home/`, formData )
   }
+
+  getGroupchats(receiverID:any):Observable<any>{
+    const formData = new FormData(); 
+    formData.append("receiver", receiverID);
+    return this.http.post(`${apiserverurl}receivechatgroup/`, formData )
+  }
+
+  getchats(sender:any,receiver:any):Observable<any>{
+    const formData = new FormData(); 
+    formData.append("sender", sender);
+    formData.append("receiver", receiver);
+    return this.http.post(`${apiserverurl}receive/`, formData )
+  }
   
 }

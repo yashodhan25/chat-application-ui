@@ -12,12 +12,10 @@ export class CreategroupComponent implements OnInit {
   constructor( private createGroup: CreategroupService, private routeDirect: Router ) { }
 
   emojiPickerVisible:boolean = false;
-
   message = '';
-
   groupdata:any;
-
   alerttext:boolean = false;
+  screen:any
 
   getvalue(value:any){
     if(value == ""){
@@ -51,7 +49,6 @@ export class CreategroupComponent implements OnInit {
     this.emojiPickerVisible = false;
   }
 
-  screen:any
   ngOnInit(): void {
     this.screen = window.innerWidth;
   }

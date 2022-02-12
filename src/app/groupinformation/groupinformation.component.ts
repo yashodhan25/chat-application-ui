@@ -37,9 +37,6 @@ export class GroupinformationComponent implements OnInit {
 
   ngOnInit(): void {
     this.start = true;
-
-    console.log(this.participant_info)
-
     const formData = new FormData(); 
     formData.append("id", this.route.snapshot.params.id);
     this.http.post(`${apiserverurl}getGroupName/`, formData ).subscribe(response=>{
@@ -47,11 +44,6 @@ export class GroupinformationComponent implements OnInit {
       this.group_create_date = this.groupname_Array.data[0].gpTableDate.dayOfMonth+"/"+this.groupname_Array.data[0].gpTableDate.monthValue+"/"+this.groupname_Array.data[0].gpTableDate.year
       this.group_name = this.groupname_Array.data[0].groupName;
       this.group_admin_email = this.groupname_Array.data[0].createdByUserEmail;
-
-      console.log("Group Name : "+this.group_name+"\nAdmin Email : "+this.group_admin_email)
-
-      console.log(this.group_create_date)
-      
       this.GroupInformation(this.route.snapshot.params.id, this.group_admin_email)
     })
 
@@ -63,9 +55,6 @@ export class GroupinformationComponent implements OnInit {
     this.http.post(`${apiserverurl}getGroupDetailsById/`, formData ).subscribe(response=>{
       this.group_information_Array = response;
       this.no_of_participants = this.group_information_Array.data.length;
-      
-      console.log(this.no_of_participants)
-      
       for(var i = 0; i<this.group_information_Array.data.length; i++){
         this.group_member_email = this.group_information_Array.data[i].userEmail
         this.group_participant_info(this.group_member_email,admin_email)

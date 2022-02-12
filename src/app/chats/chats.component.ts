@@ -3,7 +3,6 @@ import { Router } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
 import { ReceiveService } from '../services/receive.service';
 import { apiserverurl } from 'src/environments/environment.prod';
-import { observable } from 'rxjs';
 import { TransferService } from '../services/transfer.service';
 
 @Component({
@@ -23,7 +22,6 @@ export class ChatsComponent implements OnInit {
   newData:any = [];
   newData1:any = [];
   newData2:any = [];
-
   logo:any = null;
 
   constructor(private transfer : TransferService, private routeDirect: Router,private routeReverse:Router, private http: HttpClient, private receive: ReceiveService ) { }
@@ -31,13 +29,6 @@ export class ChatsComponent implements OnInit {
   status(){
     this.logo = 1;
   }
-
-  logOut(){
-    localStorage.clear();
-    this.routeReverse.navigate(['register']);
-  }
-
-  socket:any;
 
   mapper(alldata:any){
     const formData1 = new FormData();
@@ -127,6 +118,11 @@ export class ChatsComponent implements OnInit {
     return this.final.sort((a:any, b:any) => {
       return <any>b.id - <any>a.id;
     });
+  }
+
+  logOut(){
+    localStorage.clear();
+    this.routeReverse.navigate(['register']);
   }
 
 }

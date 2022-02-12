@@ -50,8 +50,10 @@ export class ChatroomComponent implements OnInit {
   groupinfo:any;
   admin:any;
   groupID:any;
+  sub:any;
+  screen:any;
 
-  
+  constructor( private transfer : TransferService, private routeDirect: Router, private route:ActivatedRoute, private sendmessage:SendService, private receive: ReceiveService, private http: HttpClient, private downloadfile: DownloadService ) { }
 
   save(datadocname:any){
     saveAs(datadocname, datadocname );
@@ -124,9 +126,9 @@ export class ChatroomComponent implements OnInit {
         "type": ""
       }      
       this.sendmessage.sendMessage(dataset).subscribe((response)=>{
-        this.socket.emit('trigger1', { 'receiver': this.groupID }  );    
-        this.socket.on('mymessage1', (data:any)=>{
-            this.groupchatdata = [];
+        
+        this.receive.getGroupchats(this.route.snapshot.params.id).subscribe(data=>{
+          this.groupchatdata = [];
             this.tempdata = [];
             if(data != null){
               this.start = false;
@@ -148,7 +150,6 @@ export class ChatroomComponent implements OnInit {
 
   }
 
-
   emojiClicked(event:any) {
     this.option = '';
     this.message += event.emoji.native;
@@ -162,11 +163,7 @@ export class ChatroomComponent implements OnInit {
       this.groupinfo = this.admindata.data[0].name+' has created group.';
     })
   }
-
-  constructor( private transfer : TransferService, private routeDirect: Router, private route:ActivatedRoute, private sendmessage:SendService, private receive: ReceiveService, private http: HttpClient, private downloadfile: DownloadService ) { }
-
-  sub:any;
-  screen:any;
+  
   ngOnInit(): void {
 
     this.screen = window.innerWidth;
@@ -197,13 +194,8 @@ export class ChatroomComponent implements OnInit {
         }
       })
 
-      // Socket URL
-      this.socket = io(`${socketserverurl}`);
-      this.loadingstart = true;
-      this.myemail = localStorage.getItem("username");
-
-      this.socket.emit('trigger1', { 'receiver': this.route.snapshot.params.id }  );  
-      this.socket.on('mymessage1', (data:any)=>{
+      this.receive.getGroupchats(this.route.snapshot.params.id).subscribe(data=>{
+        console.log(data)
         if(data != null){
           this.loadingstart = false;
         }else{
@@ -222,6 +214,11 @@ export class ChatroomComponent implements OnInit {
           }
         }
       })
+
+      // Socket URL
+      this.socket = io(`${socketserverurl}`);
+      this.loadingstart = true;
+      this.myemail = localStorage.getItem("username");
       
       this.socket.emit('connected',localStorage.getItem("username"));
       this.socket.on('getMessageFromSender', (data:any)=>{

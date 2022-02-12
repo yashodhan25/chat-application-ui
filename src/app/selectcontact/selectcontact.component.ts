@@ -13,7 +13,6 @@ import { SendService } from '../services/send.service';
 })
 export class SelectcontactComponent implements OnInit {
   term:any;
-
   searchText: any;
   contactlist:any;
   senderemail = localStorage.getItem("username");
@@ -48,7 +47,6 @@ export class SelectcontactComponent implements OnInit {
   submitForm() {
     this.start = true;
     this.createGroup.createGroup().subscribe(responce=>{
-      // console.log(responce.data.id)
       this.finallist = [];
       this.finallist.push({'groupName':responce.data.groupName, 'groupTableId':responce.data.id, 'userEmail': localStorage.getItem("username")});
       this.mySelectedPeople = this.form.value.checkArray;
@@ -69,7 +67,6 @@ export class SelectcontactComponent implements OnInit {
           this.routeDirect.navigate(['chats']);
         })
       })
-      //*/
     })
 
   }

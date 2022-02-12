@@ -44,6 +44,7 @@ export class PersonalComponent implements OnInit {
   tempdata:any[] = [];
   sub:any;
   user_receiver_email:any;
+  screen:any
 
   constructor( private transfer : TransferService, private routeDirect: Router, private route:ActivatedRoute, private sendmessage:SendService, private receive: ReceiveService, private http: HttpClient, private downloadfile: DownloadService ){}
 
@@ -127,15 +128,15 @@ export class PersonalComponent implements OnInit {
       }
       
       this.sendmessage.sendMessage(dataset).subscribe((response)=>{
-        this.socket.emit('trigger', { 'sender': localStorage.getItem("username"), 'receiver': this.user_receiver_email }  );    
-        this.socket.on('mymessage', (data:any)=>{
-            this.tempdata = [];
-            this.textmsg = data.data;
-            if(data != null){
-              this.start = false;
-            }else{
-              this.start = false;
-            }
+
+        this.receive.getchats(localStorage.getItem("username"), this.route.snapshot.params.email).subscribe(data=>{
+          this.tempdata = [];
+          this.textmsg = data.data;
+          if(data != null){
+            this.start = false;
+          }else{
+            this.start = false;
+          }
         })
         this.message = "";  
       });
@@ -153,7 +154,6 @@ export class PersonalComponent implements OnInit {
     this.message += event.emoji.native;
   }
 
-  screen:any
   ngOnInit(): void {
     this.screen = window.innerWidth;
     this.loadingstart = true;
@@ -171,33 +171,25 @@ export class PersonalComponent implements OnInit {
       this.receive.getName(this.route.snapshot.params.email).subscribe(r=>{
         this.user = r.data;
       })
-  
-      // Socket URL
-      this.socket = io(`${socketserverurl}`);
-      
-      // Send Connection Request
-      this.socket.emit('connected',localStorage.getItem("username"))
-  
-      // Display default Messages
-      this.socket.emit('trigger', { 'sender': localStorage.getItem("username"), 'receiver': this.route.snapshot.params.email }  );
-  
-      // get responce from client
-      this.socket.on('getMessage', (data:any)=>{
-  
-        // Logic for unique message identifier
-        if(data.sender == this.route.snapshot.params.email && data.receiver == localStorage.getItem("username")){
-          this.tempdata.push(data);
-        }
-  
-      })
-  
-      // Load the messages after open activity
-      this.socket.on('mymessage', (data:any)=>{
+
+      this.receive.getchats(localStorage.getItem("username"), this.route.snapshot.params.email).subscribe(data=>{
         this.textmsg = data.data;
         if(data != null){
           this.loadingstart = false;
         }else{
           this.loadingstart = false;
+        }
+      })
+  
+      // Socket URL
+      this.socket = io(`${socketserverurl}`);
+      // Send Connection Request
+      this.socket.emit('connected',localStorage.getItem("username"))
+      // get responce from client
+      this.socket.on('getMessage', (data:any)=>{
+        // Logic for unique message identifier
+        if(data.sender == this.route.snapshot.params.email && data.receiver == localStorage.getItem("username")){
+          this.tempdata.push(data);
         }
       })
 
