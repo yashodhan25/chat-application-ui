@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { DomSanitizer } from '@angular/platform-browser';
 import { Router } from '@angular/router';
 import { ReceiveService } from '../services/receive.service';
 import { TransferService } from '../services/transfer.service';
@@ -14,10 +15,14 @@ export class Fileupload2Component implements OnInit {
   // File Upload Operation
   fileData:any = null;
   localUrl: any;
+  localVideoUrl:any;
+  localAudioUrl:any;
   emojiPickerVisible:any;
   message = '';
   myEvent = this.trans.mycustomevent;
   myDocEvent = this.trans.mydocevent;
+  myVideoEvent = this.trans.myvideoEvent;
+  myAudioEvent = this.trans.myaudioEvent;
   otherEmail = this.trans.email;
   gethour:any;
   timemode:any;
@@ -31,13 +36,17 @@ export class Fileupload2Component implements OnInit {
   socket:any;
   groupusers:any = [];
 
-  constructor(private receive: ReceiveService ,private trans: TransferService, private uploadfile:UploadService, private routeDirect: Router) { }
+  constructor(private receive: ReceiveService, private domSanitizer: DomSanitizer ,private trans: TransferService, private uploadfile:UploadService, private routeDirect: Router) { }
 
   getdata(value:any){
 
     this.start = true;
     if(this.localUrl != null){
       this.type = 'image';
+    }else if(this.localVideoUrl != null){
+      this.type = 'video';
+    }else if(this.localAudioUrl != null){
+      this.type = 'audio';
     }else{
       this.type = 'doc';
     }
@@ -120,7 +129,36 @@ export class Fileupload2Component implements OnInit {
         reader.readAsDataURL(this.myEvent.target.files[0]);
      
       }
-    }else{
+    }
+    
+    else if(this.myVideoEvent != null){
+      if(this.myVideoEvent.target.files && this.myVideoEvent.target.files[0]){
+
+        this.localAudioUrl = null;
+
+        this.fileData = this.myVideoEvent.target.files[0];
+
+        var reader = new FileReader();
+        reader.onload = (event: any) => {
+          this.localVideoUrl = event.target.result;
+        }
+        reader.readAsDataURL(this.myVideoEvent.target.files[0]);
+      }
+    }
+
+    else if(this.myAudioEvent != null){
+      if(this.myAudioEvent.target.files && this.myAudioEvent.target.files[0]){
+        this.localVideoUrl = null;
+        this.fileData = this.myAudioEvent.target.files[0];
+        var reader = new FileReader();
+        reader.onload = (event: any) => {
+          this.localAudioUrl = this.domSanitizer.bypassSecurityTrustUrl(event.target.result);
+        }
+        reader.readAsDataURL(this.myAudioEvent.target.files[0]);
+      }
+    }
+    
+    else{
       if(this.myDocEvent.target.files && this.myDocEvent.target.files[0]){
         this.fileData = this.myDocEvent.target.files[0];
       }

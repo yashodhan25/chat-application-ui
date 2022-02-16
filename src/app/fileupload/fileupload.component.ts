@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { TransferService } from '../services/transfer.service';
 import { UploadService } from '../services/upload.service';
+import { DomSanitizer } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-fileupload',
@@ -13,10 +14,14 @@ export class FileuploadComponent implements OnInit {
   // File Upload Operation
   fileData:any = null;
   localUrl: any;
+  localVideoUrl:any;
+  localAudioUrl:any;
   emojiPickerVisible:any;
   message = '';
   myEvent = this.trans.mycustomevent;
   myDocEvent = this.trans.mydocevent;
+  myVideoEvent = this.trans.myvideoEvent;
+  myAudioEvent = this.trans.myaudioEvent;
   otherEmail = this.trans.email;
   gethour:any;
   timemode:any;
@@ -29,12 +34,16 @@ export class FileuploadComponent implements OnInit {
   start:any;
   socket:any;
 
-  constructor(private trans: TransferService, private uploadfile:UploadService, private routeDirect: Router) { }
+  constructor(private trans: TransferService, private uploadfile:UploadService, private routeDirect: Router, private domSanitizer: DomSanitizer) { }
   
   getdata(value:any){
     this.start = true;
     if(this.localUrl != null){
       this.type = 'image';
+    }else if(this.localVideoUrl != null){
+      this.type = 'video';
+    }else if(this.localAudioUrl != null){
+      this.type = 'audio';
     }else{
       this.type = 'doc';
     }
@@ -88,9 +97,7 @@ export class FileuploadComponent implements OnInit {
 
         const URL = window.URL || window.webkitURL;
         const Img = new Image();
-
         Img.src = URL.createObjectURL(this.myEvent.target.files[0]);
-
         Img.onload = (e: any) => {
           const height = e.path[0].height;
           const width = e.path[0].width;
@@ -99,7 +106,6 @@ export class FileuploadComponent implements OnInit {
           }else{
             this.portrait = "true";
           }
-
         }
   
         // Preview of file before upload 
@@ -110,7 +116,33 @@ export class FileuploadComponent implements OnInit {
         reader.readAsDataURL(this.myEvent.target.files[0]);
      
       }
-    }else{
+    }
+
+    else if(this.myVideoEvent != null){
+      if(this.myVideoEvent.target.files && this.myVideoEvent.target.files[0]){
+        this.localAudioUrl = null;
+        this.fileData = this.myVideoEvent.target.files[0];
+        var reader = new FileReader();
+        reader.onload = (event: any) => {
+          this.localVideoUrl = event.target.result;
+        }
+        reader.readAsDataURL(this.myVideoEvent.target.files[0]);
+      }
+    }
+
+    else if(this.myAudioEvent != null){
+      if(this.myAudioEvent.target.files && this.myAudioEvent.target.files[0]){
+        this.localVideoUrl = null;
+        this.fileData = this.myAudioEvent.target.files[0];
+        var reader = new FileReader();
+        reader.onload = (event: any) => {
+          this.localAudioUrl = this.domSanitizer.bypassSecurityTrustUrl(event.target.result);
+        }
+        reader.readAsDataURL(this.myAudioEvent.target.files[0]);
+      }
+    }
+    
+    else{
       if(this.myDocEvent.target.files && this.myDocEvent.target.files[0]){
         this.fileData = this.myDocEvent.target.files[0];
       }
@@ -121,6 +153,8 @@ export class FileuploadComponent implements OnInit {
   ngOnDestroy(): void{
     this.trans.getDocfile(null,null);
     this.trans.getfile(null,null);
+    this.trans.getVideoFile(null,null);
+    this.trans.getAudioFile(null,null);
   }
 
   emojiClicked(event:any) {

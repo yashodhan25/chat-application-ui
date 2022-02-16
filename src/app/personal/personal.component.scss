@@ -66,6 +66,22 @@
   padding: 12px 15px 12px 15px;
 }
 
+.video label{
+  background: #F9E204;
+  color: #FDFEFE;
+  border-radius: 50%;
+  cursor: pointer;
+  padding: 10px 10px 10px 10px;
+}
+
+.audio label{
+  background: #F904DB;
+  color: #FDFEFE;
+  border-radius: 50%;
+  cursor: pointer;
+  padding: 10px 12px 10px 12px;
+}
+
 .nameSection a{
   color: #767676;
   font-weight: bold;

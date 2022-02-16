@@ -9,6 +9,8 @@ export class TransferService {
 
   mydocevent:any;
   mycustomevent:any; 
+  myvideoEvent:any;
+  myaudioEvent:any;
   email:any;
 
   getfile( event:any, myemail:any ){
@@ -20,11 +22,15 @@ export class TransferService {
     this.mydocevent = event;
     this.email = myemail;
   }
+  
+  getVideoFile(event:any, myemail:any){
+    this.myvideoEvent = event;
+    this.email = myemail;
+  }
 
-  id:any;
-
-  setID(id:any){
-    this.id = id;
+  getAudioFile(event:any, myemail:any){
+    this.myaudioEvent = event;
+    this.email = myemail;
   }
 
 }

@@ -29,6 +29,12 @@
               <img [src]="imgurl" *ngIf="imgurl != null" />
             </div>
 
+            <div class="video" *ngIf="videourl != null && imgurl == null">
+              <video controls>
+                <source [src]="videourl" type="video/mp4">
+              </video>
+            </div>
+
           </div>
   
         </div>

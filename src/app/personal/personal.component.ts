@@ -62,6 +62,16 @@ export class PersonalComponent implements OnInit {
     }
   }
 
+  videoplayer(filename:any, type:any){
+    this.nameoffile = filename
+    let imgurl = filename;
+    this.downloadfile.downloadVideofile(this.user_receiver_email, this.nameoffile, imgurl,type);
+    this.routeDirect.navigate(['chats/view']);
+    if(this.screen < 700){
+      this.routeDirect.navigate(['view']);
+    }
+  }
+
   getIMG(event: any) {
     this.transfer.getfile(event,this.user_receiver_email);
     this.routeDirect.navigate(['chats/upload']);
@@ -72,6 +82,22 @@ export class PersonalComponent implements OnInit {
 
   getFILE(event: any) {
     this.transfer.getDocfile(event,this.user_receiver_email);
+    this.routeDirect.navigate(['chats/upload']);
+    if(this.screen < 700){
+      this.routeDirect.navigate(['upload']);
+    }
+  }
+
+  getVideoFILE(event: any) {
+    this.transfer.getVideoFile(event, this.user_receiver_email)
+    this.routeDirect.navigate(['chats/upload']);
+    if(this.screen < 700){
+      this.routeDirect.navigate(['upload']);
+    }
+  }
+
+  getAudioFILE(event: any) {
+    this.transfer.getAudioFile(event, this.user_receiver_email)
     this.routeDirect.navigate(['chats/upload']);
     if(this.screen < 700){
       this.routeDirect.navigate(['upload']);

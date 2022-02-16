@@ -79,6 +79,16 @@
                           <img *ngIf="group.me == 'true'" src="../../assets/images/doubleTick.svg" />&nbsp;
                           file
                         </div>
+
+                        <div class="message" *ngIf="group.message == '' && group.type == 'video' ">
+                          <img *ngIf="group.me == 'true'" src="../../assets/images/doubleTick.svg" />&nbsp;
+                          video
+                        </div>
+
+                        <div class="message" *ngIf="group.message == '' && group.type == 'audio' ">
+                          <img *ngIf="group.me == 'true'" src="../../assets/images/doubleTick.svg" />&nbsp;
+                          audio
+                        </div>
   
                         <div class="message" *ngIf="group.type == 'notification' && group.message != '' && group.me == 'true' ">
                           {{group.message}}

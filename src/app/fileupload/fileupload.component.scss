@@ -44,6 +44,20 @@
           height: auto;
           width: 320px;
         }
+        .video{
+          display: flex;
+          justify-content: center;
+        }
+
+        .video video{
+          width: 80%;
+          height: 380px;
+        }
+
+        .audio{
+          display: flex;
+          justify-content: center;
+        }
 
         @media only screen and (max-width: 950px) {
           .land{

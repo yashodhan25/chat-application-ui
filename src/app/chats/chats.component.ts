@@ -57,6 +57,7 @@ export class ChatsComponent implements OnInit {
   }
 
   ngOnInit(): void {
+
     if(window.innerWidth < 700){
       this.routeDirect.navigate(['mobileview']);
     }

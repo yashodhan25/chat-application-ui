@@ -27,6 +27,19 @@
 
             <h3 *ngIf="localUrl == null " style="color: azure;justify-content: center;display: flex;">No Preview Available</h3>
 
+            <div class="video" *ngIf="localVideoUrl != null && localAudioUrl == null">
+              <video controls>
+                <source [src]="localVideoUrl" type="video/mp4">
+              </video>
+            </div>
+
+            <div class="audio" *ngIf="localAudioUrl != null && localVideoUrl == null">
+              <audio controls>
+                <source [src]="localAudioUrl" type="audio/ogg">
+                <source [src]="localAudioUrl" type="audio/mpeg">
+              </audio>
+            </div>
+
           </div>
         
           <div id="footer" style="bottom: 0;position: absolute; width: 100%;">

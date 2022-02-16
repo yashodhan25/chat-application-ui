@@ -69,6 +69,16 @@ export class ChatroomComponent implements OnInit {
     }
   }
 
+  videoplayer(filename:any, type:any){
+    this.nameoffile = filename
+    let imgurl = filename;
+    this.downloadfile.downloadVideofile(this.groupID, this.nameoffile, imgurl,type);
+    this.routeDirect.navigate(['chats/view2']);
+    if(this.screen < 700){
+      this.routeDirect.navigate(['view2']);
+    }
+  }
+
   getIMG(event: any) {
     this.transfer.getfile(event,this.groupID);
     this.routeDirect.navigate(['chats/upload2']);
@@ -79,6 +89,22 @@ export class ChatroomComponent implements OnInit {
 
   getFILE(event: any) {
     this.transfer.getDocfile(event,this.groupID);
+    this.routeDirect.navigate(['chats/upload2']);
+    if(this.screen < 700){
+      this.routeDirect.navigate(['upload2']);
+    }
+  }
+
+  getVideoFILE(event: any) {
+    this.transfer.getVideoFile(event, this.groupID)
+    this.routeDirect.navigate(['chats/upload2']);
+    if(this.screen < 700){
+      this.routeDirect.navigate(['upload2']);
+    }
+  }
+
+  getAudioFILE(event: any) {
+    this.transfer.getAudioFile(event, this.groupID)
     this.routeDirect.navigate(['chats/upload2']);
     if(this.screen < 700){
       this.routeDirect.navigate(['upload2']);

@@ -30,12 +30,13 @@ export class CreategroupComponent implements OnInit {
       }
 
       this.createGroup.getgroupdadta(this.groupdata);
+      this.routeDirect.navigate(['SelectContact']);
       
-      if(this.screen < 700){
-        this.routeDirect.navigate(['SelectContact']);
-      }else{
-        this.routeDirect.navigate(['chats/SelectContact']);
-      }
+      // if(this.screen < 700){
+        
+      // }else{
+      //   this.routeDirect.navigate(['chats/SelectContact']);
+      // }
 
     }
   }

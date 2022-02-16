@@ -57,6 +57,25 @@
                       &nbsp;&nbsp;<a (click)="save(msg.uploadfiles)"><i class="fa fa-download" style="font-size:18px"></i></a>
                       <br>
                     </div>
+
+                    <div *ngIf="msg.type == 'video';" >
+                      <video (click)="videoplayer(msg.uploadfiles,'video')" width="300px" height="auto" >
+                        <source [src]="msg.uploadfiles"  type="video/mp4">
+                      </video>
+                      <br>
+                      <span  [innerHTML]='msg.caption | link'>{{msg.caption | link}}</span>
+                      <br>
+                    </div>
+
+                    <div *ngIf="msg.type == 'audio';" >
+                      <audio controls>
+                        <source [src]="msg.uploadfiles" type="audio/ogg">
+                        <source [src]="msg.uploadfiles" type="audio/mpeg">
+                      </audio>
+                      <br>
+                      <span  [innerHTML]='msg.caption | link'>{{msg.caption | link}}</span>
+                      <br>
+                    </div>
   
                     <div *ngIf="msg.uploadfiles == null " style="color: black;" >
                       <div style="width: 240px; text-align: inherit;word-wrap: break-word;" *ngIf="msg.message.length > 30 && msg.message.includes('http') ">
@@ -94,6 +113,25 @@
                         <img src="./../../assets/images/folder.png" width="100px" height="auto">
                         <br>
                         <label style="color: #FFFFFF;font-weight: lighter;">{{msg.caption}}</label>&nbsp;&nbsp;<a (click)="save(msg.uploadfiles)"><i class="fa fa-download" style="font-size:18px"></i></a>
+                        <br>
+                      </div>
+
+                      <div *ngIf="msg.type == 'video';" >
+                        <video (click)="videoplayer(msg.uploadfiles,'video')" width="300px" height="auto" >
+                          <source [src]="msg.uploadfiles"  type="video/mp4">
+                        </video>
+                        <br>
+                        <span  [innerHTML]='msg.caption | link'>{{msg.caption | link}}</span>
+                        <br>
+                      </div>
+
+                      <div *ngIf="msg.type == 'audio';" >
+                        <audio controls>
+                          <source [src]="msg.uploadfiles" type="audio/ogg">
+                          <source [src]="msg.uploadfiles" type="audio/mpeg">
+                        </audio>
+                        <br>
+                        <span  [innerHTML]='msg.caption | link'>{{msg.caption | link}}</span>
                         <br>
                       </div>
     
@@ -141,6 +179,25 @@
                       </label>&nbsp;&nbsp;<a (click)="save(tempmsg.message)"><i class="fa fa-download" style="font-size:18px"></i></a>
                       <br>
                     </div>
+
+                    <div *ngIf="tempmsg.type == 'video';" >
+                      <video (click)="videoplayer(tempmsg.uploadfiles,'video')" width="300px" height="auto" >
+                        <source [src]="tempmsg.uploadfiles"  type="video/mp4">
+                      </video>
+                      <br>
+                      <span  [innerHTML]='tempmsg.caption | link'>{{tempmsg.caption | link}}</span>
+                      <br>
+                    </div>
+
+                    <div *ngIf="tempmsg.type == 'audio';" >
+                      <audio controls>
+                        <source [src]="tempmsg.uploadfiles" type="audio/ogg">
+                        <source [src]="tempmsg.uploadfiles" type="audio/mpeg">
+                      </audio>
+                      <br>
+                      <span  [innerHTML]='tempmsg.caption | link'>{{tempmsg.caption | link}}</span>
+                      <br>
+                    </div>
   
                     <div *ngIf="tempmsg.file == 'false' && tempmsg.file != 'doc' && tempmsg.file != 'image';" style="color: #FFFFFF;" >
                       <span  [innerHTML]='tempmsg.message | link'>{{tempmsg.message | link}}</span>
@@ -173,6 +230,20 @@
                 <label>
                   <i class="fa fa-file" style="font-size: 16px;"></i>
                   <input type="file" style="display: none;" accept=".pdf, .xls, .doc" (change)="getFILE($event)">
+                </label>
+              </div>
+
+              <div class="video">
+                <label>
+                  <i class="fa fa-youtube-play" style="font-size: 22px;"></i>
+                  <input type="file" style="display: none;" accept=".mp4, .3gp" (change)="getVideoFILE($event)">
+                </label>
+              </div>
+  
+              <div class="audio">
+                <label>
+                  <i class='fa fa-file-audio-o' style="font-size: 22px;"></i>
+                  <input type="file" style="display: none;" accept=".mp3" (change)="getAudioFILE($event)">
                 </label>
               </div>
             
