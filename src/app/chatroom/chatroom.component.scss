@@ -150,6 +150,21 @@
         padding: 20px 50px;
         overflow-y: auto;
 
+        #video{
+          position: relative;
+        }
+        #video .data{
+          display: flex;
+          justify-content: center;
+        }
+  
+        #video .data img{
+          position: absolute;
+          top: 70px;
+          width:80px; 
+          height:80px;
+        }
+
         .groupinfo{
           display: flex;
           justify-content: center;

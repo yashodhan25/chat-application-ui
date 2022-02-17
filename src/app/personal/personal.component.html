@@ -36,10 +36,13 @@
                     <br>
                   </div>
 
-                  <div *ngIf="msg.type == 'video';" >
-                    <video (click)="videoplayer(msg.uploadfiles,'video')" width="300px" height="auto" >
+                  <div id="video" *ngIf="msg.type == 'video';" >
+                    <video width="300px" height="auto" >
                       <source [src]="msg.uploadfiles"  type="video/mp4">
                     </video>
+                    <div class="data">
+                      <img (click)="videoplayer(msg.uploadfiles,'video')" src="./../../assets/images/videoplayer.png">
+                    </div>
                     <br>
                     <span  [innerHTML]='msg.caption | link'>{{msg.caption | link}}</span>
                     <br>
@@ -126,10 +129,13 @@
                       <br>
                     </div>
 
-                    <div *ngIf="msg.type == 'video';" >
-                      <video (click)="videoplayer(msg.uploadfiles,'video')" width="300px" height="auto" >
+                    <div id="video" *ngIf="msg.type == 'video';" >
+                      <video width="300px" height="auto" >
                         <source [src]="msg.uploadfiles"  type="video/mp4">
                       </video>
+                      <div class="data">
+                        <img (click)="videoplayer(msg.uploadfiles,'video')" src="./../../assets/images/videoplayer.png">
+                      </div>
                       <br>
                       <span  [innerHTML]='msg.caption | link'>{{msg.caption | link}}</span>
                       <br>
@@ -168,10 +174,13 @@
                     <br>
                   </div>
 
-                  <div *ngIf="tempmsg.type == 'video';" >
-                    <video (click)="videoplayer(tempmsg.uploadfiles,'video')" width="300px" height="auto" >
+                  <div id="video" *ngIf="tempmsg.type == 'video';" >
+                    <video width="300px" height="auto" >
                       <source [src]="tempmsg.uploadfiles"  type="video/mp4">
                     </video>
+                    <div class="data">
+                      <img (click)="videoplayer(tempmsg.uploadfiles,'video')" src="./../../assets/images/videoplayer.png">
+                    </div>
                     <br>
                     <span  [innerHTML]='tempmsg.caption | link'>{{tempmsg.caption | link}}</span>
                     <br>
