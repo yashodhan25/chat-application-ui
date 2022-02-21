@@ -122,8 +122,6 @@ export class PersonalComponent implements OnInit {
 
     this.start = true;
 
-    this.socket = io(`${socketserverurl}`);
-
     if(messages != ""){
 
       let date: Date = new Date();
@@ -142,8 +140,6 @@ export class PersonalComponent implements OnInit {
       this.sender_email = localStorage.getItem("username");
       this.textmessages = messages;
 
-      this.socket.emit('sendresponce', {'sender': localStorage.getItem("username"), 'receiver': this.user_receiver_email, 'message': this.message, 'time': this.currenttime,'caption':'' , 'file': 'false' }  );
-
       let dataset:any = {
         "caption": "",
         "id": 0,
@@ -155,6 +151,11 @@ export class PersonalComponent implements OnInit {
       
       this.sendmessage.sendMessage(dataset).subscribe((response)=>{
 
+        this.socket = io(`${socketserverurl}`);
+        this.socket.emit('sendresponce', {'sender': localStorage.getItem("username"), 'receiver': this.user_receiver_email, 'message': this.message, 'time': this.currenttime,'caption':'' , 'file': 'false' }  );
+        // Home data Notify
+        this.socket.emit('trigger',localStorage.getItem("username"))
+
         this.receive.getchats(localStorage.getItem("username"), this.route.snapshot.params.email).subscribe(data=>{
           this.tempdata = [];
           this.textmsg = data.data;
@@ -165,6 +166,7 @@ export class PersonalComponent implements OnInit {
           }
         })
         this.message = "";  
+
       });
 
     }else{
@@ -209,8 +211,10 @@ export class PersonalComponent implements OnInit {
   
       // Socket URL
       this.socket = io(`${socketserverurl}`);
+
       // Send Connection Request
       this.socket.emit('connected',localStorage.getItem("username"))
+
       // get responce from client
       this.socket.on('getMessage', (data:any)=>{
         // Logic for unique message identifier

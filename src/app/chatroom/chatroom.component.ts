@@ -127,7 +127,6 @@ export class ChatroomComponent implements OnInit {
 
   send(messages:any){
     this.start = true;
-    this.socket = io(`${socketserverurl}`);
     if(messages != ""){
       let date: Date = new Date();
       let hour = date.getHours();
@@ -142,7 +141,7 @@ export class ChatroomComponent implements OnInit {
       this.currenttime = this.gethour+":"+minute+" "+this.timemode;
       this.sender_email = localStorage.getItem("username");
       this.textmessages = messages;
-      this.socket.emit('sendresponcetogroup', {'id':this.groupID, 'sender': localStorage.getItem("username"), 'receiver': this.groupusers, 'message': this.message, 'time': this.currenttime,'caption':'' , 'file': 'false' }  );
+      
       let dataset:any = {
         "caption": "",
         "id": 0,
@@ -152,8 +151,14 @@ export class ChatroomComponent implements OnInit {
         "type": ""
       }      
       this.sendmessage.sendMessage(dataset).subscribe((response)=>{
+
+        this.socket = io(`${socketserverurl}`);
+        this.socket.emit('sendresponcetogroup', {'id':this.groupID, 'sender': localStorage.getItem("username"), 'receiver': this.groupusers, 'message': this.message, 'time': this.currenttime,'caption':'' , 'file': 'false' }  );
+        // Home data Notify
+        this.socket.emit('trigger',localStorage.getItem("username"))
         
         this.receive.getGroupchats(this.route.snapshot.params.id).subscribe(data=>{
+
           this.groupchatdata = [];
             this.tempdata = [];
             if(data != null){
