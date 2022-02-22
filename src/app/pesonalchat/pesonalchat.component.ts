@@ -12,12 +12,12 @@ import { saveAs } from 'file-saver';
 import { apiserverurl, socketserverurl } from 'src/environments/environment.prod';
 
 @Component({
-  selector: 'app-personal',
-  templateUrl: './personal.component.html',
-  styleUrls: ['./personal.component.scss']
+  selector: 'app-pesonalchat',
+  templateUrl: './pesonalchat.component.html',
+  styleUrls: ['./pesonalchat.component.scss']
 })
+export class PesonalchatComponent implements OnInit {
 
-export class PersonalComponent implements OnInit {
   @ViewChild(ScrollToBottomDirective)
   @HostListener('scroll', ['$event'])
 

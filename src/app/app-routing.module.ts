@@ -15,6 +15,7 @@ import { Viewer2Component } from './viewer2/viewer2.component';
 import { AddgroupmemberComponent } from './addgroupmember/addgroupmember.component';
 import { GroupinformationComponent } from './groupinformation/groupinformation.component';
 import { MobileHomeComponent } from './mobile-home/mobile-home.component';
+import { PesonalchatComponent } from './pesonalchat/pesonalchat.component';
 
 const routes: Routes = [
   { path: '',   redirectTo: 'register', pathMatch: 'full' },
@@ -31,6 +32,7 @@ const routes: Routes = [
   { path: 'groupinformation/:id', component:GroupinformationComponent, canActivate:[EmailGuard]},
   { path: 'create', component:CreategroupComponent, canActivate:[EmailGuard]},
   { path: 'SelectContact', component:SelectcontactComponent, canActivate:[EmailGuard]},
+  { path: 'personalchat/:email', component:PesonalchatComponent, canActivate:[EmailGuard]},
   { path: 'chats', component:ChatsComponent, canActivate:[EmailGuard],
           children: [
             { path: 'personal/:email' , component:PersonalComponent, canActivate:[EmailGuard]},

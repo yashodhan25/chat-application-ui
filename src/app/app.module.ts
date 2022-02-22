@@ -32,6 +32,7 @@ import { HashLocationStrategy, LocationStrategy } from '@angular/common';
 import { LinkPipe } from './link.pipe';
 import { Ng2SearchPipeModule } from 'ng2-search-filter';
 import { MobileHomeComponent } from './mobile-home/mobile-home.component';
+import { PesonalchatComponent } from './pesonalchat/pesonalchat.component';
 
 
 
@@ -53,7 +54,8 @@ import { MobileHomeComponent } from './mobile-home/mobile-home.component';
     AddgroupmemberComponent,
     GroupinformationComponent,
     LinkPipe,
-    MobileHomeComponent
+    MobileHomeComponent,
+    PesonalchatComponent
   ],
   imports: [
     BrowserModule,

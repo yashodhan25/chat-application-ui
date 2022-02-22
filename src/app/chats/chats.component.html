@@ -54,10 +54,10 @@
           
                   <div class="conversationHeader" >
                     <div class="name" *ngIf="group.entitytype == 'group' ">
-                      <a [routerLink]="['./gpchatroom', group.GroupId]" (click)="status()">{{group.entity}}</a>
+                      <a [routerLink]="['./gpchatroom', group.GroupId]">{{group.entity}}</a>
                     </div>
                     <div class="name" *ngIf="group.entitytype == 'personal' ">
-                      <a [routerLink]="['./personal', group.email]" (click)="status()">{{group.entity}}</a>
+                      <a [routerLink]="['./personal', group.email]">{{group.entity}}</a>
                     </div>
                     <div class="time">{{group.time}}</div>
                   </div>
@@ -117,9 +117,9 @@
           </div>
         </div>
         <div id="chat">
-          <div id="chatPlaceholder" *ngIf="logo == null">
+          <!-- <div id="chatPlaceholder" *ngIf="logo == null">
             <img width="400" src="../assets/images/phoneIcon.png" />
-          </div>
+          </div> -->
           <router-outlet></router-outlet>
         </div>
       </div>

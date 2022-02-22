@@ -1,3 +1,29 @@
+#chatContainer {
+    position: fixed;
+    top: 0%;
+    bottom: 0%;
+    width: 80%;
+    height: 90%;
+    background-color: #fff;
+    right: 0px;
+    left: 0px;
+    box-shadow: -1px 1px 5px rgba(#333, 0.2);
+    border-radius: 3px;
+    overflow: hidden;
+    margin: auto;
+    border-radius: 10px;
+}
+
+@media screen and (max-width: 700px) {
+    #chatContainer {
+        width: 100%;
+        height: auto;
+        border-radius: 0px;
+    }
+}
+
+
+
 emoji-mart{
     bottom: 6%;
     position: absolute;
@@ -93,7 +119,7 @@ animation: spin 2s linear infinite;
             font-size: 28px;
             color: aliceblue;
         }
-        
+
         .form-ele ul li{
             padding: 20px 0px 20px 0px;
             list-style: none;
@@ -108,7 +134,7 @@ animation: spin 2s linear infinite;
             border: none;
             border-bottom: 1px solid #009CC3;
             padding: 10px 15px 10px 15px;
-            font-size: 18px;
+            font-size: 16px;
             text-align: center;
             font-family: 'Abhaya Libre';
             color: #242323;

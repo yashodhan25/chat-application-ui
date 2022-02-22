@@ -1,3 +1,28 @@
+#chatContainer {
+  position: fixed;
+  top: 0%;
+  bottom: 0%;
+  width: 80%;
+  height: 90%;
+  background-color: #fff;
+  right: 0px;
+  left: 0px;
+  box-shadow: -1px 1px 5px rgba(#333, 0.2);
+  border-radius: 3px;
+  overflow: hidden;
+  margin: auto;
+  border-radius: 10px;
+}
+
+@media screen and (max-width: 700px) {
+  #chatContainer {
+    width: 100%;
+    height: auto;
+    border-radius: 0px;
+  }
+}
+
+
 .containtLoader{
     display: flex;
     justify-content: center;
@@ -57,7 +82,15 @@
     cursor: pointer;
     padding: 12px 12px 12px 12px;
   }
-
+  
+  .documents label{
+    background: #3498DB;
+    color: #FDFEFE;
+    border-radius: 50%;
+    cursor: pointer;
+    padding: 12px 15px 12px 15px;
+  }
+  
   .video label{
     background: #F9E204;
     color: #FDFEFE;
@@ -72,14 +105,6 @@
     border-radius: 50%;
     cursor: pointer;
     padding: 10px 12px 10px 12px;
-  }
-  
-  .documents label{
-    background: #3498DB;
-    color: #FDFEFE;
-    border-radius: 50%;
-    cursor: pointer;
-    padding: 12px 15px 12px 15px;
   }
   
   .nameSection a{
@@ -153,7 +178,7 @@
         flex-direction: column;
         padding: 20px 50px;
         overflow-y: auto;
-
+  
         #video video{
           border: 1px solid black;
         }
@@ -162,7 +187,7 @@
           width:30px; 
           height:30px;
         }
-
+  
         .groupinfo{
           display: flex;
           justify-content: center;
@@ -170,9 +195,9 @@
         }
         .groupinfo label{
           font-weight: lighter;
-          color: #242323;
+          color: #FBFCFC;
         }
-
+  
         .message {
           margin-top: 10px;
           display: flex;

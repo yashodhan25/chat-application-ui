@@ -2,8 +2,8 @@
   position: fixed;
   top: 0%;
   bottom: 0%;
-  margin: auto;
-  width: 100%;
+  width: 80%;
+  height: 90%;
   background-color: #fff;
   right: 0px;
   left: 0px;
@@ -12,6 +12,8 @@
   display: flex;
   flex-direction: row;
   overflow: hidden;
+  margin: auto;
+  border-radius: 10px;
   #app-sidebar {
     width: 420px;
     height: 100%;
@@ -44,19 +46,13 @@
   }
 }
 
-// @media screen and (max-width: 700px) {
-//   #chatContainer {
-//     .appsidebar {
-//       flex-basis: 100%;
-//       display: block;
-//     }
-//     .chatroom{
-//       flex-grow: 0;
-//       width: 100%;
-//       display: block;
-//     }
-//   }
-// }
+@media screen and (max-width: 700px) {
+  #chatContainer {
+    width: 100%;
+    height: auto;
+    border-radius: 0px;
+  }
+}
 
 
 ::-webkit-scrollbar {
@@ -161,7 +157,7 @@
     
       #sidebarContent {
         flex-grow: 1;
-        height: 78vh;
+        height: 68vh;
         overflow-y: auto;
         margin-top: 0px;
         background: #FFFFFF;

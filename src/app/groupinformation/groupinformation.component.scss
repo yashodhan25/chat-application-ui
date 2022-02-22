@@ -26,7 +26,7 @@
     background-color: #FFFFFF;
 
     #header {
-        margin-top: -10px;
+        margin-top: 0px;
         min-height: 67px;
         background-color: #f4f7f9;
         justify-content: space-between;
@@ -80,7 +80,7 @@
 
     #sidebarContent {
         flex-grow: 1;
-        height: 55vh;
+        height: 47vh;
         overflow-y: auto;
         background: #FFFFFF;
         margin-right: -2px;

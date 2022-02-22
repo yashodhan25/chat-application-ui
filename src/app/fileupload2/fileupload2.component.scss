@@ -12,11 +12,14 @@
 }
 
 #container {
-    display: flex;
-    width: 100%;
+  display: flex;
+  width: 100%;
+  height: 90vh;
+  background-color: #FFFFFF;
+  flex-direction: column;
+  @media (max-width: 700px) {
     height: 100vh;
-    background-color: #FFFFFF;
-    flex-direction: column;
+  }
 
     #body {
       flex-grow: 1;

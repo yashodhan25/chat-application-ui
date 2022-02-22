@@ -1,16 +1,48 @@
+#chatContainer {
+  position: fixed;
+  top: 0%;
+  bottom: 0%;
+  width: 80%;
+  height: 90%;
+  background-color: #fff;
+  right: 0px;
+  left: 0px;
+  box-shadow: -1px 1px 5px rgba(#333, 0.2);
+  border-radius: 3px;
+  overflow: hidden;
+  margin: auto;
+  border-radius: 10px;
+}
+
+@media screen and (max-width: 700px) {
+  #chatContainer {
+    width: 100%;
+    height: auto;
+    border-radius: 0px;
+  }
+}
+
+
+
+
 .mybutton{
   position: fixed;
   z-index:9999999;
-  bottom: 6%;
-  right: 4%;
+  bottom: 10%;
+  right: 14%;
   display:block !important;
+
+  @media screen and (max-width: 700px) {
+    bottom: 6%;
+    right: 4%;
+  }
 }
 
 .mybutton button{
   background: #009CC3;
   border: none;
   color: white;
-  padding: 12px 12px;
+  padding: 16px 12px;
   border-radius: 50%;
   font-size: 36px;
   font-weight: 400;
@@ -63,7 +95,10 @@
         display: flex;
         flex-direction: column;
         position: fixed; 
-        width: 100%;
+        width: 80%;
+        @media screen and (max-width: 700px) {
+          width: 100%;
+        }
         
         #sidebarHeader {
           flex-basis: 67px;
@@ -74,6 +109,12 @@
           padding-left: 20px;
           padding-right: 20px;
           justify-content: space-between;
+          border-top-left-radius: 10px;
+          border-top-right-radius: 10px;
+          @media screen and (max-width: 700px) {
+            border-top-left-radius: 0px;
+            border-top-right-radius: 0px;
+          }  
 
           .avatarSection {
             display: flex;
@@ -162,13 +203,13 @@
       }
       #sidebarContent {
         flex-grow: 1;
-        height: 80vh;
+        height: 70vh;
         overflow-y: auto;
         margin-top: 120px;
         background: #FFFFFF;
         margin-right: -2px;
         @media (max-width: 700px) {
-          height: 80vh;
+          height: 78vh;
         }
         .conversation {
           height: 70px;
