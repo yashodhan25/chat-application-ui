@@ -4,7 +4,7 @@
 }
 
 .head{
-    background: #009cc3;
+    background: #a2a3a4;
     width: 100px;
     padding: 45px 100px;
     border-radius: 50%;
@@ -24,7 +24,7 @@
 
 .form-ele ul li input{
     border: none;
-    border-bottom: 1px solid #3498DB;
+    border-bottom: 1px solid #a2a3a4;
     padding: 10px 20px 10px 20px;
     font-size: 24px;
     text-align: center;
@@ -34,11 +34,11 @@
 
 .form-ele ul li input:focus{
     outline: none;
-    border-bottom: 2px solid #3498DB;
+    border-bottom: 2px solid #515253;
 }
 
 .form-ele ul li button{
-    background: #009cc3;
+    background: #a2a3a4;
     color: aliceblue;
     border: none;
     font-size: 24px;
@@ -53,7 +53,7 @@
 }
 
 .form-ele ul li button:hover{
-    background: #057a97;
+    background: rgb(2, 68, 85);
 }
 
 .form-ele ul li select{

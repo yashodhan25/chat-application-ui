@@ -27,6 +27,8 @@ export class ChatsComponent implements OnInit {
 
   constructor(private route:ActivatedRoute, private transfer : TransferService, private routeDirect: Router,private routeReverse:Router, private http: HttpClient, private receive: ReceiveService ) { }
 
+  display:any;
+
   ngOnInit(): void {
     this.socket = io(`${socketserverurl}`);      
     this.socket.emit('connected_All',localStorage.getItem("username"));
@@ -42,10 +44,13 @@ export class ChatsComponent implements OnInit {
     if(window.innerWidth < 700){
       this.routeDirect.navigate(['mobileview']);
     }
+
+  }
+
+  getHighlights(id:any){
   }
 
   setHomedata(){
-
     this.receive.getGroups(localStorage.getItem("username")).subscribe(response=>{
       this.loader = false;
       for (let i = 0; i < response.data.length; i++){
@@ -57,15 +62,16 @@ export class ChatsComponent implements OnInit {
         })
       }
     })
-
     this.receive.getHomeData(localStorage.getItem("username")).subscribe(responce=>{
       this.loader = false;
       for (let i = 0;i < responce.data.length;i++) {
         if(responce.data[i].sender != localStorage.getItem("username") ){
-          this.homechadata.push({'id':responce.data[i].id,'entity':responce.data[i].sender,'message':responce.data[i].message,'time':responce.data[i].time,'type':responce.data[i].type,'me':'false'})
+          let date = responce.data[i].chatdate.dayOfMonth+" "+responce.data[i].chatdate.month.substring(0, 3).toLowerCase();
+          this.homechadata.push({'id':responce.data[i].id,'entity':responce.data[i].sender,'message':responce.data[i].message,'time':responce.data[i].time,'type':responce.data[i].type,'me':'false', 'date':date})
         }
         if(responce.data[i].receiver != localStorage.getItem("username") ){
-          this.homechadata.push({'id':responce.data[i].id,'entity':responce.data[i].receiver,'message':responce.data[i].message,'time':responce.data[i].time,'type':responce.data[i].type,'me':'true'})
+          let date = responce.data[i].chatdate.dayOfMonth+" "+responce.data[i].chatdate.month.substring(0, 3).toLowerCase();
+          this.homechadata.push({'id':responce.data[i].id,'entity':responce.data[i].receiver,'message':responce.data[i].message,'time':responce.data[i].time,'type':responce.data[i].type,'me':'true', 'date':date})
         }
       }
       for(var i=0; i<this.homechadata.length; i++){
@@ -88,9 +94,31 @@ export class ChatsComponent implements OnInit {
             }else{
               me = 'false'
             }
+
+            let hour = this.finaldata[x].time.substring(0, 2);
+            let min = this.finaldata[x].time.substring(3, 5);
+            let timezone = this.finaldata[x].time.substring(9, 11);
+            let time;
+            if(hour.substring(0, 1) == 0){
+              time = hour.substring(1, 2)+":"+min+" "+timezone;
+            }else{
+              time = hour.substring(0, 2)+":"+min+" "+timezone;
+            }
+
             this.newData = r;
             this.newData.data[0].name;
-            this.final.push({'id':this.finaldata[x].id,'entity': this.newData.data[0].name, 'email':this.finaldata[x].entity,'message':this.finaldata[x].message,'time':this.finaldata[x].time,'type':this.finaldata[x].type,'entitytype':'personal','me':me})
+            this.final.push(
+              {
+                'id':this.finaldata[x].id,
+                'entity': this.newData.data[0].name, 
+                'email':this.finaldata[x].entity,
+                'message':this.finaldata[x].message,
+                'time':time,
+                'type':this.finaldata[x].type,
+                'entitytype':'personal',
+                'me':me, 
+                'date':this.finaldata[x].date
+              })
           })
         }
       }
@@ -108,6 +136,18 @@ export class ChatsComponent implements OnInit {
       }else{
         me = 'false'
       }
+      let date = alldata.chatdate.dayOfMonth+" "+alldata.chatdate.month.substring(0, 3).toLowerCase();
+
+      let hour = alldata.time.substring(0, 2);
+      let min = alldata.time.substring(3, 5);
+      let timezone = alldata.time.substring(9, 11);
+      let time;
+      if(hour.substring(0, 1) == 0){
+        time = hour.substring(1, 2)+":"+min+" "+timezone;
+      }else{
+        time = hour.substring(0, 2)+":"+min+" "+timezone;
+      }
+
       let data = {
         'id': alldata.id,
         'entity': this.newData2.data[0].groupName,
@@ -115,11 +155,13 @@ export class ChatsComponent implements OnInit {
         'entitytype': "group",
         'me': me,
         'message': alldata.message,
-        'time': alldata.time,
+        'time': time,
         'type': alldata.type,
-        'email': ""
+        'email': "",
+        'date' :date
       }
       this.final.push(data)
+      // console.log(this.final)
     })
   }
 
@@ -135,3 +177,9 @@ export class ChatsComponent implements OnInit {
   }
 
 }
+
+  // if(this.routeDirect.url.length > 6){
+  //   this.display = 'false'
+  // }else{
+  //   this.display = 'true'
+  // }

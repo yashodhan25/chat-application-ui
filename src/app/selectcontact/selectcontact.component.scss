@@ -36,7 +36,7 @@
 }
 
 .mybutton button{
-  background: #009CC3;
+  background-color: #7b7c7e;
   border: none;
   color: white;
   padding: 16px 12px;
@@ -46,7 +46,7 @@
 }
 
 .mybutton button:hover{
-  background: #0589aa;
+  background-color: #a2a3a4;
 }
 
 ::-webkit-scrollbar {
@@ -54,12 +54,12 @@
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #009CC3; 
+  background-color: #a2a3a4;
   border-radius: 10px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: #057794; 
+  background-color: #7e8083;
 }
 
 .loader{
@@ -98,7 +98,7 @@
         }
         #sidebarHeader {
           flex-basis: 67px;
-          background-color: #009CC3;
+          background-color: #a2a3a4;
           display: flex;
           flex-direction: row;
           align-items: center;

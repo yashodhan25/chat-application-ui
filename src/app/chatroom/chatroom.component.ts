@@ -226,7 +226,6 @@ export class ChatroomComponent implements OnInit {
       })
 
       this.receive.getGroupchats(this.route.snapshot.params.id).subscribe(data=>{
-        console.log(data)
         if(data != null){
           this.loadingstart = false;
         }else{
@@ -284,6 +283,18 @@ export class ChatroomComponent implements OnInit {
     this.http.post(`${apiserverurl}getContactName/`, formData ).subscribe(r=>{
       this.newData = r;
 
+      let date = chatdata[count].chatdate.dayOfMonth+" "+chatdata[count].chatdate.month.substring(0, 3).toLowerCase();
+
+      let hour = chatdata[count].time.substring(0, 2);
+      let min = chatdata[count].time.substring(3, 5);
+      let timezone = chatdata[count].time.substring(9, 11);
+      let time;
+      if(hour.substring(0, 1) == 0){
+        time = hour.substring(1, 2)+":"+min+" "+timezone;
+      }else{
+        time = hour.substring(0, 2)+":"+min+" "+timezone;
+      }
+
       let finaldata = {
         'id': chatdata[count].id,
         'name': this.newData.data[0].name,
@@ -291,9 +302,10 @@ export class ChatroomComponent implements OnInit {
         'receiver': chatdata[count].receiver,
         'message': chatdata[count].message,
         'caption': chatdata[count].caption,
-        'time': chatdata[count].time,
+        'time': time,
         'type': chatdata[count].type,
-        'uploadfiles': chatdata[count].uploadfiles
+        'uploadfiles': chatdata[count].uploadfiles,
+        'date': date
       }
       this.groupchatdata.push(finaldata);
     })

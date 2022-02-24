@@ -21,12 +21,12 @@
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #009CC3; 
+  background-color: #a2a3a4;
   border-radius: 10px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: #037b99; 
+  background-color: #7e8083;
 }
 
 .uploadoptions{
@@ -105,7 +105,8 @@
   
     #header {
       min-height: 67px;
-      background-color: #009CC3;
+      // background-color: #009CC3;
+      background-color: #a2a3a4;
       display: flex;
       justify-content: space-between;
       align-items: center;
@@ -180,7 +181,7 @@
         color: #767676;
         flex-direction: column;
         .messageContent {
-          background-color: #009CC3;
+          background-color: #5D6D7E;
           border-radius: 5px;
           padding: 10px;
   

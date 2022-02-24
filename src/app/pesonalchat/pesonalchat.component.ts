@@ -35,7 +35,7 @@ export class PesonalchatComponent implements OnInit {
   message = '';
   socket:any;
   myemail:any;
-  textmsg:any;
+  textmsg:any = [];
   textmsg1:any;
   nameoffile:any;
   baseurl = `${apiserverurl}`;
@@ -151,6 +151,8 @@ export class PesonalchatComponent implements OnInit {
       
       this.sendmessage.sendMessage(dataset).subscribe((response)=>{
 
+        this.textmsg = [];
+
         this.socket = io(`${socketserverurl}`);
         this.socket.emit('sendresponce', {'sender': localStorage.getItem("username"), 'receiver': this.user_receiver_email, 'message': this.message, 'time': this.currenttime,'caption':'' , 'file': 'false' }  );
         // Home data Notify
@@ -158,12 +160,35 @@ export class PesonalchatComponent implements OnInit {
 
         this.receive.getchats(localStorage.getItem("username"), this.route.snapshot.params.email).subscribe(data=>{
           this.tempdata = [];
-          this.textmsg = data.data;
-          if(data != null){
-            this.start = false;
-          }else{
-            this.start = false;
+          for(let i = 0; i<data.data.length; i++){
+            let date = data.data[i].chatdate.dayOfMonth+" "+data.data[i].chatdate.month.substring(0, 3).toLowerCase();
+            let hour = data.data[i].time.substring(0, 2);
+            let min = data.data[i].time.substring(3, 5);
+            let timezone = data.data[i].time.substring(8, 11);
+            let time;
+            if(hour.substring(0, 1) == 0){
+              time = hour.substring(1, 2)+":"+min+" "+timezone;
+            }else{
+              time = hour.substring(0, 2)+":"+min+" "+timezone;
+            }
+  
+            let chatdata = {
+              'caption': data.data[i].caption,
+              'id': data.data[i].id,
+              'message': data.data[i].message,
+              'receiver': data.data[i].receiver,
+              'sender': data.data[i].sender,
+              'time': time,
+              'type': data.data[i].type,
+              'uploadfiles':data.data[i].uploadfiles,
+              'date':date
+            }
+  
+            // console.log(chatdata);
+            this.textmsg.push(chatdata)
+  
           }
+          this.start = false;
         })
         this.message = "";  
 
@@ -201,20 +226,44 @@ export class PesonalchatComponent implements OnInit {
       })
 
       this.receive.getchats(localStorage.getItem("username"), this.route.snapshot.params.email).subscribe(data=>{
-        this.textmsg = data.data;
-        if(data != null){
-          this.loadingstart = false;
-        }else{
-          this.loadingstart = false;
+
+        for(let i = 0; i<data.data.length; i++){
+
+          let date = data.data[i].chatdate.dayOfMonth+" "+data.data[i].chatdate.month.substring(0, 3).toLowerCase();
+
+          let hour = data.data[i].time.substring(0, 2);
+          let min = data.data[i].time.substring(3, 5);
+          let timezone = data.data[i].time.substring(8, 11);
+          let time;
+          if(hour.substring(0, 1) == 0){
+            time = hour.substring(1, 2)+":"+min+" "+timezone;
+          }else{
+            time = hour.substring(0, 2)+":"+min+" "+timezone;
+          }
+
+          let chatdata = {
+            'caption': data.data[i].caption,
+            'id': data.data[i].id,
+            'message': data.data[i].message,
+            'receiver': data.data[i].receiver,
+            'sender': data.data[i].sender,
+            'time': time,
+            'type': data.data[i].type,
+            'uploadfiles':data.data[i].uploadfiles,
+            'date':date
+          }
+
+          // console.log(chatdata);
+          this.textmsg.push(chatdata)
+
         }
+        this.loadingstart = false;
       })
   
       // Socket URL
       this.socket = io(`${socketserverurl}`);
-
       // Send Connection Request
       this.socket.emit('connected',localStorage.getItem("username"))
-
       // get responce from client
       this.socket.on('getMessage', (data:any)=>{
         // Logic for unique message identifier
