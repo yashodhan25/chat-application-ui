@@ -44,13 +44,13 @@
                 
                     <div class="conversation" *ngFor="let group of sortData | filter:term">
           
-                      <div class="chatdata" *ngIf="group.entitytype == 'personal'" routerLinkActive="active" [routerLink]="['./personal', group.email]">
+                      <div class="chatdata" *ngIf="group.entitytype == 'personal'" routerLinkActive="active" [routerLink]="['./../personal', group.email]">
                         <div class="picture">
                           <img src="../../assets/images/noPic.svg" />
                         </div>
         
                         <div class="content">
-                  
+            
                           <div class="conversationHeader" >
                             <div class="name">
                               <a>{{group.entity}}</a>
@@ -59,7 +59,9 @@
                           </div>
                           
                           <div class="message" *ngIf="group.type == '' && group.message != '' ">
-                            <img *ngIf="group.me == 'true'" src="../../assets/images/doubleTick.svg" />&nbsp;
+                            <img *ngIf="group.me == 'true' && group.seen == 'false' " src="../../assets/images/doubleTick.svg" />
+                            <img *ngIf="group.me == 'true' && group.seen == 'true' " src="../../assets/images/doubleTickBlue.svg" />
+                            &nbsp;
                             <span *ngIf="group.message.length > 20">
                               {{group.message.substring(0, 20)}}...
                             </span>
@@ -105,9 +107,10 @@
                           </div>
                   
                         </div>
+
                       </div>
       
-                      <div class="chatdata" *ngIf="group.entitytype == 'group'" routerLinkActive="active" [routerLink]="['./gpchatroom', group.GroupId]">
+                      <div class="chatdata" *ngIf="group.entitytype == 'group'" routerLinkActive="active" [routerLink]="['./../gpchatroom', group.GroupId]">
                         <div class="picture">
                           <img src="../../assets/images/noPic.svg" />
                         </div>
@@ -168,6 +171,7 @@
                           </div>
                   
                         </div>
+                        
                       </div>
                 
                     </div>

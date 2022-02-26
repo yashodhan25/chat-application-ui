@@ -64,7 +64,7 @@
                     <br>
                     <span  [innerHTML]='msg.caption | link'>{{msg.caption | link}}</span>
                     <br>
-                    <!-- <span style="color: darkgrey;">mydoc.doc</span> -->
+                    <span style="color: darkgrey;">mydoc.doc</span>
                     &nbsp;&nbsp;
                     <a (click)="save(msg.uploadfiles)"><i class="fa fa-download" style="font-size:18px"></i></a>
                     <br>
@@ -81,10 +81,11 @@
                     <br>
                   </div>
 
-                  <!-- *ngIf="msg.seen == 'false' " -->
+                  <!-- -->
                   <div class="time">
                     {{msg.date}}&nbsp;&nbsp;{{msg.time}}&nbsp;
-                    <img src="../../assets/images/doubleTick.svg" />
+                    <img *ngIf="msg.seen == 'false' " src="../../assets/images/doubleTick.svg" />
+                    <img *ngIf="msg.seen == 'true' " src="../../assets/images/doubleTickBlue.svg" />
                   </div>
 
                 </div>
@@ -110,7 +111,7 @@
                         <span  [innerHTML]='msg.caption | link'>{{msg.caption | link}}</span>
                       </label>
                       <br>
-                      <!-- <span style="color: rgb(240, 234, 234);">mydoc.doc</span> -->
+                      <span style="color: rgb(240, 234, 234);">mydoc.doc</span>
                       &nbsp;&nbsp;
                       <a (click)="save(msg.uploadfiles)"><i class="fa fa-download" style="font-size:18px"></i></a>
                       <br><br>
@@ -181,7 +182,7 @@
                       <span  [innerHTML]='tempmsg.caption | link'>{{tempmsg.caption | link}}</span>
                     </label>
                     <br>
-                    <!-- <span style="color: rgb(240, 234, 234);">mydoc.doc</span> -->
+                    <span style="color: rgb(240, 234, 234);">mydoc.doc</span>
                     &nbsp;&nbsp;
                     <a (click)="save(tempmsg.uploadfiles)"><i class="fa fa-download" style="font-size:18px"></i></a>
                     <br><br>

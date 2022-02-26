@@ -81,10 +81,10 @@
                       <br>
                     </div>
 
-                    <!-- *ngIf="msg.seen == 'false' " -->
                     <div class="time">
                       {{msg.date}}&nbsp;&nbsp;{{msg.time}}&nbsp;
-                      <img src="../../assets/images/doubleTick.svg" />
+                      <img *ngIf="msg.seen == 'false' " src="../../assets/images/doubleTick.svg" />
+                      <img *ngIf="msg.seen == 'true' " src="../../assets/images/doubleTickBlue.svg" />
                     </div>
 
                   </div>

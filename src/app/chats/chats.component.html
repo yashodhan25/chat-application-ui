@@ -1,6 +1,8 @@
 <div class="loader" *ngIf="loader">
   <mat-progress-bar mode="indeterminate"></mat-progress-bar>
 </div>
+
+
 <div class="container">
   <div class="row">
     <div class="col-md-12 col-lg-12" style="padding: 0px; margin: 0;">
@@ -60,7 +62,9 @@
                     </div>
                     
                     <div class="message" *ngIf="group.type == '' && group.message != '' ">
-                      <img *ngIf="group.me == 'true'" src="../../assets/images/doubleTick.svg" />&nbsp;
+                      <img *ngIf="group.me == 'true' && group.seen == 'false' " src="../../assets/images/doubleTick.svg" />
+                      <img *ngIf="group.me == 'true' && group.seen == 'true' " src="../../assets/images/doubleTickBlue.svg" />
+                      &nbsp;
                       <span *ngIf="group.message.length > 20">
                         {{group.message.substring(0, 20)}}...
                       </span>

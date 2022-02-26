@@ -221,7 +221,7 @@ export class ChatroomComponent implements OnInit {
           this.adminName(r.data[0].createdByUserEmail);
         }else{
           this.admin = 'true';
-          this.groupinfo = 'You has created group.';
+          this.groupinfo = 'You created group.';
         }
       })
 

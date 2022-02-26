@@ -32,6 +32,17 @@ emoji-mart{
 }
 
 
+.spinner {
+border: 4px solid #f3f3f3;
+border-radius: 50%;
+border-top: 4px solid #5DADE2;
+width: 50px;
+height: 50px;
+-webkit-animation: spin 2s linear infinite; /* Safari */
+animation: spin 2s linear infinite;
+}
+
+
 #container {
     display: flex;
     width: 100%;
@@ -41,7 +52,7 @@ emoji-mart{
 
     #header {
     min-height: 67px;
-    background-color: #a2a3a4;
+    background-color: #009CC3;
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -121,7 +132,7 @@ emoji-mart{
         
         .form-ele ul li input{
             border: none;
-            border-bottom: 1px solid #7e8083;
+            border-bottom: 1px solid #009CC3;
             padding: 10px 15px 10px 15px;
             font-size: 16px;
             text-align: center;
@@ -141,7 +152,7 @@ emoji-mart{
         }
         
         .form-ele ul li button{
-            background: #a2a3a4;
+            background: #009CC3;
             color: aliceblue;
             border: none;
             font-size: 18px;
@@ -156,7 +167,7 @@ emoji-mart{
         }
         
         .form-ele ul li button:hover{
-            background: #7e8083;
+            background: #0681a0;
         }
         
 

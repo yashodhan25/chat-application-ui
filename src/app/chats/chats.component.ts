@@ -27,8 +27,6 @@ export class ChatsComponent implements OnInit {
 
   constructor(private route:ActivatedRoute, private transfer : TransferService, private routeDirect: Router,private routeReverse:Router, private http: HttpClient, private receive: ReceiveService ) { }
 
-  display:any;
-
   ngOnInit(): void {
     this.socket = io(`${socketserverurl}`);      
     this.socket.emit('connected_All',localStorage.getItem("username"));
@@ -37,7 +35,9 @@ export class ChatsComponent implements OnInit {
       this.homechadata = [];
       this.filtered = [];
       this.finaldata = [];
-      this.setHomedata();
+      setTimeout(()=>{
+        this.setHomedata();
+      }, 200);      
     })
     this.setHomedata();
     this.loader = true;
@@ -45,9 +45,6 @@ export class ChatsComponent implements OnInit {
       this.routeDirect.navigate(['mobileview']);
     }
 
-  }
-
-  getHighlights(id:any){
   }
 
   setHomedata(){
@@ -67,11 +64,11 @@ export class ChatsComponent implements OnInit {
       for (let i = 0;i < responce.data.length;i++) {
         if(responce.data[i].sender != localStorage.getItem("username") ){
           let date = responce.data[i].chatdate.dayOfMonth+" "+responce.data[i].chatdate.month.substring(0, 3).toLowerCase();
-          this.homechadata.push({'id':responce.data[i].id,'entity':responce.data[i].sender,'message':responce.data[i].message,'time':responce.data[i].time,'type':responce.data[i].type,'me':'false', 'date':date})
+          this.homechadata.push({'id':responce.data[i].id,'entity':responce.data[i].sender,'message':responce.data[i].message,'time':responce.data[i].time,'type':responce.data[i].type,'me':'false', 'date':date, 'seen':responce.data[i].seen})
         }
         if(responce.data[i].receiver != localStorage.getItem("username") ){
           let date = responce.data[i].chatdate.dayOfMonth+" "+responce.data[i].chatdate.month.substring(0, 3).toLowerCase();
-          this.homechadata.push({'id':responce.data[i].id,'entity':responce.data[i].receiver,'message':responce.data[i].message,'time':responce.data[i].time,'type':responce.data[i].type,'me':'true', 'date':date})
+          this.homechadata.push({'id':responce.data[i].id,'entity':responce.data[i].receiver,'message':responce.data[i].message,'time':responce.data[i].time,'type':responce.data[i].type,'me':'true', 'date':date, 'seen':responce.data[i].seen})
         }
       }
       for(var i=0; i<this.homechadata.length; i++){
@@ -117,7 +114,8 @@ export class ChatsComponent implements OnInit {
                 'type':this.finaldata[x].type,
                 'entitytype':'personal',
                 'me':me, 
-                'date':this.finaldata[x].date
+                'date':this.finaldata[x].date,
+                'seen':this.finaldata[x].seen
               })
           })
         }

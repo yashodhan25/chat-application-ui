@@ -67,7 +67,8 @@ export class FileuploadComponent implements OnInit {
       "message": "",
       "receiver": this.otherEmail,
       "sender": this.sender,
-      "type": this.type
+      "type": this.type,
+      "seen": "false"
     }
 
 

@@ -14,4 +14,11 @@ export class SendService {
     return this.http.post(`${apiserverurl}send/`, dataset);
   }
 
+  updateSeenStatus(sender_email:any ,receiver_email:any):Observable<any>{
+    const formData = new FormData(); 
+    formData.append("sender", sender_email);
+    formData.append("receiver", receiver_email);
+    return this.http.post(`${apiserverurl}/seenStatusUpdate`, formData);
+  }
+
 }

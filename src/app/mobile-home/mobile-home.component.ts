@@ -2,8 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
 import { ReceiveService } from '../services/receive.service';
-import { apiserverurl } from 'src/environments/environment.prod';
+import { apiserverurl, socketserverurl } from 'src/environments/environment.prod';
 import { observable } from 'rxjs';
+import { io } from 'socket.io-client';
 
 @Component({
   selector: 'app-mobile-home',
@@ -23,54 +24,31 @@ export class MobileHomeComponent implements OnInit {
   newData:any = [];
   newData1:any = [];
   newData2:any = [];
+  socket:any;
 
   constructor(private routeDirect: Router, private routeReverse:Router, private http: HttpClient, private receive: ReceiveService ) { }
-
-  mapper(alldata:any){
-    const formData1 = new FormData();
-    formData1.append("id", alldata.receiver);
-    this.http.post(`${apiserverurl}getGroupName/`, formData1 ).subscribe(r=>{
-      this.newData2 = r;
-      let me;
-      if(alldata.sender == localStorage.getItem("username")){
-        me = 'true'
-      }else{
-        me = 'false'
-      }
-      let date = alldata.chatdate.dayOfMonth+" "+alldata.chatdate.month.substring(0, 3).toLowerCase();
-
-      let hour = alldata.time.substring(0, 2);
-      let min = alldata.time.substring(3, 5);
-      let timezone = alldata.time.substring(9, 11);
-      let time;
-      if(hour.substring(0, 1) == 0){
-        time = hour.substring(1, 2)+":"+min+" "+timezone;
-      }else{
-        time = hour.substring(0, 2)+":"+min+" "+timezone;
-      }
-
-      let data = {
-        'id': alldata.id,
-        'entity': this.newData2.data[0].groupName,
-        'GroupId': alldata.receiver,
-        'entitytype': "group",
-        'me': me,
-        'message': alldata.message,
-        'time': time,
-        'type': alldata.type,
-        'email': "",
-        'date' :date
-      }
-      this.final.push(data)
-      // console.log(this.final)
-    })
-  }
 
   ngOnInit(): void {
     if(window.innerWidth > 700){
       this.routeDirect.navigate(['chats']);
     }
     this.loader = true;
+    this.socket = io(`${socketserverurl}`);      
+    this.socket.emit('connected_All',localStorage.getItem("username"));
+    this.socket.on('getHomeData', (data:any)=>{
+      this.final = [];
+      this.homechadata = [];
+      this.filtered = [];
+      this.finaldata = [];
+      setTimeout(()=>{
+        this.setHomedata();
+      }, 200);      
+    })
+    this.setHomedata();
+
+  }
+
+  setHomedata(){
     this.receive.getGroups(localStorage.getItem("username")).subscribe(response=>{
       this.loader = false;
       for (let i = 0; i < response.data.length; i++){
@@ -82,17 +60,16 @@ export class MobileHomeComponent implements OnInit {
         })
       }
     })
-
     this.receive.getHomeData(localStorage.getItem("username")).subscribe(responce=>{
       this.loader = false;
       for (let i = 0;i < responce.data.length;i++) {
         if(responce.data[i].sender != localStorage.getItem("username") ){
           let date = responce.data[i].chatdate.dayOfMonth+" "+responce.data[i].chatdate.month.substring(0, 3).toLowerCase();
-          this.homechadata.push({'id':responce.data[i].id,'entity':responce.data[i].sender,'message':responce.data[i].message,'time':responce.data[i].time,'type':responce.data[i].type,'me':'false', 'date':date})
+          this.homechadata.push({'id':responce.data[i].id,'entity':responce.data[i].sender,'message':responce.data[i].message,'time':responce.data[i].time,'type':responce.data[i].type,'me':'false', 'date':date, 'seen':responce.data[i].seen})
         }
         if(responce.data[i].receiver != localStorage.getItem("username") ){
           let date = responce.data[i].chatdate.dayOfMonth+" "+responce.data[i].chatdate.month.substring(0, 3).toLowerCase();
-          this.homechadata.push({'id':responce.data[i].id,'entity':responce.data[i].receiver,'message':responce.data[i].message,'time':responce.data[i].time,'type':responce.data[i].type,'me':'true', 'date':date})
+          this.homechadata.push({'id':responce.data[i].id,'entity':responce.data[i].receiver,'message':responce.data[i].message,'time':responce.data[i].time,'type':responce.data[i].type,'me':'true', 'date':date, 'seen':responce.data[i].seen})
         }
       }
       for(var i=0; i<this.homechadata.length; i++){
@@ -138,13 +115,53 @@ export class MobileHomeComponent implements OnInit {
                 'type':this.finaldata[x].type,
                 'entitytype':'personal',
                 'me':me, 
-                'date':this.finaldata[x].date
+                'date':this.finaldata[x].date,
+                'seen':this.finaldata[x].seen
               })
           })
         }
       }
     })
+  }
 
+  mapper(alldata:any){
+    const formData1 = new FormData();
+    formData1.append("id", alldata.receiver);
+    this.http.post(`${apiserverurl}getGroupName/`, formData1 ).subscribe(r=>{
+      this.newData2 = r;
+      let me;
+      if(alldata.sender == localStorage.getItem("username")){
+        me = 'true'
+      }else{
+        me = 'false'
+      }
+      let date = alldata.chatdate.dayOfMonth+" "+alldata.chatdate.month.substring(0, 3).toLowerCase();
+
+      let hour = alldata.time.substring(0, 2);
+      let min = alldata.time.substring(3, 5);
+      let timezone = alldata.time.substring(9, 11);
+      let time;
+      if(hour.substring(0, 1) == 0){
+        time = hour.substring(1, 2)+":"+min+" "+timezone;
+      }else{
+        time = hour.substring(0, 2)+":"+min+" "+timezone;
+      }
+
+      let data = {
+        'id': alldata.id,
+        'entity': this.newData2.data[0].groupName,
+        'GroupId': alldata.receiver,
+        'entitytype': "group",
+        'me': me,
+        'message': alldata.message,
+        'time': time,
+        'type': alldata.type,
+        'email': "",
+        'date' :date
+      }
+      this.final.push(data)
+      // console.log(this.final)
+    })
   }
 
   get sortData() {

@@ -121,6 +121,8 @@ export class PesonalchatComponent implements OnInit {
   send(messages:any){
 
     this.start = true;
+    this.textmsg = [];
+    this.tempdata = [];
 
     if(messages != ""){
 
@@ -146,50 +148,22 @@ export class PesonalchatComponent implements OnInit {
         "message": this.textmessages,
         "receiver": this.receiver_email,
         "sender": this.sender_email,
-        "type": ""
+        "type": "",
+        "seen": "false"
       }
       
       this.sendmessage.sendMessage(dataset).subscribe((response)=>{
 
-        this.textmsg = [];
-
         this.socket = io(`${socketserverurl}`);
         this.socket.emit('sendresponce', {'sender': localStorage.getItem("username"), 'receiver': this.user_receiver_email, 'message': this.message, 'time': this.currenttime,'caption':'' , 'file': 'false' }  );
+        
         // Home data Notify
         this.socket.emit('trigger',localStorage.getItem("username"))
 
-        this.receive.getchats(localStorage.getItem("username"), this.route.snapshot.params.email).subscribe(data=>{
-          this.tempdata = [];
-          for(let i = 0; i<data.data.length; i++){
-            let date = data.data[i].chatdate.dayOfMonth+" "+data.data[i].chatdate.month.substring(0, 3).toLowerCase();
-            let hour = data.data[i].time.substring(0, 2);
-            let min = data.data[i].time.substring(3, 5);
-            let timezone = data.data[i].time.substring(8, 11);
-            let time;
-            if(hour.substring(0, 1) == 0){
-              time = hour.substring(1, 2)+":"+min+" "+timezone;
-            }else{
-              time = hour.substring(0, 2)+":"+min+" "+timezone;
-            }
-  
-            let chatdata = {
-              'caption': data.data[i].caption,
-              'id': data.data[i].id,
-              'message': data.data[i].message,
-              'receiver': data.data[i].receiver,
-              'sender': data.data[i].sender,
-              'time': time,
-              'type': data.data[i].type,
-              'uploadfiles':data.data[i].uploadfiles,
-              'date':date
-            }
-  
-            // console.log(chatdata);
-            this.textmsg.push(chatdata)
-  
-          }
-          this.start = false;
-        })
+        setTimeout(()=>{
+          this.getMessages(localStorage.getItem("username"), this.route.snapshot.params.email)
+        }, 300);
+
         this.message = "";  
 
       });
@@ -213,53 +187,23 @@ export class PesonalchatComponent implements OnInit {
     this.myemail = localStorage.getItem("username");
 
     this.sub = this.route.params.subscribe(params => {
+
       this.loadingstart = true;
       this.textmsg = [];
+      
       this.user_receiver_email = params['email'];
-
-      if(window.innerWidth < 700){
-        this.routeDirect.navigate([`personal`,params['email']]);
-      }
 
       this.receive.getName(this.route.snapshot.params.email).subscribe(r=>{
         this.user = r.data;
       })
 
-      this.receive.getchats(localStorage.getItem("username"), this.route.snapshot.params.email).subscribe(data=>{
+      if(window.innerWidth < 700){
+        this.routeDirect.navigate([`personal`,params['email']]);
+      }
 
-        for(let i = 0; i<data.data.length; i++){
+      // update seen Status
+      this.sendmessage.updateSeenStatus(params['email'],localStorage.getItem("username")).subscribe()
 
-          let date = data.data[i].chatdate.dayOfMonth+" "+data.data[i].chatdate.month.substring(0, 3).toLowerCase();
-
-          let hour = data.data[i].time.substring(0, 2);
-          let min = data.data[i].time.substring(3, 5);
-          let timezone = data.data[i].time.substring(8, 11);
-          let time;
-          if(hour.substring(0, 1) == 0){
-            time = hour.substring(1, 2)+":"+min+" "+timezone;
-          }else{
-            time = hour.substring(0, 2)+":"+min+" "+timezone;
-          }
-
-          let chatdata = {
-            'caption': data.data[i].caption,
-            'id': data.data[i].id,
-            'message': data.data[i].message,
-            'receiver': data.data[i].receiver,
-            'sender': data.data[i].sender,
-            'time': time,
-            'type': data.data[i].type,
-            'uploadfiles':data.data[i].uploadfiles,
-            'date':date
-          }
-
-          // console.log(chatdata);
-          this.textmsg.push(chatdata)
-
-        }
-        this.loadingstart = false;
-      })
-  
       // Socket URL
       this.socket = io(`${socketserverurl}`);
       // Send Connection Request
@@ -269,15 +213,73 @@ export class PesonalchatComponent implements OnInit {
         // Logic for unique message identifier
         if(data.sender == this.route.snapshot.params.email && data.receiver == localStorage.getItem("username")){
           this.tempdata.push(data);
+          // auto update seen Status
+          this.sendmessage.updateSeenStatus(params['email'],localStorage.getItem("username")).subscribe()
         }
+      })
+      this.getMessages(localStorage.getItem("username"), this.route.snapshot.params.email)
+
+      // Send Connection Request
+      this.socket.emit('seen',this.route.snapshot.params.email)
+      this.socket.on('status', (email:any)=>{
+        setTimeout(()=>{
+          this.data()
+        }, 300);
       })
 
     })
 
   }
 
+  data(){
+    for(let i=0; i<this.textmsg.length; i++){
+      console.log(this.textmsg[i].message)
+      this.textmsg[i].seen = 'true'
+    }
+  }
+
+  getMessages(sender:any, receiver:any){
+    this.receive.getchats(sender, receiver).subscribe(data=>{
+
+      for(let i = 0; i<data.data.length; i++){
+
+        let date = data.data[i].chatdate.dayOfMonth+" "+data.data[i].chatdate.month.substring(0, 3).toLowerCase();
+
+        let hour = data.data[i].time.substring(0, 2);
+        let min = data.data[i].time.substring(3, 5);
+        let timezone = data.data[i].time.substring(8, 11);
+        let time;
+        if(hour.substring(0, 1) == 0){
+          time = hour.substring(1, 2)+":"+min+" "+timezone;
+        }else{
+          time = hour.substring(0, 2)+":"+min+" "+timezone;
+        }
+
+        let chatdata = {
+          'caption': data.data[i].caption,
+          'id': data.data[i].id,
+          'message': data.data[i].message,
+          'receiver': data.data[i].receiver,
+          'sender': data.data[i].sender,
+          'time': time,
+          'type': data.data[i].type,
+          'uploadfiles':data.data[i].uploadfiles,
+          'date':date,
+          'seen':data.data[i].seen,
+        }
+
+        // console.log(chatdata);
+        this.textmsg.push(chatdata)
+
+      }
+      this.loadingstart = false;
+      this.start = false;
+    })
+  }
+
   ngOnDestroy() {
     this.sub.unsubscribe();
+    this.socket.disconnect();
   }
 
 }
