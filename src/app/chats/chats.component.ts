@@ -24,6 +24,7 @@ export class ChatsComponent implements OnInit {
   newData1:any = [];
   newData2:any = [];
   socket:any;
+  unseencount:any;
 
   constructor(private route:ActivatedRoute, private transfer : TransferService, private routeDirect: Router,private routeReverse:Router, private http: HttpClient, private receive: ReceiveService ) { }
 
@@ -61,14 +62,14 @@ export class ChatsComponent implements OnInit {
     })
     this.receive.getHomeData(localStorage.getItem("username")).subscribe(responce=>{
       this.loader = false;
-      for (let i = 0;i < responce.data.length;i++) {
+      for (let i = 0; i<responce.data.length; i++) {
         if(responce.data[i].sender != localStorage.getItem("username") ){
           let date = responce.data[i].chatdate.dayOfMonth+" "+responce.data[i].chatdate.month.substring(0, 3).toLowerCase();
-          this.homechadata.push({'id':responce.data[i].id,'entity':responce.data[i].sender,'message':responce.data[i].message,'time':responce.data[i].time,'type':responce.data[i].type,'me':'false', 'date':date, 'seen':responce.data[i].seen})
+          this.homechadata.push({'id':responce.data[i].id,'entity':responce.data[i].sender,'message':responce.data[i].message,'time':responce.data[i].time,'type':responce.data[i].type,'me':'false', 'date':date, 'seen':responce.data[i].seen, 'myemail': localStorage.getItem("username")})
         }
         if(responce.data[i].receiver != localStorage.getItem("username") ){
           let date = responce.data[i].chatdate.dayOfMonth+" "+responce.data[i].chatdate.month.substring(0, 3).toLowerCase();
-          this.homechadata.push({'id':responce.data[i].id,'entity':responce.data[i].receiver,'message':responce.data[i].message,'time':responce.data[i].time,'type':responce.data[i].type,'me':'true', 'date':date, 'seen':responce.data[i].seen})
+          this.homechadata.push({'id':responce.data[i].id,'entity':responce.data[i].receiver,'message':responce.data[i].message,'time':responce.data[i].time,'type':responce.data[i].type,'me':'true', 'date':date, 'seen':responce.data[i].seen, 'myemail': localStorage.getItem("username")})
         }
       }
       for(var i=0; i<this.homechadata.length; i++){
@@ -81,9 +82,10 @@ export class ChatsComponent implements OnInit {
       });
       for (let x = 0; x < this.finaldata.length; x++) {
         if(!(parseInt(this.finaldata[x].entity))){
+
           this.newData = [];
           const formData = new FormData(); 
-          formData.append("email", this.finaldata[x].entity);
+          formData.append("email", this.finaldata[x].entity);          
           this.http.post(`${apiserverurl}getContactName/`, formData ).subscribe(r=>{
             let me;
             if(this.finaldata[x].me == 'true'){
@@ -104,22 +106,38 @@ export class ChatsComponent implements OnInit {
 
             this.newData = r;
             this.newData.data[0].name;
-            this.final.push(
-              {
-                'id':this.finaldata[x].id,
-                'entity': this.newData.data[0].name, 
-                'email':this.finaldata[x].entity,
-                'message':this.finaldata[x].message,
-                'time':time,
-                'type':this.finaldata[x].type,
-                'entitytype':'personal',
-                'me':me, 
-                'date':this.finaldata[x].date,
-                'seen':this.finaldata[x].seen
-              })
+
+            this.finalArray(this.finaldata[x].entity,this.finaldata[x].myemail,this.newData.data[0].name,this.finaldata[x],time,this.finaldata[x].date,me);
           })
+
         }
       }
+    })
+  }
+
+  finalArray(email1:any,email2:any,name:any,data:any,time:any,date:any,me:any){
+    const formData = new FormData(); 
+    formData.append("sender", email1);
+    formData.append("receiver", email2);
+    this.http.post(`${apiserverurl}unseenmsagecount/`, formData ).subscribe(r=>{
+      this.unseencount = [];
+      this.unseencount = r;
+      this.unseencount.data.length;
+      this.final.push(
+        {
+          'id':data.id,
+          'entity': name, 
+          'email':data.entity,
+          'message':data.message,
+          'time':time,
+          'type':data.type,
+          'entitytype':'personal',
+          'me':me, 
+          'date':data.date,
+          'seen':data.seen,
+          'unSeenCount': this.unseencount.data.length
+        }
+      )
     })
   }
 

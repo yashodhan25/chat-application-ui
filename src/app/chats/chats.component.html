@@ -58,7 +58,12 @@
                       <div class="name">
                         <a>{{group.entity}}</a>
                       </div>
-                      <div class="time">{{group.date}}&nbsp;&nbsp;{{group.time}}</div>
+                      <div class="time">
+                        {{group.date}}&nbsp;&nbsp;{{group.time}}
+                        <div class="count" *ngIf="group.unSeenCount > 0">
+                          <span>{{group.unSeenCount}}</span>
+                        </div>
+                      </div>
                     </div>
                     
                     <div class="message" *ngIf="group.type == '' && group.message != '' ">
