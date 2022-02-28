@@ -160,9 +160,7 @@ export class PersonalComponent implements OnInit {
         // Home data Notify
         this.socket.emit('trigger',localStorage.getItem("username"))
 
-        setTimeout(()=>{
-          this.getMessages(localStorage.getItem("username"), this.route.snapshot.params.email)
-        }, 300);
+        this.getMessages(localStorage.getItem("username"), this.route.snapshot.params.email)
 
         this.message = "";  
 
@@ -212,14 +210,22 @@ export class PersonalComponent implements OnInit {
       this.socket.on('getMessage', (data:any)=>{
         // Logic for unique message identifier
         if(data.sender == this.route.snapshot.params.email && data.receiver == localStorage.getItem("username")){
-          this.tempdata.push(data);
           // auto update seen Status
           this.sendmessage.updateSeenStatus(params['email'],localStorage.getItem("username")).subscribe()
+          this.tempdata.push(data);
+          // Send seen status to sender
+          this.socket.emit('seen',this.route.snapshot.params.email)
+          this.socket.on('status', (email:any)=>{
+            setTimeout(()=>{
+              this.data()
+            }, 300);
+          })
         }
       })
+
       this.getMessages(localStorage.getItem("username"), this.route.snapshot.params.email)
 
-      // Send Connection Request
+      // Send seen status to sender
       this.socket.emit('seen',this.route.snapshot.params.email)
       this.socket.on('status', (email:any)=>{
         setTimeout(()=>{
@@ -275,6 +281,10 @@ export class PersonalComponent implements OnInit {
       this.loadingstart = false;
       this.start = false;
     })
+  }
+
+  disconnect(){
+    this.socket.disconnect();
   }
 
   ngOnDestroy() {

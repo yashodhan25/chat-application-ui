@@ -45,9 +45,6 @@ export class MobileHomeComponent implements OnInit {
       }, 200);      
     })
     this.setHomedata();
-
-    console.log(this.final)
-
   }
 
   setHomedata(){
@@ -192,6 +189,10 @@ export class MobileHomeComponent implements OnInit {
   logOut(){
     localStorage.clear();
     this.routeReverse.navigate(['register']);
+  }
+
+  ngOnDestroy() {
+    this.socket.disconnect();
   }
 
 }

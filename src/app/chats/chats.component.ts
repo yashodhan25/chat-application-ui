@@ -181,6 +181,17 @@ export class ChatsComponent implements OnInit {
     })
   }
 
+  /* Update Home data when user click on chat list item */
+
+  update(){
+    this.final = [];
+    this.homechadata = [];
+    this.filtered = [];
+    this.finaldata = [];
+    this.setHomedata()
+  }
+  
+
   get sortData() {
     return this.final.sort((a:any, b:any) => {
       return <any>b.id - <any>a.id;
@@ -192,10 +203,8 @@ export class ChatsComponent implements OnInit {
     this.routeReverse.navigate(['register']);
   }
 
-}
+  ngOnDestroy() {
+    this.socket.disconnect();
+  }
 
-  // if(this.routeDirect.url.length > 6){
-  //   this.display = 'false'
-  // }else{
-  //   this.display = 'true'
-  // }
+}

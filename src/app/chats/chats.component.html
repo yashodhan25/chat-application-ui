@@ -47,7 +47,7 @@
           
               <div class="conversation" *ngFor="let group of sortData | filter:term">
           
-                <div class="chatdata" *ngIf="group.entitytype == 'personal'" routerLinkActive="active" [routerLink]="['./personal', group.email]">
+                <div class="chatdata" *ngIf="group.entitytype == 'personal'" routerLinkActive="active" [routerLink]="['./personal', group.email]" (click)="update()">
                   <div class="picture">
                     <img src="../../assets/images/noPic.svg" />
                   </div>
