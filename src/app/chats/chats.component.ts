@@ -25,6 +25,8 @@ export class ChatsComponent implements OnInit {
   newData2:any = [];
   socket:any;
   unseencount:any;
+  unseencount1:any;
+
 
   constructor(private route:ActivatedRoute, private transfer : TransferService, private routeDirect: Router,private routeReverse:Router, private http: HttpClient, private receive: ReceiveService ) { }
 
@@ -56,7 +58,7 @@ export class ChatsComponent implements OnInit {
         formData.append("email", response.data[i].groupTableId);
         this.http.post(`${apiserverurl}home/`, formData ).subscribe(r=>{
           this.newData1 = r;
-          this.mapper(this.newData1.data[0])
+          this.mapper(this.newData1.data[0], localStorage.getItem("username"))
         })
       }
     })
@@ -115,36 +117,11 @@ export class ChatsComponent implements OnInit {
     })
   }
 
-  finalArray(email1:any,email2:any,name:any,data:any,time:any,date:any,me:any){
-    const formData = new FormData(); 
-    formData.append("sender", email1);
-    formData.append("receiver", email2);
-    this.http.post(`${apiserverurl}unseenmsagecount/`, formData ).subscribe(r=>{
-      this.unseencount = [];
-      this.unseencount = r;
-      this.unseencount.data.length;
-      this.final.push(
-        {
-          'id':data.id,
-          'entity': name, 
-          'email':data.entity,
-          'message':data.message,
-          'time':time,
-          'type':data.type,
-          'entitytype':'personal',
-          'me':me, 
-          'date':data.date,
-          'seen':data.seen,
-          'unSeenCount': this.unseencount.data.length
-        }
-      )
-    })
-  }
-
-  mapper(alldata:any){
+  mapper(alldata:any, myEmail:any){
     const formData1 = new FormData();
     formData1.append("id", alldata.receiver);
     this.http.post(`${apiserverurl}getGroupName/`, formData1 ).subscribe(r=>{
+
       this.newData2 = r;
       let me;
       if(alldata.sender == localStorage.getItem("username")){
@@ -163,32 +140,72 @@ export class ChatsComponent implements OnInit {
       }else{
         time = hour.substring(0, 2)+":"+min+" "+timezone;
       }
+      this.finalArrayofGroup(alldata, date, time, this.newData2.data[0].groupName, myEmail, me)
+    })
 
+  }
+
+  finalArray(email1:any,email2:any,name:any,data:any,time:any,date:any,me:any){
+    const formData = new FormData(); 
+    formData.append("sender", email1);
+    formData.append("receiver", email2);
+    this.http.post(`${apiserverurl}unseenmsagecount/`, formData ).subscribe(r=>{
+      this.unseencount = [];
+      this.unseencount = r;
+      this.final.push(
+        {
+          'id':data.id,
+          'entity': name, 
+          'email':data.entity,
+          'message':data.message,
+          'time':time,
+          'type':data.type,
+          'entitytype':'personal',
+          'me':me, 
+          'date':data.date,
+          'seen':data.seen,
+          'unSeenCount': this.unseencount.data.length
+        }
+      )
+    })
+  }
+
+  finalArrayofGroup(dataArry:any, date:any, time:any, group_name:any, myEmail:any, me:any){
+
+    const formData = new FormData(); 
+    formData.append("receiver", dataArry.receiver);
+    formData.append("email", myEmail);
+    formData.append("status", myEmail);
+    this.http.post(`${apiserverurl}receivegroupunseenmessage/`, formData ).subscribe(r1=>{
+      this.unseencount1 = [];
+      this.unseencount1 = r1;
       let data = {
-        'id': alldata.id,
-        'entity': this.newData2.data[0].groupName,
-        'GroupId': alldata.receiver,
+        'id': dataArry.id,
+        'entity': group_name,
+        'GroupId': dataArry.receiver,
         'entitytype': "group",
         'me': me,
-        'message': alldata.message,
+        'message': dataArry.message,
         'time': time,
-        'type': alldata.type,
+        'type': dataArry.type,
         'email': "",
-        'date' :date
+        'date' :date,
+        'unSeenCount' :this.unseencount1.data.length
       }
       this.final.push(data)
-      // console.log(this.final)
     })
   }
 
   /* Update Home data when user click on chat list item */
 
-  update(){
-    this.final = [];
-    this.homechadata = [];
-    this.filtered = [];
-    this.finaldata = [];
-    this.setHomedata()
+  update(){    
+    setTimeout(()=>{
+      this.final = [];
+      this.homechadata = [];
+      this.filtered = [];
+      this.finaldata = [];
+      this.setHomedata()
+    }, 300);
   }
   
 

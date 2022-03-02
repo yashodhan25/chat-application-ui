@@ -55,5 +55,13 @@ export class ReceiveService {
     formData.append("receiver", receiver);
     return this.http.post(`${apiserverurl}receive/`, formData )
   }
+
+  getSeenStatus(Group_ID:any, Email:any):Observable<any>{
+    const formData = new FormData(); 
+    formData.append("receiver", Group_ID);
+    formData.append("email", Email);
+    formData.append("status", Email);
+    return this.http.post(`${apiserverurl}receivegroupunseenmessage/`, formData )
+  }
   
 }

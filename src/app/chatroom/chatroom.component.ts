@@ -148,7 +148,8 @@ export class ChatroomComponent implements OnInit {
         "message": this.textmessages,
         "receiver": this.groupID,
         "sender": this.sender_email,
-        "type": ""
+        "type": "",
+        "seenby": ""
       }      
       this.sendmessage.sendMessage(dataset).subscribe((response)=>{
 
@@ -203,6 +204,21 @@ export class ChatroomComponent implements OnInit {
 
       this.loadingstart = true;
 
+      this.receive.getSeenStatus(params['id'], localStorage.getItem("username")).subscribe(reponse=>{
+        for(let i=0; i<reponse.data.length; i++){
+          // console.log(reponse.data[i])
+          let id = reponse.data[i].id;
+          let group_id = params['id'];
+          let seenby = reponse.data[i].seenby+","+localStorage.getItem("username")
+
+          const formData = new FormData(); 
+          formData.append("id", id);
+          formData.append("Group_id", group_id);
+          formData.append("email ", seenby);
+          this.http.post(`${apiserverurl}updateseenstatusingroup/`, formData ).subscribe(res=>{})
+        }
+      })
+
       this.groupID = params['id'];
 
       if(window.innerWidth < 700){
@@ -252,10 +268,29 @@ export class ChatroomComponent implements OnInit {
       
       this.socket.emit('connected',localStorage.getItem("username"));
       this.socket.on('getMessageFromSender', (data:any)=>{
+        this.receive.getSeenStatus(params['id'], localStorage.getItem("username")).subscribe(reponse=>{
+          for(let i=0; i<reponse.data.length; i++){
+            // console.log(reponse.data[i])
+            let id = reponse.data[i].id;
+            let group_id = params['id'];
+            let seenby = reponse.data[i].seenby+","+localStorage.getItem("username")
+  
+            const formData = new FormData(); 
+            formData.append("id", id);
+            formData.append("Group_id", group_id);
+            formData.append("email ", seenby);
+            this.http.post(`${apiserverurl}updateseenstatusingroup/`, formData ).subscribe(res=>{})
+          }
+        })
         if(data.id == this.route.snapshot.params.id && data.sender != localStorage.getItem("username") ){
           this.tempdata.push(data);
           this.tempcoverter(this.tempdata.length, data.sender);
         }
+        // Home data Notify
+        setTimeout(()=>{
+          this.socket.emit('trigger',localStorage.getItem("username"))
+        }, 300);
+        
       })
 
     });
