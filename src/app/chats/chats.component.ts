@@ -167,6 +167,7 @@ export class ChatsComponent implements OnInit {
           'unSeenCount': this.unseencount.data.length
         }
       )
+      console.log(data.seen)
     })
   }
 

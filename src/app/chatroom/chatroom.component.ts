@@ -126,7 +126,7 @@ export class ChatroomComponent implements OnInit {
   }
 
   send(messages:any){
-    this.start = true;
+    this.socket = io(`${socketserverurl}`);
     if(messages != ""){
       let date: Date = new Date();
       let hour = date.getHours();
@@ -141,7 +141,6 @@ export class ChatroomComponent implements OnInit {
       this.currenttime = this.gethour+":"+minute+" "+this.timemode;
       this.sender_email = localStorage.getItem("username");
       this.textmessages = messages;
-      
       let dataset:any = {
         "caption": "",
         "id": 0,
@@ -151,28 +150,13 @@ export class ChatroomComponent implements OnInit {
         "type": "",
         "seenby": ""
       }      
+      let msgData = {'id':this.groupID, 'sender': localStorage.getItem("username"), 'receiver': this.groupusers, 'message': this.message, 'time': this.currenttime,'caption':'' , 'file': 'false', 'seen':'false' };
+      this.tempdata.push(msgData);
       this.sendmessage.sendMessage(dataset).subscribe((response)=>{
-
-        this.socket = io(`${socketserverurl}`);
         this.socket.emit('sendresponcetogroup', {'id':this.groupID, 'sender': localStorage.getItem("username"), 'receiver': this.groupusers, 'message': this.message, 'time': this.currenttime,'caption':'' , 'file': 'false' }  );
         // Home data Notify
         this.socket.emit('trigger',localStorage.getItem("username"))
-        
-        this.receive.getGroupchats(this.route.snapshot.params.id).subscribe(data=>{
-
-          this.groupchatdata = [];
-            this.tempdata = [];
-            if(data != null){
-              this.start = false;
-            }else{
-              this.start = false;
-            }
-            for(var i=0; i<data.data.length; i++){
-              this.coverter(i,data.data)
-            }
-        })
         this.message = "";  
-        
       });
 
     }else{
@@ -297,10 +281,6 @@ export class ChatroomComponent implements OnInit {
 
   }
 
-  ngOnDestroy() {
-    this.sub.unsubscribe();
-  }
-
   tempcoverter(count:any, email:any){
     this.newData1 = [];
     const formData = new FormData(); 
@@ -351,6 +331,11 @@ export class ChatroomComponent implements OnInit {
     return this.groupchatdata.sort((a:any, b:any) => {
       return <any>a.id - <any>b.id;
     });
+  }
+
+  ngOnDestroy() {
+    this.sub.unsubscribe();
+    this.socket.disconnect();
   }
 
 }

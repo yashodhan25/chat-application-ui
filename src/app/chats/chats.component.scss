@@ -24,12 +24,11 @@
   right: 0px;
   left: 0px;
   box-shadow: -1px 1px 5px rgba(#333, 0.2);
-  border-radius: 3px;
   display: flex;
   flex-direction: row;
   overflow: hidden;
   margin: auto;
-  border-radius: 10px;
+  border-radius: 0px;
   #app-sidebar {
     width: 420px;
     height: 100%;
@@ -120,7 +119,6 @@
         #sidebarHeader {
           flex-basis: 67px;
           background-color: #009CC3;
-          // background-color: #eeeeee;
           display: flex;
           flex-direction: row;
           align-items: center;

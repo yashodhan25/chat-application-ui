@@ -119,10 +119,7 @@ export class PersonalComponent implements OnInit {
   }
 
   send(messages:any){
-
-    this.start = true;
-    this.textmsg = [];
-    this.tempdata = [];
+    this.socket = io(`${socketserverurl}`);
 
     if(messages != ""){
 
@@ -151,17 +148,15 @@ export class PersonalComponent implements OnInit {
         "type": "",
         "seen": "false"
       }
+
+      let msgdata = {'sender': localStorage.getItem("username"), 'receiver': this.user_receiver_email, 'message': this.message, 'time': this.currenttime,'caption':'' , 'file': 'false', 'seen':'false' };
+      this.tempdata.push(msgdata);
       
       this.sendmessage.sendMessage(dataset).subscribe((response)=>{
-
-        this.socket = io(`${socketserverurl}`);
         this.socket.emit('sendresponce', {'sender': localStorage.getItem("username"), 'receiver': this.user_receiver_email, 'message': this.message, 'time': this.currenttime,'caption':'' , 'file': 'false' }  );
         
         // Home data Notify
         this.socket.emit('trigger',localStorage.getItem("username"))
-
-        this.getMessages(localStorage.getItem("username"), this.route.snapshot.params.email)
-
         this.message = "";  
 
       });
@@ -217,7 +212,8 @@ export class PersonalComponent implements OnInit {
           this.socket.emit('seen',this.route.snapshot.params.email)
           this.socket.on('status', (email:any)=>{
             setTimeout(()=>{
-              this.data()
+              this.data();
+              this.data1();
             }, 300);
           })
         }
@@ -229,7 +225,8 @@ export class PersonalComponent implements OnInit {
       this.socket.emit('seen',this.route.snapshot.params.email)
       this.socket.on('status', (email:any)=>{
         setTimeout(()=>{
-          this.data()
+          this.data();
+          this.data1();
         }, 300);
       })
 
@@ -239,8 +236,13 @@ export class PersonalComponent implements OnInit {
 
   data(){
     for(let i=0; i<this.textmsg.length; i++){
-      console.log(this.textmsg[i].message)
       this.textmsg[i].seen = 'true'
+    }
+  }
+
+  data1(){
+    for(let i=0; i<this.tempdata.length; i++){
+      this.tempdata[i].seen = 'true'
     }
   }
 

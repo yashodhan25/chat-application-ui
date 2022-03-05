@@ -21,7 +21,7 @@
         
                 <div class="actionsContainer dropdown">
                     <a href="#" data-toggle="dropdown">
-                        <a><i class="fa fa-bars" style="font-size:24px;margin-left: 80px;color: white;"></i></a>
+                        <a><label style="font-size:36px; margin-left: 70px; margin-top: -35px; color: white;">...</label></a>
                     </a>
                     <ul class="dropdown-menu" style="margin-left: -50px;">
                         <li><a routerLink="/create">Create New Group</a></li>
@@ -79,22 +79,30 @@
                     </div>
       
                     <div class="message" *ngIf="group.message == '' && group.type == 'image' ">
-                      <img *ngIf="group.me == 'true'" src="../../assets/images/doubleTick.svg" />&nbsp;
+                      <img *ngIf="group.me == 'true' && group.seen == 'false' " src="../../assets/images/doubleTick.svg" />
+                      <img *ngIf="group.me == 'true' && group.seen == 'true' " src="../../assets/images/doubleTickBlue.svg" />
+                      &nbsp;
                       Image
                     </div>
       
                     <div class="message" *ngIf="group.message == '' && group.type == 'doc' ">
-                      <img *ngIf="group.me == 'true'" src="../../assets/images/doubleTick.svg" />&nbsp;
+                      <img *ngIf="group.me == 'true' && group.seen == 'false' " src="../../assets/images/doubleTick.svg" />
+                      <img *ngIf="group.me == 'true' && group.seen == 'true' " src="../../assets/images/doubleTickBlue.svg" />
+                      &nbsp;
                       file
                     </div>
   
                     <div class="message" *ngIf="group.message == '' && group.type == 'video' ">
-                      <img *ngIf="group.me == 'true'" src="../../assets/images/doubleTick.svg" />&nbsp;
+                      <img *ngIf="group.me == 'true' && group.seen == 'false' " src="../../assets/images/doubleTick.svg" />
+                      <img *ngIf="group.me == 'true' && group.seen == 'true' " src="../../assets/images/doubleTickBlue.svg" />
+                      &nbsp;
                       video
                     </div>
   
                     <div class="message" *ngIf="group.message == '' && group.type == 'audio' ">
-                      <img *ngIf="group.me == 'true'" src="../../assets/images/doubleTick.svg" />&nbsp;
+                      <img *ngIf="group.me == 'true' && group.seen == 'false' " src="../../assets/images/doubleTick.svg" />
+                      <img *ngIf="group.me == 'true' && group.seen == 'true' " src="../../assets/images/doubleTickBlue.svg" />
+                      &nbsp;
                       audio
                     </div>
       

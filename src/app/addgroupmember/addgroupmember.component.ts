@@ -73,7 +73,7 @@ export class AddgroupmemberComponent implements OnInit {
           let dataset:any = {
             "caption": "",
             "id": 0,
-            "message": this.myname+" is Added "+this.userArray.data[0].name,
+            "message": this.myname+" has Added "+this.userArray.data[0].name,
             "receiver": this.route.snapshot.params.id,
             "sender": localStorage.getItem("username"),
             "type": "notification"
