@@ -103,10 +103,12 @@ export class AddgroupmemberComponent implements OnInit {
     this.loader = true;
     
     this.getpeople.getall(this.senderemail).subscribe((users:any)=>{
-      this.loader = false;
-      for(var i = 0; i< users.content.length; i++){
-        this.datafilter(users.content[i])
-      }
+      this.getpeople.getallcontacts(users.totalElements).subscribe((peoples)=>{
+        this.loader = false;
+        for(var i = 0; i< peoples.content.length; i++){
+          this.datafilter(peoples.content[i])
+        }
+      })
     });
 
   }

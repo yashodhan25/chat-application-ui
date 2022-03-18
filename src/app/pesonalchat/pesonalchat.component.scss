@@ -33,7 +33,7 @@
   .spinner {
     border: 4px solid #f3f3f3;
     border-radius: 50%;
-    border-top: 4px solid #009CC3;
+    border-top: 4px solid #E67E22;
     width: 50px;
     height: 50px;
     -webkit-animation: spin 2s linear infinite; /* Safari */
@@ -46,12 +46,12 @@
   }
   
   ::-webkit-scrollbar-thumb {
-    background: #009CC3; 
+    background: #E67E22; 
     border-radius: 10px;
   }
   
   ::-webkit-scrollbar-thumb:hover {
-    background: #037b99; 
+    background: #d46a0d; 
   }
   
   .uploadoptions{
@@ -130,7 +130,7 @@
     
       #header {
         min-height: 68px;
-        background-color: #009CC3;
+        background-color: #E67E22;
         display: flex;
         justify-content: space-between;
         align-items: center;
@@ -234,7 +234,7 @@
           color: #767676;
           flex-direction: column;
           .messageContent {
-            background-color: #009CC3;
+            background-color: #E67E22;
             border-radius: 5px;
             padding: 10px;
     

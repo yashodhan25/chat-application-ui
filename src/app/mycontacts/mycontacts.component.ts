@@ -21,8 +21,10 @@ export class MycontactsComponent implements OnInit {
   ngOnInit(): void {    
     this.loader = true;
     this.getpeople.getall(this.userId).subscribe((users:any)=>{
-      this.contactlist = users.content
-      this.loader = false;
+      this.getpeople.getallcontacts(users.totalElements).subscribe((peoples)=>{
+        this.contactlist = peoples.content
+        this.loader = false;
+      })
     });
   }
 

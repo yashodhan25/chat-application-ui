@@ -70,7 +70,7 @@
 }
 
 .active{
-  border-left: 3px solid #009CC3;
+  border-left: 3px solid #E67E22;
   background-color: #F4F7F9;
 }
 
@@ -79,7 +79,7 @@
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #009CC3; 
+  background: #E67E22; 
   border-radius: 10px;
 }
 
@@ -118,7 +118,7 @@
         
         #sidebarHeader {
           flex-basis: 67px;
-          background-color: #009CC3;
+          background-color: #E67E22;
           display: flex;
           flex-direction: row;
           align-items: center;
