@@ -1,64 +1,54 @@
 <div class="loader" *ngIf="loader">
-  <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+    <mat-progress-bar mode="indeterminate"></mat-progress-bar>
 </div>
-
+  
 <div class="container" id="chatContainer">
     <div class="row">
-      <div class="col-md-12 col-lg-12" style="padding: 0px; margin: 0;">
-  
-              <div id="sidebar">
-  
-                  <div id="row1" >
+    <div class="col-md-12 col-lg-12" style="padding: 0px; margin: 0;">
+
+            <div id="sidebar">
+
+                <div id="row1" >
                     
                     <div id="sidebarHeader" >
-                      
-                      <div class="avatarSection">
-                        <div class="nameSection"><a routerLink="/chats" >&nbsp;&larr;&nbsp;&nbsp;&nbsp;<label>Select Contact</label></a></div>
-                      </div>
-              
-                      <div class="actionsContainer dropdown">
-                          <a href="#" data-toggle="dropdown">
-                              <a><i class="fa fa-bars" style="font-size:24px;margin-left: 80px;color: white;"></i></a>
-                          </a>
-                          <ul class="dropdown-menu" style="margin-left: -50px;">
-                              <li><a routerLink="./../create">Create New Group</a></li>
-                              <li><a (click)="logOut()">Log Out</a></li>
-                            </ul>
-                      </div>
-              
+                    
+                    <div class="avatarSection">
+                        <div class="nameSection"><a routerLink="/chats" ><label>&nbsp;&larr;&nbsp;&nbsp;&nbsp;Select Contact</label></a></div>
+                    </div>
+            
                     </div>
                     
                     <div id="searchBox">
-                      <img width="19" src="../../assets/images/searchIcon.svg" />
-                      <input
+                    <img width="19" src="../../assets/images/searchIcon.svg" />
+                    <input
                         [(ngModel)]="term"
                         type="text"
                         placeholder="Search Contacts"
-                      />
+                    />
                     </div>
                 
-                  </div>
+                </div>
                 
-                  <div id="sidebarContent">
+                <div id="sidebarContent">
                 
                     <div class="conversation" *ngFor="let people of contactlist | filter:term">
-                      
-                      <div class="picture">
-                        <img src="../../assets/images/noPic.svg" />
-                      </div>
-                      
-                      <div class="content" [routerLink]="['./../personalchat', people.email]">
+                    
+                    <div class="picture">
+                        <img src="./../../assets/images/noPic.svg" />
+                    </div>
+                    
+                    <div class="content" [routerLink]="['./../personalchat', people.id]">
                         <div class="conversationHeader">
-                          <div class="name"><a >{{people.name}}</a></div>
+                        <div class="name"><a>{{people.firstName}} {{people.lastName}}</a></div>
                         </div>
-                      </div>
+                    </div>
 
                     </div>
-              
-                  </div>
-              
-              </div>
-  
-          </div>
-      </div>
+            
+                </div>
+            
+            </div>
+
+        </div>
+    </div>
 </div>

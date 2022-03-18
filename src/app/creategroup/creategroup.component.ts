@@ -24,19 +24,13 @@ export class CreategroupComponent implements OnInit {
       this.alerttext = false;
       
       this.groupdata = {
-        "createdByUserEmail": localStorage.getItem("username"),
+        "createdByUserEmail": localStorage.getItem("user_id"),
         "groupName": value,
         "is_active": true
       }
 
       this.createGroup.getgroupdadta(this.groupdata);
       this.routeDirect.navigate(['SelectContact']);
-      
-      // if(this.screen < 700){
-        
-      // }else{
-      //   this.routeDirect.navigate(['chats/SelectContact']);
-      // }
 
     }
   }

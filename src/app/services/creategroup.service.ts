@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable, observable } from 'rxjs';
+import { Observable } from 'rxjs';
 import { apiserverurl } from 'src/environments/environment.prod';
 
 @Injectable({
@@ -23,5 +23,5 @@ export class CreategroupService {
   addPeople(peopledata:any):Observable<any>{
     return this.http.post(`${apiserverurl}addGpMembers/`, peopledata);
   }
-
+  
 }

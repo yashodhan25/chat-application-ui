@@ -1,10 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { GetService } from '../services/get.service';
-import { CreategroupService } from '../services/creategroup.service';
 import { FormArray, FormBuilder, FormControl, FormGroup, NgForm, Validators } from '@angular/forms';
-import { ReceiveService } from '../services/receive.service';
 import { SendService } from '../services/send.service';
+import { CreategroupService } from '../services/creategroup.service';
+import { ReceiveService } from '../services/receive.service';
+import { GetService } from '../services/get.service';
 
 @Component({
   selector: 'app-selectcontact',
@@ -12,10 +12,11 @@ import { SendService } from '../services/send.service';
   styleUrls: ['./selectcontact.component.scss']
 })
 export class SelectcontactComponent implements OnInit {
+  
   term:any;
   searchText: any;
   contactlist:any;
-  senderemail = localStorage.getItem("username");
+  senderemail = localStorage.getItem("user_id");
   loader:any;
   start:any;
   mySelectedPeople:any = [];
@@ -47,26 +48,30 @@ export class SelectcontactComponent implements OnInit {
   submitForm() {
     this.start = true;
     this.createGroup.createGroup().subscribe(responce=>{
+
       this.finallist = [];
-      this.finallist.push({'groupName':responce.data.groupName, 'groupTableId':responce.data.id, 'userEmail': localStorage.getItem("username")});
+      this.finallist.push({'groupName':responce.data.groupName, 'groupTableId':responce.data.id, 'userEmail': localStorage.getItem("user_id")});
       this.mySelectedPeople = this.form.value.checkArray;
       for(var i=0; i<this.mySelectedPeople.length; i++){
         this.finallist.push({'groupName':responce.data.groupName, 'groupTableId':responce.data.id, 'userEmail': this.mySelectedPeople[i]})
       }
+
       this.createGroup.addPeople(this.finallist).subscribe(res=>{
         let dataset:any = {
           "caption": "",
           "id": 0,
           "message": '',
           "receiver": responce.data.id,
-          "sender": localStorage.getItem("username"),
-          "type": "notification"
+          "sender": localStorage.getItem("user_id"),
+          "type": "notification",
+          'entityType': 'group'
         }
         this.sendmessage.sendMessage(dataset).subscribe((response)=>{
           this.start = false
           this.routeDirect.navigate(['chats']);
         })
       })
+
     })
 
   }
@@ -74,9 +79,9 @@ export class SelectcontactComponent implements OnInit {
   ngOnInit(): void {
     this.loader = true;
     this.getpeople.getall(this.senderemail).subscribe((users:any)=>{
-      this.contactlist = users.data;
+      this.contactlist = users.content
       this.loader = false;
-    });
+    })
 
   }
 

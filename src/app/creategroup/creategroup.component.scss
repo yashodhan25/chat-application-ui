@@ -2,7 +2,7 @@
     position: fixed;
     top: 0%;
     bottom: 0%;
-    width: 80%;
+    width: 40%;
     height: 90%;
     background-color: #fff;
     right: 0px;
@@ -18,13 +18,14 @@
         width: 100%;
         height: auto;
         border-radius: 0px;
+        margin-top: 0px;
     }
 }
 
 
 
 emoji-mart{
-    bottom: 6%;
+    bottom: 1%;
     position: absolute;
     display: flex;
     justify-content: center;

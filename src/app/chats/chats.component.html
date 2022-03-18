@@ -2,12 +2,12 @@
   <mat-progress-bar mode="indeterminate"></mat-progress-bar>
 </div>
 
-
 <div class="container">
   <div class="row">
     <div class="col-md-12 col-lg-12" style="padding: 0px; margin: 0;">
 
       <div id="chatContainer">
+
         <div id="app-sidebar">
           <div id="sidebar">
 
@@ -16,18 +16,21 @@
               <div id="sidebarHeader" >
                 
                 <div class="avatarContainer">
-                  <img src="../../assets/images/noPic.svg" />
+                  <!-- <img src="../../assets/images/noPic.svg" /> -->
+                  <h2>Messaging</h2>
                 </div>
         
                 <div class="actionsContainer dropdown">
-                    <a href="#" data-toggle="dropdown">
-                        <a><label style="font-size:36px; margin-left: 70px; margin-top: -35px; color: white;">...</label></a>
-                    </a>
-                    <ul class="dropdown-menu" style="margin-left: -50px;">
-                        <li><a routerLink="/create">Create New Group</a></li>
-                        <li><a routerLink="/mycontacts">My Contacts</a></li>
-                        <li><a (click)="logOut()">Log Out</a></li>
-                      </ul>
+                  
+                  <a href="#" data-toggle="dropdown">
+                    <a><label style="font-size:36px; margin-left: 40px; margin-top: -14px; color: white;">...</label></a>
+                  </a>
+                  <ul class="dropdown-menu" style="margin-left: -50px;">
+                      <li><a routerLink="/create">Create New Group</a></li>
+                  </ul>
+
+                  <a routerLink="/mycontacts"><label style="font-size:30px; margin-left: 20px; margin-top: 10px; color: white;"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></label></a>
+
                 </div>
         
               </div>
@@ -47,7 +50,7 @@
           
               <div class="conversation" *ngFor="let group of sortData | filter:term">
           
-                <div class="chatdata" *ngIf="group.entitytype == 'personal'" routerLinkActive="active" [routerLink]="['./personal', group.email]" (click)="update()">
+                <div class="chatdata" *ngIf="group.entitytype == 'personal'" routerLinkActive="active" [routerLink]="['./personal', group.email]" (click)="update(group.email)">
                   <div class="picture">
                     <img src="../../assets/images/noPic.svg" />
                   </div>
@@ -125,7 +128,7 @@
                   </div>
                 </div>
 
-                <div class="chatdata" *ngIf="group.entitytype == 'group'" routerLinkActive="active" [routerLink]="['./gpchatroom', group.GroupId]" (click)="update()">
+                <div class="chatdata" *ngIf="group.entitytype == 'group'" routerLinkActive="active" [routerLink]="['./gpchatroom', group.GroupId]" (click)="update1(group.GroupId)">
                   <div class="picture">
                     <img src="../../assets/images/noPic.svg" />
                   </div>
@@ -199,14 +202,12 @@
     
           </div>
         </div>
+
         <div id="chat">
           <router-outlet></router-outlet>
         </div>
       </div>
+      
     </div>
   </div>
-</div>  
-
-<!-- <div class="mybutton">
-  <a routerLink="/mycontacts"><button><i class='fa fa-comment'></i></button></a>
-</div> -->
+</div>

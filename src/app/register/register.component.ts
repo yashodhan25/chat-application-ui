@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { GetallService } from '../services/getall.service';
 
 @Component({
@@ -10,35 +10,38 @@ import { GetallService } from '../services/getall.service';
 })
 export class RegisterComponent implements OnInit {
 
-  useremail = "";
-  dataarray:any;
-  socket:any;
+  paramsObject:any
 
-  constructor(
-    private routeDirect: Router,
-    private getemail: GetallService
-  ) { }
-
-  loginDetails:any = new FormGroup(
-    {
-      email: new FormControl('',[Validators.required, Validators.email])
+  constructor(private route: ActivatedRoute, private routeDirect: Router) { }
+ 
+  ngOnInit(): void {
+    this.route.queryParamMap.subscribe((params) => {
+      this.paramsObject = { ...params.keys, ...params };
+    });
+    if(this.paramsObject.params.id != null){
+      localStorage.clear();
+      this.login(this.paramsObject.params.id)
+    }else{
+      alert("please provide GET parameter !")
     }
-  )
 
-  userData(getemail:any){
-    localStorage.setItem("username", getemail);
+  }
+
+  login(id:any){
+    localStorage.setItem("user_id", id);
     this.routeDirect.navigate(['chats']);
   }
 
-  ngOnInit(): void {
-    this.getemail.getall().subscribe(responce => {
-      this.dataarray = responce.data;
-    })
-
-    if(localStorage.getItem("username") != null){
-      this.routeDirect.navigate(['chats']);
-    }
-    
-  }
-
 }
+
+// this.routeDirect.navigate(['chats']);
+// console.log(this.paramsObject.params.id)
+// http://localhost:4200/#/register?id=2880
+// if(this.paramsObject.params[0] == null){
+//   alert("please provide GET Parameter like ?id=_id");
+// }else{
+//   console.log(this.paramsObject.params.id)
+//   localStorage.clear();
+//   localStorage.setItem("user_id", this.paramsObject.params.id);
+//   this.routeDirect.navigate(['chats']);
+// }

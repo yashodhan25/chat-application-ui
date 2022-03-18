@@ -9,7 +9,7 @@ import { HttpClient } from '@angular/common/http';
 import { ScrollToBottomDirective } from '../scroll-to-bottom.directive';
 import { DownloadService } from '../services/download.service';
 import { saveAs } from 'file-saver';
-import { apiserverurl, socketserverurl } from 'src/environments/environment.prod';
+import { apiserverurl, baseUrl, socketserverurl } from 'src/environments/environment.prod';
 
 @Component({
   selector: 'app-chatroom',
@@ -139,7 +139,7 @@ export class ChatroomComponent implements OnInit {
         this.timemode = "AM";
       }
       this.currenttime = this.gethour+":"+minute+" "+this.timemode;
-      this.sender_email = localStorage.getItem("username");
+      this.sender_email = localStorage.getItem("user_id");
       this.textmessages = messages;
       let dataset:any = {
         "caption": "",
@@ -148,14 +148,15 @@ export class ChatroomComponent implements OnInit {
         "receiver": this.groupID,
         "sender": this.sender_email,
         "type": "",
-        "seenby": ""
+        "seenby": "",
+        'entityType': 'group'
       }      
-      let msgData = {'id':this.groupID, 'sender': localStorage.getItem("username"), 'receiver': this.groupusers, 'message': this.message, 'time': this.currenttime,'caption':'' , 'file': 'false', 'seen':'false' };
+      let msgData = {'id':this.groupID, 'sender': localStorage.getItem("user_id"), 'receiver': this.groupusers, 'message': this.message, 'time': this.currenttime,'caption':'' , 'file': 'false', 'seen':'false' };
       this.tempdata.push(msgData);
       this.sendmessage.sendMessage(dataset).subscribe((response)=>{
-        this.socket.emit('sendresponcetogroup', {'id':this.groupID, 'sender': localStorage.getItem("username"), 'receiver': this.groupusers, 'message': this.message, 'time': this.currenttime,'caption':'' , 'file': 'false' }  );
+        this.socket.emit('sendresponcetogroup', {'id':this.groupID, 'sender': localStorage.getItem("user_id"), 'receiver': this.groupusers, 'message': this.message, 'time': this.currenttime,'caption':'' , 'file': 'false' }  );
         // Home data Notify
-        this.socket.emit('trigger',localStorage.getItem("username"))
+        this.socket.emit('trigger',localStorage.getItem("user_id"))
         this.message = "";  
       });
 
@@ -188,12 +189,11 @@ export class ChatroomComponent implements OnInit {
 
       this.loadingstart = true;
 
-      this.receive.getSeenStatus(params['id'], localStorage.getItem("username")).subscribe(reponse=>{
+      this.receive.getSeenStatus(params['id'], localStorage.getItem("user_id")).subscribe(reponse=>{
         for(let i=0; i<reponse.data.length; i++){
-          // console.log(reponse.data[i])
           let id = reponse.data[i].id;
           let group_id = params['id'];
-          let seenby = reponse.data[i].seenby+","+localStorage.getItem("username")
+          let seenby = reponse.data[i].seenby+","+localStorage.getItem("user_id")
 
           const formData = new FormData(); 
           formData.append("id", id);
@@ -217,7 +217,7 @@ export class ChatroomComponent implements OnInit {
 
       this.receive.getGroupName(this.route.snapshot.params.id).subscribe(r=>{
 
-        if(localStorage.getItem("username") != r.data[0].createdByUserEmail){
+        if(localStorage.getItem("user_id") != r.data[0].createdByUserEmail){
           this.adminName(r.data[0].createdByUserEmail);
         }else{
           this.admin = 'true';
@@ -239,7 +239,7 @@ export class ChatroomComponent implements OnInit {
 
       this.receive.getGroupDetails(this.route.snapshot.params.id).subscribe(res=>{
         for( var i = 0; i < res.data.length; i++){
-          if(localStorage.getItem("username") != res.data[i].userEmail){
+          if(localStorage.getItem("user_id") != res.data[i].userEmail){
             this.groupusers.push(res.data[i].userEmail);
           }
         }
@@ -248,16 +248,15 @@ export class ChatroomComponent implements OnInit {
       // Socket URL
       this.socket = io(`${socketserverurl}`);
       this.loadingstart = true;
-      this.myemail = localStorage.getItem("username");
+      this.myemail = localStorage.getItem("user_id");
       
-      this.socket.emit('connected',localStorage.getItem("username"));
+      this.socket.emit('connected',localStorage.getItem("user_id"));
       this.socket.on('getMessageFromSender', (data:any)=>{
-        this.receive.getSeenStatus(params['id'], localStorage.getItem("username")).subscribe(reponse=>{
+        this.receive.getSeenStatus(params['id'], localStorage.getItem("user_id")).subscribe(reponse=>{
           for(let i=0; i<reponse.data.length; i++){
-            // console.log(reponse.data[i])
             let id = reponse.data[i].id;
             let group_id = params['id'];
-            let seenby = reponse.data[i].seenby+","+localStorage.getItem("username")
+            let seenby = reponse.data[i].seenby+","+localStorage.getItem("user_id")
   
             const formData = new FormData(); 
             formData.append("id", id);
@@ -266,13 +265,13 @@ export class ChatroomComponent implements OnInit {
             this.http.post(`${apiserverurl}updateseenstatusingroup/`, formData ).subscribe(res=>{})
           }
         })
-        if(data.id == this.route.snapshot.params.id && data.sender != localStorage.getItem("username") ){
+        if(data.id == this.route.snapshot.params.id && data.sender != localStorage.getItem("user_id") ){
           this.tempdata.push(data);
           this.tempcoverter(this.tempdata.length, data.sender);
         }
         // Home data Notify
         setTimeout(()=>{
-          this.socket.emit('trigger',localStorage.getItem("username"))
+          this.socket.emit('trigger',localStorage.getItem("user_id"))
         }, 300);
         
       })
@@ -283,23 +282,20 @@ export class ChatroomComponent implements OnInit {
 
   tempcoverter(count:any, email:any){
     this.newData1 = [];
-    const formData = new FormData(); 
-    formData.append("email", email);
-    this.http.post(`${apiserverurl}getContactName/`, formData ).subscribe(r=>{
+    
+    this.http.get(`${baseUrl}companyRegistration/`+email).subscribe(r=>{
       this.newData1 = r;
-      this.tempdata[count-1].name = this.newData1.data[0].name; 
+      this.tempdata[count-1].name = this.newData.content[0].firstName+" "+this.newData.content[0].lastName;
     })
+
   }
 
   coverter(count:any, chatdata:any){
     this.newData = [];
-    const formData = new FormData(); 
-    formData.append("email", chatdata[count].sender);
-    this.http.post(`${apiserverurl}getContactName/`, formData ).subscribe(r=>{
+    this.http.get(`${baseUrl}companyRegistration/`+chatdata[count].sender).subscribe(r=>{
       this.newData = r;
-
+      let name = this.newData.content[0].firstName+" "+this.newData.content[0].lastName;
       let date = chatdata[count].chatdate.dayOfMonth+" "+chatdata[count].chatdate.month.substring(0, 3).toLowerCase();
-
       let hour = chatdata[count].time.substring(0, 2);
       let min = chatdata[count].time.substring(3, 5);
       let timezone = chatdata[count].time.substring(9, 11);
@@ -312,7 +308,7 @@ export class ChatroomComponent implements OnInit {
 
       let finaldata = {
         'id': chatdata[count].id,
-        'name': this.newData.data[0].name,
+        'name': name,
         'sender': chatdata[count].sender,
         'receiver': chatdata[count].receiver,
         'message': chatdata[count].message,
@@ -323,6 +319,7 @@ export class ChatroomComponent implements OnInit {
         'date': date
       }
       this.groupchatdata.push(finaldata);
+
     })
 
   }

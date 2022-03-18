@@ -97,14 +97,15 @@
     display: flex;
     width: 100%;
     height: 90vh;
-    background-color: #FFFFFF;
+    background-color: #FBFCFC;
     flex-direction: column;
+    border-left: 1px solid #FBFCFC;
     @media (max-width: 700px) {
       height: 100vh;
     }
   
     #header {
-      min-height: 67px;
+      min-height: 68px;
       background-color: #009CC3;
       display: flex;
       justify-content: space-between;
@@ -114,11 +115,13 @@
       .avatarSection {
         display: flex;
         .picture {
-          min-width: 40px;
-          max-width: 40px;
+          min-width: 45px;
+          max-width: 45px;
           margin: 0 10px;
+          margin-top: 9px;
           img {
             max-width: 100%;
+            border-radius: 50%;
           }
         }
         .nameSection {
@@ -126,6 +129,22 @@
           color: white;
           display: flex;
           align-items: center;
+        }
+        .headName{
+          display: list-item;
+          justify-content: left;
+          list-style: none;
+          margin-top: 9px;
+        }
+        .headName h3{
+          font-size: 18px;
+          cursor: pointer;
+        }
+        .headName h4{
+          font-weight: lighter;
+          font-size: 14px;
+          margin-top: -30px;
+          cursor: pointer;
         }
         .nameSection a{
           font-size: 30px;color: white;
@@ -153,6 +172,20 @@
       flex-direction: column;
       padding: 20px 50px;
       overflow-y: auto;
+
+      .date{
+        width: 100%; 
+        text-align: center; 
+        border-bottom: 1px solid #ABB2B9; 
+        line-height: 0.1em;
+        margin: 10px 0 20px; 
+      }
+
+      .date span{
+        background:#FBFCFC; 
+        padding:0 10px;
+        color: #ABB2B9;
+      }
 
       #video video{
         border: 1px solid black;

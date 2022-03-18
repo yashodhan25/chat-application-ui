@@ -1,15 +1,20 @@
 import { Component, HostListener, OnInit, ViewChild } from '@angular/core';
-import { TransferService } from '../services/transfer.service';
 import { Router } from '@angular/router';
 import { ActivatedRoute } from '@angular/router';
-import { SendService } from '../services/send.service';
-import { ReceiveService } from '../services/receive.service';
 import { io } from 'socket.io-client';
 import { HttpClient } from '@angular/common/http';
-import { ScrollToBottomDirective } from '../scroll-to-bottom.directive';
-import { DownloadService } from '../services/download.service';
 import { saveAs } from 'file-saver';
+import { ScrollToBottomDirective } from '../scroll-to-bottom.directive';
+
 import { apiserverurl, socketserverurl } from 'src/environments/environment.prod';
+
+import { TransferService } from '../services/transfer.service';
+import { ReceiveService } from '../services/receive.service';
+
+import { SendService } from '../services/send.service';
+import { DownloadService } from '../services/download.service';
+import { GetService } from '../services/get.service';
+
 
 @Component({
   selector: 'app-pesonalchat',
@@ -44,33 +49,12 @@ export class PesonalchatComponent implements OnInit {
   tempdata:any[] = [];
   sub:any;
   user_receiver_email:any;
-  screen:any
+  screen:any;
+  dateddata:any = [];
+  formattedMessageData:any = [];
+  uniqueDate:any;
 
-  constructor( private transfer : TransferService, private routeDirect: Router, private route:ActivatedRoute, private sendmessage:SendService, private receive: ReceiveService, private http: HttpClient, private downloadfile: DownloadService ){}
-
-  save(datadocname:any){
-    saveAs(datadocname, datadocname );
-  }
-
-  download(filename:any){
-    this.nameoffile = filename
-    let imgurl = filename;
-    this.downloadfile.downloadfile(this.user_receiver_email, this.nameoffile, imgurl)
-    this.routeDirect.navigate(['chats/view']);
-    if(this.screen < 700){
-      this.routeDirect.navigate(['view']);
-    }
-  }
-
-  videoplayer(filename:any, type:any){
-    this.nameoffile = filename
-    let imgurl = filename;
-    this.downloadfile.downloadVideofile(this.user_receiver_email, this.nameoffile, imgurl,type);
-    this.routeDirect.navigate(['chats/view']);
-    if(this.screen < 700){
-      this.routeDirect.navigate(['view']);
-    }
-  }
+  constructor(private getpeople:GetService, private transfer : TransferService, private routeDirect: Router, private route:ActivatedRoute, private sendmessage:SendService, private receive: ReceiveService, private http: HttpClient, private downloadfile: DownloadService ){}
 
   getIMG(event: any) {
     this.transfer.getfile(event,this.user_receiver_email);
@@ -104,6 +88,30 @@ export class PesonalchatComponent implements OnInit {
     }
   }
 
+  save(datadocname:any){
+    saveAs(datadocname, datadocname );
+  }
+
+  download(filename:any){
+    this.nameoffile = filename
+    let imgurl = filename;
+    this.downloadfile.downloadfile(this.user_receiver_email, this.nameoffile, imgurl)
+    this.routeDirect.navigate(['chats/view']);
+    if(this.screen < 700){
+      this.routeDirect.navigate(['view']);
+    }
+  }
+
+  videoplayer(filename:any, type:any){
+    this.nameoffile = filename
+    let imgurl = filename;
+    this.downloadfile.downloadVideofile(this.user_receiver_email, this.nameoffile, imgurl,type);
+    this.routeDirect.navigate(['chats/view']);
+    if(this.screen < 700){
+      this.routeDirect.navigate(['view']);
+    }
+  }
+
   options(){
     this.emojiPickerVisible = false;
     if(this.option != ""){
@@ -133,7 +141,7 @@ export class PesonalchatComponent implements OnInit {
       }
       this.currenttime = this.gethour+":"+minute+" "+this.timemode;
       this.receiver_email = this.user_receiver_email;
-      this.sender_email = localStorage.getItem("username");
+      this.sender_email = localStorage.getItem("user_id");
       this.textmessages = messages;
       let dataset:any = {
         "caption": "",
@@ -142,15 +150,16 @@ export class PesonalchatComponent implements OnInit {
         "receiver": this.receiver_email,
         "sender": this.sender_email,
         "type": "",
-        "seen": "false"
+        "seen": "false",
+        'entityType': 'personal'
       }
-      let msgdata = {'sender': localStorage.getItem("username"), 'receiver': this.user_receiver_email, 'message': this.message, 'time': this.currenttime,'caption':'' , 'file': 'false', 'seen':'false' };
+      let msgdata = {'sender': localStorage.getItem("user_id"), 'receiver': this.user_receiver_email, 'message': this.message, 'time': this.currenttime,'caption':'' , 'file': 'false', 'seen':'false' };
       this.tempdata.push(msgdata);
       
       this.sendmessage.sendMessage(dataset).subscribe((response)=>{
-        this.socket.emit('sendresponce', {'sender': localStorage.getItem("username"), 'receiver': this.user_receiver_email, 'message': this.message, 'time': this.currenttime,'caption':'' , 'file': 'false' }  );
+        this.socket.emit('sendresponce', {'sender': localStorage.getItem("user_id"), 'receiver': this.user_receiver_email, 'message': this.message, 'time': this.currenttime,'caption':'' , 'file': 'false' }  );
         // Home data Notify
-        this.socket.emit('trigger',localStorage.getItem("username"))
+        this.socket.emit('trigger',localStorage.getItem("user_id"))
         this.message = "";  
       });
 
@@ -170,17 +179,20 @@ export class PesonalchatComponent implements OnInit {
   ngOnInit(): void {
     this.screen = window.innerWidth;
     this.loadingstart = true;
-    this.myemail = localStorage.getItem("username");
+    this.myemail = localStorage.getItem("user_id");
 
     this.sub = this.route.params.subscribe(params => {
 
       this.loadingstart = true;
       this.textmsg = [];
-      
+      this.tempdata = [];
+      this.formattedMessageData = [];
+      this.dateddata = [];
       this.user_receiver_email = params['email'];
 
       this.receive.getName(this.route.snapshot.params.email).subscribe(r=>{
-        this.user = r.data;
+        this.user = [r.content[0]];
+        console.log([r.content[0]])
       })
 
       if(window.innerWidth < 700){
@@ -188,18 +200,18 @@ export class PesonalchatComponent implements OnInit {
       }
 
       // update seen Status
-      this.sendmessage.updateSeenStatus(params['email'],localStorage.getItem("username")).subscribe()
+      this.sendmessage.updateSeenStatus(params['email'],localStorage.getItem("user_id")).subscribe()
 
       // Socket URL
       this.socket = io(`${socketserverurl}`);
       // Send Connection Request
-      this.socket.emit('connected',localStorage.getItem("username"))
+      this.socket.emit('connected',localStorage.getItem("user_id"))
       // get responce from client
       this.socket.on('getMessage', (data:any)=>{
         // Logic for unique message identifier
-        if(data.sender == this.route.snapshot.params.email && data.receiver == localStorage.getItem("username")){
+        if(data.sender == this.route.snapshot.params.email && data.receiver == localStorage.getItem("user_id")){
           // auto update seen Status
-          this.sendmessage.updateSeenStatus(params['email'],localStorage.getItem("username")).subscribe()
+          this.sendmessage.updateSeenStatus(params['email'],localStorage.getItem("user_id")).subscribe()
           this.tempdata.push(data);
           // Send seen status to sender
           this.socket.emit('seen',this.route.snapshot.params.email)
@@ -211,7 +223,7 @@ export class PesonalchatComponent implements OnInit {
           })
         }
       })
-      this.getMessages(localStorage.getItem("username"), this.route.snapshot.params.email)
+      this.getMessages(localStorage.getItem("user_id"), this.route.snapshot.params.email)
 
       // Send seen status to sender
       this.socket.emit('seen',this.route.snapshot.params.email)
@@ -240,11 +252,15 @@ export class PesonalchatComponent implements OnInit {
 
   getMessages(sender:any, receiver:any){
     this.receive.getchats(sender, receiver).subscribe(data=>{
-
       for(let i = 0; i<data.data.length; i++){
-
-        let date = data.data[i].chatdate.dayOfMonth+" "+data.data[i].chatdate.month.substring(0, 3).toLowerCase();
-
+        const d = new Date();
+        let year: string;
+        if(d.getFullYear() != data.data[i].chatdate.year){
+          year = data.data[i].chatdate.year;
+        }else{
+          year = "";
+        }
+        let date = data.data[i].chatdate.dayOfMonth+" "+data.data[i].chatdate.month.substring(0, 3).toLowerCase()+" "+year;
         let hour = data.data[i].time.substring(0, 2);
         let min = data.data[i].time.substring(3, 5);
         let timezone = data.data[i].time.substring(8, 11);
@@ -268,10 +284,30 @@ export class PesonalchatComponent implements OnInit {
           'seen':data.data[i].seen,
         }
         this.textmsg.push(chatdata)
+        this.dateddata.push(date)
       }
+
+      setTimeout(()=>{
+        this.uniqueDate = [new Set(this.dateddata)];
+        this.uniqueDate[0].forEach((date: any) => {
+          let messagedata = [];
+          for(let i =0; i<this.textmsg.length; i++){
+            if(this.textmsg[i].date == date){
+              messagedata.push(this.textmsg[i])
+            }
+          }
+          this.formatted(date,messagedata)
+        })
+      }, 300);
+
       this.loadingstart = false;
       this.start = false;
+      
     })
+  }
+
+  formatted(date:any,messagedata:any){
+    this.formattedMessageData.push({date: date, data: messagedata})    
   }
 
   disconnect(){

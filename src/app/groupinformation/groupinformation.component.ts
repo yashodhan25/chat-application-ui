@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { apiserverurl } from 'src/environments/environment.prod';
+import { apiserverurl, baseUrl } from 'src/environments/environment.prod';
 
 @Component({
   selector: 'app-groupinformation',
@@ -63,19 +63,20 @@ export class GroupinformationComponent implements OnInit {
   }
 
   group_participant_info(user_email:any, admin_email:any){
-    const formData = new FormData();
-    formData.append("email", user_email);
-    this.http.post(`${apiserverurl}getContactName/`, formData ).subscribe(r=>{
+    this.http.get(`${baseUrl}companyRegistration/`+user_email).subscribe(r=>{
+      
       this.start = false
       this.group_member_name_array = r;
-      this.group_member_name = this.group_member_name_array.data[0].name;
+      this.group_member_name = this.group_member_name_array.content[0].firstName+" "+this.group_member_name_array.content[0].lastName
+      let profilePic = 'this.group_member_name_array.data.profilePicture';
+
       let admin;
       if(user_email == admin_email){
         admin = 'true'
       }else{
         admin = 'false'
       }
-      let data = {'name':this.group_member_name, 'Email':user_email, 'Admin':admin}
+      let data = {'name':this.group_member_name, 'Email':this.group_member_name_array.content[0].emailId, 'Admin':admin, 'profilePic':profilePic}
       this.participant_info.push(data)
     })
   }

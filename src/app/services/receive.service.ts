@@ -1,22 +1,19 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
-import { apiserverurl } from 'src/environments/environment.prod';
+import { apiserverurl, baseUrl } from 'src/environments/environment.prod';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ReceiveService {
 
-  socket:any;
   list:any
 
   constructor(private http:HttpClient) { }
 
   getName(Name:any):Observable<any>{
-    const formData = new FormData(); 
-    formData.append("email", Name);
-    return this.http.post(`${apiserverurl}getContactName/`, formData )
+    return this.http.get(`${baseUrl}companyRegistration/`+Name)
   }
 
   getGroups(email:any):Observable<any>{

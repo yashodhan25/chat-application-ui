@@ -5,7 +5,7 @@ import { CreategroupService } from '../services/creategroup.service';
 import { FormArray, FormBuilder, FormControl, FormGroup, NgForm, Validators } from '@angular/forms';
 import { ReceiveService } from '../services/receive.service';
 import { SendService } from '../services/send.service';
-import { apiserverurl } from 'src/environments/environment.prod';
+import { apiserverurl, baseUrl } from 'src/environments/environment.prod';
 import { HttpClient } from '@angular/common/http';
 
 @Component({
@@ -18,7 +18,7 @@ export class AddgroupmemberComponent implements OnInit {
   term:any;
   searchText: any;
   contactlist:any = [];
-  senderemail = localStorage.getItem("username");
+  senderemail = localStorage.getItem("user_id");
   loader:any;
   start:any;
   mySelectedPeople:any = [];
@@ -65,70 +65,68 @@ export class AddgroupmemberComponent implements OnInit {
     }
     this.createGroup.addPeople(this.finallist).subscribe(res=>{
       for(var i = 0; i<res.data.length; i++){
-        const formData = new FormData(); 
-        formData.append("email", res.data[i].userEmail);
-        this.http.post(`${apiserverurl}getContactName/`, formData ).subscribe(r=>{
+        this.http.get(`${baseUrl}companyRegistration/`+res.data[i].userEmail).subscribe(r=>{
           this.userArray = r;
-          this.userArray.data[0].name;
+          let name = this.userArray.content[0].firstName+" "+this.userArray.content[0].lastName;
+
           let dataset:any = {
             "caption": "",
             "id": 0,
-            "message": this.myname+" has Added "+this.userArray.data[0].name,
+            "message": this.myname+" has Added "+name,
             "receiver": this.route.snapshot.params.id,
-            "sender": localStorage.getItem("username"),
-            "type": "notification"
+            "sender": localStorage.getItem("user_id"),
+            "type": "notification",
+            'entityType': 'group'
           }
+
           this.sendmessage.sendMessage(dataset).subscribe((response)=>{
             this.start = false;
             this.routeDirect.navigate([`chats/gpchatroom`,this.route.snapshot.params.id]);
           })
+
         })
       }
     })
   }
 
-  datafilter(data:any){
-    const formData = new FormData(); 
-    formData.append("email", data.email);
-    formData.append("id", this.route.snapshot.params.id);
-    this.http.post(`${apiserverurl}getGroupByuseritselfboth/`, formData ).subscribe(r=>{
-      this.groupMembers = r
-      if(this.groupMembers.data.length == 0){
-        if(data.email != localStorage.getItem("username")){
-          this.contactlist.push(data)
-        }
-      }
-    })
-
-  }
-
-
   ngOnInit(): void {
-    const formData = new FormData(); 
-    this.loader = true;
-    this.getpeople.getall(this.senderemail).subscribe((users:any)=>{
-      this.loader = false;
-      for(var i = 0; i< users.data.length; i++){
-        this.datafilter(users.data[i])
-      }
-    });
 
+    this.myfullname(localStorage.getItem("user_id"));
+
+    const formData = new FormData();
     formData.append("id", this.route.snapshot.params.id);
     this.http.post(`${apiserverurl}getGroupName/`, formData ).subscribe(r=>{
       this.groupnamedata = r;
       this.groupname = this.groupnamedata.data[0].groupName
     })
 
-    this.myfullname(localStorage.getItem("username"));
+    this.loader = true;
+    
+    this.getpeople.getall(this.senderemail).subscribe((users:any)=>{
+      this.loader = false;
+      for(var i = 0; i< users.content.length; i++){
+        this.datafilter(users.content[i])
+      }
+    });
 
   }
 
-  myfullname(email:any){
+  datafilter(data:any){
     const formData = new FormData(); 
-    formData.append("email", email);
-    this.http.post(`${apiserverurl}getContactName/`, formData ).subscribe(r=>{
+    formData.append("email", data.id);
+    formData.append("id", this.route.snapshot.params.id);
+    this.http.post(`${apiserverurl}getGroupByuseritselfboth/`, formData ).subscribe(r=>{
+      this.groupMembers = r;
+      if(this.groupMembers.data.length == 0){
+        this.contactlist.push(data)
+      }
+    })
+  }
+
+  myfullname(email:any){
+    this.http.get(`${baseUrl}companyRegistration/`+email).subscribe(r=>{
       this.userArray1 = r;
-      this.myname = this.userArray1.data[0].name;
+      this.myname = this.userArray1.content[0].firstName+" "+this.userArray1.content[0].lastName;
     })
   }
 

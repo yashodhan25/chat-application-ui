@@ -128,6 +128,13 @@
           .avatarContainer {
             flex-basis: 43px;
             height: 43px;
+            h2{
+              margin-top: 8px;
+              color: #fbfbfb;
+              font-size: 24px;
+              font-family: 'Abhaya Libre';
+              font-weight: 600;
+            }
             img {
               height: 100%;
             }
@@ -205,13 +212,13 @@
               img {
                 max-width: 100%;
                 width: 48px;
+                border-radius: 50%;
               }
             }
             .content {
-            
               border-bottom: 1px solid #e2e4e6;
               flex-grow: 1;
-              padding: 20px 0px;
+              padding: 10px 0px;
               padding-right: 10px;
               .conversationHeader {
                 display: flex;

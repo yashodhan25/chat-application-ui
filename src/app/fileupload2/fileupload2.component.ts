@@ -27,7 +27,7 @@ export class Fileupload2Component implements OnInit {
   gethour:any;
   timemode:any;
   currenttime:any;
-  sender = localStorage.getItem("username");
+  sender = localStorage.getItem("user_id");
   caption:any;
   type:any;
   portrait = "";
@@ -71,7 +71,8 @@ export class Fileupload2Component implements OnInit {
       "receiver": this.otherEmail,
       "sender": this.sender,
       "type": this.type,
-      "seenby": ""
+      "seenby": "",
+      'entityType': 'group'
     }
 
 
@@ -94,7 +95,7 @@ export class Fileupload2Component implements OnInit {
 
     this.receive.getGroupDetails(this.otherEmail).subscribe(res=>{
       for( var i = 0; i < res.data.length; i++){
-        if(localStorage.getItem("username") != res.data[i].userEmail){
+        if(localStorage.getItem("user_id") != res.data[i].userEmail){
           this.groupusers.push(res.data[i].userEmail);
         }
       }

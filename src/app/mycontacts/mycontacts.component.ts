@@ -13,21 +13,17 @@ export class MycontactsComponent implements OnInit {
   searchText: any;
   contactlist:any;
   senderemail = localStorage.getItem("username");
+  userId = localStorage.getItem("user_id"); 
   loader:any;
 
   constructor(private routeReverse:Router, private getpeople:GetService) { }
 
   ngOnInit(): void {    
     this.loader = true;
-    this.getpeople.getall(this.senderemail).subscribe((users:any)=>{
-      this.contactlist = users.data;
+    this.getpeople.getall(this.userId).subscribe((users:any)=>{
+      this.contactlist = users.content
       this.loader = false;
     });
-  }
-
-  logOut(){
-    localStorage.clear();
-    this.routeReverse.navigate(['register']);
   }
 
 }

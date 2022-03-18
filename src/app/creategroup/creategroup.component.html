@@ -28,7 +28,7 @@
                                 <div id="smileyIcon">
                                     <img (click)="emojiPickerVisible = !emojiPickerVisible" src="../../assets/images/smileIcon.png" style="width: 25px; height: auto;margin-top: 10px;"/>
                                 </div>
-                                <input type="text" #value [(ngModel)]="message" [ngClass]='{alerttext}' name="email" placeholder="Type Group Subject Here..." (keyup)="clearemogi()" required>
+                                <input type="text" #value [(ngModel)]="message" [ngClass]="{'alerttext' : alerttext != false}" name="email" placeholder="Type Group Subject Here..." (keyup)="clearemogi()" required>
                                 <button (click)="getvalue(value.value)" >Go</button>
                             </li>
                         </ul>

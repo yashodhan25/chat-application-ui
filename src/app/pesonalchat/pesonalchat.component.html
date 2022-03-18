@@ -6,25 +6,36 @@
         <div id="container">
   
           <div id="header" style="top:0;position: absolute;width: 100%;">
-        
+
             <div class="avatarSection">
-              <div class="nameSection"><a routerLink="/mycontacts" (click)="disconnect()">&nbsp;&larr;</a></div>
+              <div class="nameSection"><a routerLink="/mycontacts" (click)="disconnect()"><label>&nbsp;&larr;</label></a></div>
               <div class="picture">
                 <img src="../../assets/images/noPic.svg" />
               </div>
-              <div class="nameSection" *ngFor="let userName of user">{{userName.name}}</div>
+              <div class="nameSection" *ngFor="let userName of user">{{userName.firstName}} {{userName.lastName}}</div>
             </div>
         
           </div>
           
           <div id="body" (click)="clear()" style="margin-top: 50px;margin-bottom: 60px;" #scrollMe [scrollTop]="scrollMe.scrollHeight" >
              
-              <div class="containtLoader" *ngIf="loadingstart">
-                <div class="spinner"></div>
-              </div>
-  
+            <div class="containtLoader" *ngIf="loadingstart">
+              <div class="spinner"></div>
+            </div>
+
+            <!-- <h4 *ngFor="let msg1 of formattedMessageData">
+              {{msg1.date}}
+              <ul>
+                <li *ngFor="let msg2 of msg1.data">
+                  {{msg2.message}}
+                </li>
+              </ul>
+            </h4> -->
+            
+            <div *ngFor="let alldata of formattedMessageData">
+              <div class="date"><span>{{alldata.date}}</span></div>
               <!-- Get Message -->
-              <div *ngFor="let msg of textmsg">
+              <div *ngFor="let msg of alldata.data">
                 
                 <div class="message me" *ngIf="msg.sender == myemail; else receiver">
                   <div class="messageContent">
@@ -36,7 +47,7 @@
                       <br>
                       <br>
                     </div>
-
+  
                     <div id="video" *ngIf="msg.type == 'video';" >
                       <video width="300px" height="auto" >
                         <source [src]="msg.uploadfiles"  type="video/mp4">
@@ -48,7 +59,7 @@
                       <span  [innerHTML]='msg.caption | link'>{{msg.caption | link}}</span>
                       <br>
                     </div>
-
+  
                     <div *ngIf="msg.type == 'audio';" >
                       <audio controls>
                         <source [src]="msg.uploadfiles" type="audio/ogg">
@@ -58,19 +69,19 @@
                       <span  [innerHTML]='msg.caption | link'>{{msg.caption | link}}</span>
                       <br>
                     </div>
-
+  
                     <div *ngIf="msg.type == 'doc';" style="color: black;">
                       <img src="./../../assets/images/folder.png" width="100px" height="auto">
                       <br>
                       <span  [innerHTML]='msg.caption | link'>{{msg.caption | link}}</span>
                       <br>
-                      <!-- <span style="color: darkgrey;">mydoc.doc</span> -->
+                      <span style="color: darkgrey;">mydoc.doc</span>
                       &nbsp;&nbsp;
                       <a (click)="save(msg.uploadfiles)"><i class="fa fa-download" style="font-size:18px"></i></a>
                       <br>
                       <br>
                     </div>
-
+  
                     <div *ngIf="msg.uploadfiles == null;" style="color: black;" >
                       <div *ngIf="msg.message.length > 30" style="width: 240px; text-align: inherit;word-wrap: break-word;">
                         <span  [innerHTML]='msg.message | link'>{{msg.message | link}}</span>
@@ -80,16 +91,17 @@
                       </div>
                       <br>
                     </div>
-
+  
+                    <!-- -->
                     <div class="time">
-                      {{msg.date}}&nbsp;&nbsp;{{msg.time}}&nbsp;
+                      {{msg.time}}&nbsp;
                       <img *ngIf="msg.seen == 'false' " src="../../assets/images/doubleTick.svg" />
                       <img *ngIf="msg.seen == 'true' " src="../../assets/images/doubleTickBlue.svg" />
                     </div>
-
+  
                   </div>
                 </div>
-
+  
                 <ng-template #receiver>
                   <div class="message message.me" >
                     <div class="messageContent">
@@ -102,7 +114,7 @@
                         </label>
                         <br>
                       </div>
-
+  
                       <div *ngIf="msg.type == 'doc';" style="color: #FFFFFF;">
                         <img src="./../../assets/images/folder.png" width="100px" height="auto">
                         <br>
@@ -110,12 +122,12 @@
                           <span  [innerHTML]='msg.caption | link'>{{msg.caption | link}}</span>
                         </label>
                         <br>
-                        <!-- <span style="color: rgb(240, 234, 234);">mydoc.doc</span> -->
+                        <span style="color: rgb(240, 234, 234);">mydoc.doc</span>
                         &nbsp;&nbsp;
                         <a (click)="save(msg.uploadfiles)"><i class="fa fa-download" style="font-size:18px"></i></a>
                         <br><br>
                       </div>
-
+  
                       <div *ngIf="msg.type == 'audio';" >
                         <audio controls>
                           <source [src]="msg.uploadfiles" type="audio/ogg">
@@ -125,7 +137,7 @@
                         <span style="color: #FFFFFF; font-weight: lighter;" [innerHTML]='msg.caption | link'>{{msg.caption | link}}</span>
                         <br>
                       </div>
-
+  
                       <div id="video" *ngIf="msg.type == 'video';" >
                         <video width="300px" height="auto" >
                           <source [src]="msg.uploadfiles"  type="video/mp4">
@@ -148,27 +160,96 @@
                         <br>
                         <br>
                       </div>
-
+  
                       <div class="time" style="color: #FFFFFF;">
-                        {{msg.date}}&nbsp;&nbsp;{{msg.time}}
+                        {{msg.time}}
                       </div>
                       
                     </div>
                   </div>
                 </ng-template>
+  
+              </div>
+            </div>
 
+            <!-- Temp Msg -->
+            <div *ngFor="let tempmsg of tempdata">
+                
+              <div class="message me" *ngIf="tempmsg.sender == myemail; else receiver">
+                <div class="messageContent">
+                    
+                  <div *ngIf="tempmsg.file == 'image';" >
+                    <img (click)="download(tempmsg.message)" [src]="tempmsg.message" width="200px" height="auto">
+                    <br>
+                    <label style="color: black; font-weight: lighter;">
+                      <span  [innerHTML]='tempmsg.caption | link'>{{tempmsg.caption | link}}</span>
+                    </label>
+                    <br>
+                  </div>
+
+                  <div *ngIf="tempmsg.file == 'doc';" style="color: #FFFFFF;">
+                    <img src="./../../assets/images/folder.png" width="100px" height="auto">
+                    <br>
+                    <label style="color: black;font-weight: lighter;">
+                      <span  [innerHTML]='tempmsg.caption | link'>{{tempmsg.caption | link}}</span>
+                    </label>
+                    <br>
+                    <span style="color: rgb(139, 131, 131);">mydoc.doc</span>
+                    &nbsp;&nbsp;
+                    <a (click)="save(tempmsg.uploadfiles)"><i class="fa fa-download" style="font-size:18px"></i></a>
+                    <br><br>
+                  </div>
+
+                  <div *ngIf="tempmsg.file == 'audio';" >
+                    <audio controls>
+                      <source [src]="tempmsg.message" type="audio/ogg">
+                      <source [src]="tempmsg.message" type="audio/mpeg">
+                    </audio>
+                    <br>
+                    <span style="color: black; font-weight: lighter;" [innerHTML]='tempmsg.caption | link'>{{tempmsg.caption | link}}</span>
+                    <br>
+                  </div>
+
+                  <div id="video" *ngIf="tempmsg.file == 'video';" >
+                    <video width="300px" height="auto" >
+                      <source [src]="tempmsg.message"  type="video/mp4">
+                    </video>
+                    <div class="data">
+                      <img (click)="videoplayer(tempmsg.message,'video')" src="./../../assets/images/videoplayer.png">
+                    </div>
+                    <br>
+                    <span style="color: black; font-weight: lighter;"  [innerHTML]='tempmsg.caption | link'>{{tempmsg.caption | link}}</span>
+                    <br>
+                  </div>
+
+                  <div *ngIf="tempmsg.file == 'false';" style="color: black; margin-bottom: -35px;">
+                    <div *ngIf="tempmsg.message.length > 30" style="width: 240px; text-align: inherit;word-wrap: break-word;">
+                      <span  [innerHTML]='tempmsg.message | link'>{{tempmsg.message | link}}</span>
+                    </div>
+                    <div *ngIf="tempmsg.message.length < 30 ">
+                      <span  [innerHTML]='tempmsg.message | link'>{{tempmsg.message | link}}</span>
+                    </div>
+                    <br>
+                    <br>
+                  </div>
+
+                  <div class="time" style="color: black;">
+                    {{tempmsg.time}}
+                    <img *ngIf="tempmsg.seen == 'false' " src="../../assets/images/doubleTick.svg" />
+                    <img *ngIf="tempmsg.seen == 'true' " src="../../assets/images/doubleTickBlue.svg" />
+                  </div>
+                  
+                </div>
               </div>
 
-              <!-- Temp Msg -->
-              <div *ngFor="let tempmsg of tempdata">
-                
-                <div class="message me" *ngIf="tempmsg.sender == myemail; else receiver">
+              <ng-template #receiver>
+                <div class="message message.me" >
                   <div class="messageContent">
-                      
+                    
                     <div *ngIf="tempmsg.file == 'image';" >
                       <img (click)="download(tempmsg.message)" [src]="tempmsg.message" width="200px" height="auto">
                       <br>
-                      <label style="color: black; font-weight: lighter;">
+                      <label style="color: #FFFFFF; font-weight: lighter;">
                         <span  [innerHTML]='tempmsg.caption | link'>{{tempmsg.caption | link}}</span>
                       </label>
                       <br>
@@ -177,11 +258,11 @@
                     <div *ngIf="tempmsg.file == 'doc';" style="color: #FFFFFF;">
                       <img src="./../../assets/images/folder.png" width="100px" height="auto">
                       <br>
-                      <label style="color: black;font-weight: lighter;">
+                      <label style="color: #FFFFFF;font-weight: lighter;">
                         <span  [innerHTML]='tempmsg.caption | link'>{{tempmsg.caption | link}}</span>
                       </label>
                       <br>
-                      <span style="color: rgb(139, 131, 131);">mydoc.doc</span>
+                      <span style="color: rgb(240, 234, 234);">mydoc.doc</span>
                       &nbsp;&nbsp;
                       <a (click)="save(tempmsg.uploadfiles)"><i class="fa fa-download" style="font-size:18px"></i></a>
                       <br><br>
@@ -193,7 +274,7 @@
                         <source [src]="tempmsg.message" type="audio/mpeg">
                       </audio>
                       <br>
-                      <span style="color: black; font-weight: lighter;" [innerHTML]='tempmsg.caption | link'>{{tempmsg.caption | link}}</span>
+                      <span style="color: #FFFFFF; font-weight: lighter;" [innerHTML]='tempmsg.caption | link'>{{tempmsg.caption | link}}</span>
                       <br>
                     </div>
 
@@ -205,11 +286,11 @@
                         <img (click)="videoplayer(tempmsg.message,'video')" src="./../../assets/images/videoplayer.png">
                       </div>
                       <br>
-                      <span style="color: black; font-weight: lighter;"  [innerHTML]='tempmsg.caption | link'>{{tempmsg.caption | link}}</span>
+                      <span style="color: #FFFFFF; font-weight: lighter;"  [innerHTML]='tempmsg.caption | link'>{{tempmsg.caption | link}}</span>
                       <br>
                     </div>
 
-                    <div *ngIf="tempmsg.file == 'false';" style="color: black; margin-bottom: -35px;">
+                    <div *ngIf="tempmsg.file == 'false';" style="color: #FFFFFF; margin-bottom: -35px;">
                       <div *ngIf="tempmsg.message.length > 30" style="width: 240px; text-align: inherit;word-wrap: break-word;">
                         <span  [innerHTML]='tempmsg.message | link'>{{tempmsg.message | link}}</span>
                       </div>
@@ -220,84 +301,16 @@
                       <br>
                     </div>
 
-                    <div class="time" style="color: black;">
+                    <div class="time" style="color: #FFFFFF;">
                       {{tempmsg.time}}
-                      <img *ngIf="tempmsg.seen == 'false' " src="../../assets/images/doubleTick.svg" />
-                      <img *ngIf="tempmsg.seen == 'true' " src="../../assets/images/doubleTickBlue.svg" />
                     </div>
                     
                   </div>
                 </div>
+              </ng-template>
+              
+            </div>
 
-                <ng-template #receiver>
-                  <div class="message message.me" >
-                    <div class="messageContent">
-                      
-                      <div *ngIf="tempmsg.file == 'image';" >
-                        <img (click)="download(tempmsg.message)" [src]="tempmsg.message" width="200px" height="auto">
-                        <br>
-                        <label style="color: #FFFFFF; font-weight: lighter;">
-                          <span  [innerHTML]='tempmsg.caption | link'>{{tempmsg.caption | link}}</span>
-                        </label>
-                        <br>
-                      </div>
-  
-                      <div *ngIf="tempmsg.file == 'doc';" style="color: #FFFFFF;">
-                        <img src="./../../assets/images/folder.png" width="100px" height="auto">
-                        <br>
-                        <label style="color: #FFFFFF;font-weight: lighter;">
-                          <span  [innerHTML]='tempmsg.caption | link'>{{tempmsg.caption | link}}</span>
-                        </label>
-                        <br>
-                        <span style="color: rgb(240, 234, 234);">mydoc.doc</span>
-                        &nbsp;&nbsp;
-                        <a (click)="save(tempmsg.uploadfiles)"><i class="fa fa-download" style="font-size:18px"></i></a>
-                        <br><br>
-                      </div>
-  
-                      <div *ngIf="tempmsg.file == 'audio';" >
-                        <audio controls>
-                          <source [src]="tempmsg.message" type="audio/ogg">
-                          <source [src]="tempmsg.message" type="audio/mpeg">
-                        </audio>
-                        <br>
-                        <span style="color: #FFFFFF; font-weight: lighter;" [innerHTML]='tempmsg.caption | link'>{{tempmsg.caption | link}}</span>
-                        <br>
-                      </div>
-  
-                      <div id="video" *ngIf="tempmsg.file == 'video';" >
-                        <video width="300px" height="auto" >
-                          <source [src]="tempmsg.message"  type="video/mp4">
-                        </video>
-                        <div class="data">
-                          <img (click)="videoplayer(tempmsg.message,'video')" src="./../../assets/images/videoplayer.png">
-                        </div>
-                        <br>
-                        <span style="color: #FFFFFF; font-weight: lighter;"  [innerHTML]='tempmsg.caption | link'>{{tempmsg.caption | link}}</span>
-                        <br>
-                      </div>
-  
-                      <div *ngIf="tempmsg.file == 'false';" style="color: #FFFFFF; margin-bottom: -35px;">
-                        <div *ngIf="tempmsg.message.length > 30" style="width: 240px; text-align: inherit;word-wrap: break-word;">
-                          <span  [innerHTML]='tempmsg.message | link'>{{tempmsg.message | link}}</span>
-                        </div>
-                        <div *ngIf="tempmsg.message.length < 30 ">
-                          <span  [innerHTML]='tempmsg.message | link'>{{tempmsg.message | link}}</span>
-                        </div>
-                        <br>
-                        <br>
-                      </div>
-  
-                      <div class="time" style="color: #FFFFFF;">
-                        {{tempmsg.time}}
-                      </div>
-                      
-                    </div>
-                  </div>
-                </ng-template>
-                
-              </div>
-  
           </div>
   
           <!-- file Selection Buttons  -->
@@ -318,7 +331,7 @@
                 </label>
               </div>
   
-              <!-- <div class="video">
+              <div class="video">
                 <label>
                   <i class="fa fa-youtube-play" style="font-size: 22px;"></i>
                   <input type="file" style="display: none;" accept=".mp4, .3gp" (change)="getVideoFILE($event)">
@@ -330,7 +343,7 @@
                   <i class='fa fa-file-audio-o' style="font-size: 22px;"></i>
                   <input type="file" style="display: none;" accept=".mp3" (change)="getAudioFILE($event)">
                 </label>
-              </div> -->
+              </div>
             
             </div>
           </div>

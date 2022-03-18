@@ -37,18 +37,18 @@
 
                             <div class="selected-contact">
                                 <label class="container1">
-                                    <input type="checkbox" type="checkbox" [value]="people.email" (change)="onCheckboxChange($event)">
+                                    <input type="checkbox" type="checkbox" [value]="people.id" (change)="onCheckboxChange($event)">
                                     <span class="checkmark"></span>
                                 </label>
                             </div>
 
                             <div class="picture">
-                                <img src="../../assets/images/noPic.svg" />
+                                <img src="./../../assets/images/noPic.svg" />
                             </div>
                             
                             <div class="content">
                                 <div class="conversationHeader">
-                                <div class="name"><a>{{people.name}}</a></div>
+                                <div class="name"><a>{{people.firstName}} {{people.lastName}}</a></div>
                                 </div>
                             </div>
 
