@@ -1,194 +1,213 @@
 <div class="loader" *ngIf="loader">
-    <mat-progress-bar mode="indeterminate"></mat-progress-bar>
-  </div>
-  
-  <div class="container">
-    <div class="row">
-      <div class="col-md-12 col-lg-12" style="padding: 0px; margin: 0;">
-  
-              <div id="sidebar">
-  
-                  <div id="row1">
-                    
-                    <div id="sidebarHeader" >
-                      
-                      <div class="avatarContainer">
-                        <img src="../../assets/images/noPic.svg" />
-                      </div>
-              
-                      <div class="actionsContainer dropdown">
-                          <a href="#" data-toggle="dropdown">
-                              <a><label style="font-size:36px;margin-left: 70px;color: white; margin-top: -35px;">...</label></a>
-                          </a>
-                          <ul class="dropdown-menu" style="margin-left: -50px;">
-                              <li><a routerLink="./../create">Create New Group</a></li>
-                              <li><a routerLink="/mycontacts">My Contacts</a></li>
-                              <li><a (click)="logOut()">Log Out</a></li>
-                            </ul>
-                      </div>
-              
-                    </div>
-                    
-                    <div id="searchBox">
-                      <img width="19" src="../../assets/images/searchIcon.svg" />
-                      <input
-                        type="text"
-                        placeholder="Search or start the new chat"
-                        [(ngModel)]="term"
-                      />
-                    </div>
-                
-                  </div>
-  
-                  <div id="sidebarContent">
-                
-                    <div class="conversation" *ngFor="let group of sortData | filter:term">
-          
-                      <div class="chatdata" *ngIf="group.entitytype == 'personal'" routerLinkActive="active" [routerLink]="['./../personal', group.email]">
-                        <div class="picture">
-                          <img src="../../assets/images/noPic.svg" />
-                        </div>
-        
-                        <div class="content">
-            
-                          <div class="conversationHeader" >
-                            <div class="name">
-                              <a>{{group.entity}}</a>
-                            </div>
-                            <div class="time">
-                              {{group.date}}&nbsp;&nbsp;{{group.time}}
-                              <div class="count" *ngIf="group.unSeenCount > 0">
-                                <span>{{group.unSeenCount}}</span>
-                              </div>
-                            </div>
-                          </div>
-                          
-                          <div class="message" *ngIf="group.type == '' && group.message != '' ">
-                            <img *ngIf="group.me == 'true' && group.seen == 'false' " src="../../assets/images/doubleTick.svg" />
-                            <img *ngIf="group.me == 'true' && group.seen == 'true' " src="../../assets/images/doubleTickBlue.svg" />
-                            &nbsp;
-                            <span *ngIf="group.message.length > 20">
-                              {{group.message.substring(0, 20)}}...
-                            </span>
-                            <span *ngIf="group.message.length <= 20">
-                              {{group.message}}
-                            </span>
-                          </div>
-            
-                          <div class="message" *ngIf="group.message == '' && group.type == 'image' ">
-                            <img *ngIf="group.me == 'true'" src="../../assets/images/doubleTick.svg" />&nbsp;
-                            Image
-                          </div>
-            
-                          <div class="message" *ngIf="group.message == '' && group.type == 'doc' ">
-                            <img *ngIf="group.me == 'true'" src="../../assets/images/doubleTick.svg" />&nbsp;
-                            file
-                          </div>
-        
-                          <div class="message" *ngIf="group.message == '' && group.type == 'video' ">
-                            <img *ngIf="group.me == 'true'" src="../../assets/images/doubleTick.svg" />&nbsp;
-                            video
-                          </div>
-        
-                          <div class="message" *ngIf="group.message == '' && group.type == 'audio' ">
-                            <img *ngIf="group.me == 'true'" src="../../assets/images/doubleTick.svg" />&nbsp;
-                            audio
-                          </div>
-            
-                          <div class="message" *ngIf="group.type == 'notification' && group.message != '' && group.me == 'true' ">
-                            {{group.message}}
-                          </div>
-            
-                          <div class="message" *ngIf="group.type == 'notification' && group.message != '' && group.me == 'false' ">
-                            {{group.message}}
-                          </div>
-            
-                          <div class="message" *ngIf="group.type == 'notification' && group.message == '' && group.me == 'true' ">
-                            You Created Group
-                          </div>
-            
-                          <div class="message" *ngIf="group.type == 'notification' && group.message == '' && group.me == 'false' ">
-                            You were Added
-                          </div>
-                  
-                        </div>
+  <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+</div>
 
-                      </div>
-      
-                      <div class="chatdata" *ngIf="group.entitytype == 'group'" routerLinkActive="active" [routerLink]="['./../gpchatroom', group.GroupId]">
-                        <div class="picture">
-                          <img src="../../assets/images/noPic.svg" />
-                        </div>
-                  
-                        <div class="content">
-                  
-                          <div class="conversationHeader" >
-                            <div class="name">
-                              <a>{{group.entity}}</a>
-                            </div>
-                            <div class="time">{{group.date}}&nbsp;&nbsp;{{group.time}}</div>
-                          </div>
-                          
-                          <div class="message" *ngIf="group.type == '' && group.message != '' ">
-                            <img *ngIf="group.me == 'true'" src="../../assets/images/doubleTick.svg" />&nbsp;
-                            <span *ngIf="group.message.length > 20">
-                              {{group.message.substring(0, 20)}}...
-                            </span>
-                            <span *ngIf="group.message.length <= 20">
-                              {{group.message}}
-                            </span>
-                          </div>
-            
-                          <div class="message" *ngIf="group.message == '' && group.type == 'image' ">
-                            <img *ngIf="group.me == 'true'" src="../../assets/images/doubleTick.svg" />&nbsp;
-                            Image
-                          </div>
-            
-                          <div class="message" *ngIf="group.message == '' && group.type == 'doc' ">
-                            <img *ngIf="group.me == 'true'" src="../../assets/images/doubleTick.svg" />&nbsp;
-                            file
-                          </div>
-      
-                          <div class="message" *ngIf="group.message == '' && group.type == 'video' ">
-                            <img *ngIf="group.me == 'true'" src="../../assets/images/doubleTick.svg" />&nbsp;
-                            video
-                          </div>
-      
-                          <div class="message" *ngIf="group.message == '' && group.type == 'audio' ">
-                            <img *ngIf="group.me == 'true'" src="../../assets/images/doubleTick.svg" />&nbsp;
-                            audio
-                          </div>
-            
-                          <div class="message" *ngIf="group.type == 'notification' && group.message != '' && group.me == 'true' ">
-                            {{group.message}}
-                          </div>
-            
-                          <div class="message" *ngIf="group.type == 'notification' && group.message != '' && group.me == 'false' ">
-                            {{group.message}}
-                          </div>
-            
-                          <div class="message" *ngIf="group.type == 'notification' && group.message == '' && group.me == 'true' ">
-                            You Created Group
-                          </div>
-            
-                          <div class="message" *ngIf="group.type == 'notification' && group.message == '' && group.me == 'false' ">
-                            You were Added
-                          </div>
-                  
-                        </div>
-                        
-                      </div>
+<div class="container">
+  <div class="row">
+    <div class="col-md-12 col-lg-12" style="padding: 0px; margin: 0;">
+
+      <div id="chatContainer">
+
+        <div id="app-sidebar">
+          <div id="sidebar">
+
+            <div id="row1">
+              
+              <div id="sidebarHeader" >
                 
-                    </div>
-              
-                  </div>
-              
+                <div class="avatarContainer">
+                  <!-- <img src="../../assets/images/noPic.svg" /> -->
+                  <h2>Messaging</h2>
+                </div>
+        
+                <div class="actionsContainer dropdown">
+                  
+                  <a href="#" data-toggle="dropdown">
+                    <a><label style="font-size:36px; margin-left: 40px; margin-top: -14px; color: white;">...</label></a>
+                  </a>
+                  <ul class="dropdown-menu" style="margin-left: -50px;">
+                      <li><a routerLink="/create">Create New Group</a></li>
+                  </ul>
+
+                  <a routerLink="/mycontacts"><label style="font-size:30px; margin-left: 20px; margin-top: 10px; color: white;"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></label></a>
+
+                </div>
+        
               </div>
+              
+              <div id="searchBox">
+                <img width="19" src="../../assets/images/searchIcon.svg" />
+                <input
+                  type="text"
+                  placeholder="Search or start the new chat"
+                  [(ngModel)]="term"
+                />
+              </div>
+          
+            </div>
+    
+            <div id="sidebarContent">
+          
+              <div class="conversation" *ngFor="let group of sortData | filter:term">
+          
+                <div class="chatdata" *ngIf="group.entitytype == 'personal'" routerLinkActive="active" [routerLink]="['./../personal', group.email]" (click)="update(group.email)">
+                  <div class="picture">
+                    <img src="../../assets/images/noPic.svg" />
+                  </div>
   
+                  <div class="content">
+            
+                    <div class="conversationHeader" >
+                      <div class="name">
+                        <a>{{group.entity}}</a>
+                      </div>
+                      <div class="time">
+                        {{group.date}}&nbsp;&nbsp;{{group.time}}
+                        <div class="count" *ngIf="group.unSeenCount > 0">
+                          <span>{{group.unSeenCount}}</span>
+                        </div>
+                      </div>
+                    </div>
+                    
+                    <div class="message" *ngIf="group.type == '' && group.message != '' ">
+                      <img *ngIf="group.me == 'true' && group.seen == 'false' " src="../../assets/images/doubleTick.svg" />
+                      <img *ngIf="group.me == 'true' && group.seen == 'true' " src="../../assets/images/doubleTickBlue.svg" />
+                      &nbsp;
+                      <span *ngIf="group.message.length > 20">
+                        {{group.message.substring(0, 20)}}...
+                      </span>
+                      <span *ngIf="group.message.length <= 20">
+                        {{group.message}}
+                      </span>
+                    </div>
+      
+                    <div class="message" *ngIf="group.message == '' && group.type == 'image' ">
+                      <img *ngIf="group.me == 'true' && group.seen == 'false' " src="../../assets/images/doubleTick.svg" />
+                      <img *ngIf="group.me == 'true' && group.seen == 'true' " src="../../assets/images/doubleTickBlue.svg" />
+                      &nbsp;
+                      Image
+                    </div>
+      
+                    <div class="message" *ngIf="group.message == '' && group.type == 'doc' ">
+                      <img *ngIf="group.me == 'true' && group.seen == 'false' " src="../../assets/images/doubleTick.svg" />
+                      <img *ngIf="group.me == 'true' && group.seen == 'true' " src="../../assets/images/doubleTickBlue.svg" />
+                      &nbsp;
+                      file
+                    </div>
+  
+                    <div class="message" *ngIf="group.message == '' && group.type == 'video' ">
+                      <img *ngIf="group.me == 'true' && group.seen == 'false' " src="../../assets/images/doubleTick.svg" />
+                      <img *ngIf="group.me == 'true' && group.seen == 'true' " src="../../assets/images/doubleTickBlue.svg" />
+                      &nbsp;
+                      video
+                    </div>
+  
+                    <div class="message" *ngIf="group.message == '' && group.type == 'audio' ">
+                      <img *ngIf="group.me == 'true' && group.seen == 'false' " src="../../assets/images/doubleTick.svg" />
+                      <img *ngIf="group.me == 'true' && group.seen == 'true' " src="../../assets/images/doubleTickBlue.svg" />
+                      &nbsp;
+                      audio
+                    </div>
+      
+                    <div class="message" *ngIf="group.type == 'notification' && group.message != '' && group.me == 'true' ">
+                      {{group.message}}
+                    </div>
+      
+                    <div class="message" *ngIf="group.type == 'notification' && group.message != '' && group.me == 'false' ">
+                      {{group.message}}
+                    </div>
+      
+                    <div class="message" *ngIf="group.type == 'notification' && group.message == '' && group.me == 'true' ">
+                      You Created Group
+                    </div>
+      
+                    <div class="message" *ngIf="group.type == 'notification' && group.message == '' && group.me == 'false' ">
+                      You were Added
+                    </div>
+            
+                  </div>
+                </div>
+
+                <div class="chatdata" *ngIf="group.entitytype == 'group'" routerLinkActive="active" [routerLink]="['./../gpchatroom', group.GroupId]" (click)="update1(group.GroupId)">
+                  <div class="picture">
+                    <img src="../../assets/images/noPic.svg" />
+                  </div>
+            
+                  <div class="content">
+            
+                    <div class="conversationHeader" >
+                      <div class="name">
+                        <a>{{group.entity}}</a>
+                      </div>
+                      <div class="time">
+                        {{group.date}}&nbsp;&nbsp;{{group.time}}
+                        <div class="count" *ngIf="group.unSeenCount > 0">
+                          <span>{{group.unSeenCount}}</span>
+                        </div>
+                      </div>
+                    </div>
+                    
+                    <div class="message" *ngIf="group.type == '' && group.message != '' ">
+                      <img *ngIf="group.me == 'true'" src="../../assets/images/doubleTick.svg" />&nbsp;
+                      <span *ngIf="group.message.length > 20">
+                        {{group.message.substring(0, 20)}}...
+                      </span>
+                      <span *ngIf="group.message.length <= 20">
+                        {{group.message}}
+                      </span>
+                    </div>
+      
+                    <div class="message" *ngIf="group.message == '' && group.type == 'image' ">
+                      <img *ngIf="group.me == 'true'" src="../../assets/images/doubleTick.svg" />&nbsp;
+                      Image
+                    </div>
+      
+                    <div class="message" *ngIf="group.message == '' && group.type == 'doc' ">
+                      <img *ngIf="group.me == 'true'" src="../../assets/images/doubleTick.svg" />&nbsp;
+                      file
+                    </div>
+
+                    <div class="message" *ngIf="group.message == '' && group.type == 'video' ">
+                      <img *ngIf="group.me == 'true'" src="../../assets/images/doubleTick.svg" />&nbsp;
+                      video
+                    </div>
+
+                    <div class="message" *ngIf="group.message == '' && group.type == 'audio' ">
+                      <img *ngIf="group.me == 'true'" src="../../assets/images/doubleTick.svg" />&nbsp;
+                      audio
+                    </div>
+      
+                    <div class="message" *ngIf="group.type == 'notification' && group.message != '' && group.me == 'true' ">
+                      {{group.message}}
+                    </div>
+      
+                    <div class="message" *ngIf="group.type == 'notification' && group.message != '' && group.me == 'false' ">
+                      {{group.message}}
+                    </div>
+      
+                    <div class="message" *ngIf="group.type == 'notification' && group.message == '' && group.me == 'true' ">
+                      You Created Group
+                    </div>
+      
+                    <div class="message" *ngIf="group.type == 'notification' && group.message == '' && group.me == 'false' ">
+                      You were Added
+                    </div>
+            
+                  </div>
+                </div>
+          
+              </div>
+        
+            </div>
+    
           </div>
+        </div>
+
+        <div id="chat">
+          <router-outlet></router-outlet>
+        </div>
       </div>
-  </div>  
-  
-  <div class="mybutton">
-    <a routerLink="/mycontacts"><button><i class='fa fa-comment'></i></button></a>
+      
+    </div>
   </div>
+</div>

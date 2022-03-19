@@ -10,7 +10,7 @@ export class RegisterComponent implements OnInit {
 
   paramsObject:any
 
-  constructor(private route: ActivatedRoute, private routeDirect: Router) { }
+  constructor(private route: ActivatedRoute, private routeDirect: Router){}
  
   ngOnInit(): void {
     localStorage.clear();

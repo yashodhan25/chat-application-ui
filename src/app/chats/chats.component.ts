@@ -31,7 +31,6 @@ export class ChatsComponent implements OnInit {
   constructor(private route:ActivatedRoute, private transfer : TransferService, private routeDirect: Router,private routeReverse:Router, private http: HttpClient, private receive: ReceiveService ) { }
   
   ngOnInit(): void {
-    console.log(localStorage.getItem("user_id"))
     this.socket = io(`${socketserverurl}`);      
     this.socket.emit('connected_All',localStorage.getItem("user_id"));
     this.socket.on('getHomeData', (data:any)=>{
@@ -232,7 +231,6 @@ export class ChatsComponent implements OnInit {
   update1(id:any){    
     setTimeout(()=>{
       for(let i = 0; i< this.final.length; i++){
-        console.log(this.final[i])
         if(this.final[i].GroupId == id){
           this.final[i].unSeenCount = 0;
         }

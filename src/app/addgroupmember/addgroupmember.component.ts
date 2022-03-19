@@ -103,14 +103,32 @@ export class AddgroupmemberComponent implements OnInit {
     this.loader = true;
     
     this.getpeople.getall(this.senderemail).subscribe((users:any)=>{
-      this.getpeople.getallcontacts(users.totalElements).subscribe((peoples)=>{
-        this.loader = false;
-        for(var i = 0; i< peoples.content.length; i++){
-          this.datafilter(peoples.content[i])
-        }
-      })
+      this.loader = false;
+      for(var i = 0; i< users.content.length; i++){
+        this.datafilter(users.content[i])
+      }
     });
 
+  }
+
+  count:number = 0;
+  loadingstart:any;
+
+  onScroll(event: any) { 
+    if (event.target.offsetHeight + event.target.scrollTop <= event.target.scrollHeight) {
+
+        if(event.target.scrollTop == 0){
+          this.count += 1;
+          this.loadingstart = true;
+          this.getpeople.getallcontacts(this.count,20).subscribe((peoples)=>{
+            for(let i=0; i< peoples.content.length; i++){
+              this.datafilter(peoples.content[i])
+            }
+            this.loadingstart = false;
+          })
+        }
+
+    }
   }
 
   datafilter(data:any){
@@ -121,6 +139,7 @@ export class AddgroupmemberComponent implements OnInit {
       this.groupMembers = r;
       if(this.groupMembers.data.length == 0){
         this.contactlist.push(data)
+        this.contactlist.reverse()
       }
     })
   }

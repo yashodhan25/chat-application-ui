@@ -29,7 +29,11 @@
                 
                 </div>
                 
-                <div id="sidebarContent">
+                <div id="sidebarContent" (scroll)="onScroll($event)">
+
+                    <div class="containtLoader" *ngIf="loadingstart">
+                        <div class="spinner"></div>
+                    </div>
 
                     <form [formGroup]="form" (ngSubmit)="submitForm()" novalidate>
                 

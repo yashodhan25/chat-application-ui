@@ -189,7 +189,6 @@ export class PersonalComponent implements OnInit {
 
       this.receive.getName(this.route.snapshot.params.email).subscribe(r=>{
         this.user = [r.content[0]];
-        console.log([r.content[0]])
       })
 
       if(window.innerWidth < 700){

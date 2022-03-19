@@ -11,11 +11,11 @@ export class GetService {
   constructor( private http: HttpClient ) { }
 
   getall(id:any):Observable<any>{
-    return this.http.get(`${baseUrl}companyRegistration`)
+    return this.http.get(`${baseUrl}companyRegistration?page=0&size=20`)
   }
 
-  getallcontacts(count:any):Observable<any>{
-    return this.http.get(`${baseUrl}companyRegistration?page=0&size=`+count)
+  getallcontacts(pageNo:any,count:any):Observable<any>{
+    return this.http.get(`${baseUrl}companyRegistration?page=`+pageNo+`&size=`+count)
   }
 
 }

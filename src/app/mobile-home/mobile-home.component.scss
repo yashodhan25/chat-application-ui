@@ -7,7 +7,7 @@
   background: #0BDD21;
   border-radius: 50%;
   position: absolute;
-  margin-left: 68px;
+  margin-left: 60px;
 }
 
 .count span{
@@ -24,12 +24,11 @@
   right: 0px;
   left: 0px;
   box-shadow: -1px 1px 5px rgba(#333, 0.2);
-  border-radius: 3px;
   display: flex;
   flex-direction: row;
   overflow: hidden;
   margin: auto;
-  border-radius: 10px;
+  border-radius: 0px;
   #app-sidebar {
     width: 420px;
     height: 100%;
@@ -62,28 +61,6 @@
   }
 }
 
-.mybutton{
-  position: fixed;
-  z-index:9999999;
-  bottom: 6%;
-  right: 4%;
-  display:block !important;
-}
-
-.mybutton button{
-  background: #009CC3;
-  border: none;
-  color: white;
-  padding: 12px 12px;
-  border-radius: 50%;
-  font-size: 36px;
-  font-weight: 400;
-}
-
-.mybutton button:hover{
-  background: #0589aa;
-}
-
 @media screen and (max-width: 700px) {
   #chatContainer {
     width: 100%;
@@ -93,7 +70,7 @@
 }
 
 .active{
-  border-left: 3px solid #009CC3;
+  border-left: 3px solid #E67E22;
   background-color: #F4F7F9;
 }
 
@@ -102,7 +79,7 @@
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #009CC3; 
+  background: #E67E22; 
   border-radius: 10px;
 }
 
@@ -141,7 +118,7 @@
         
         #sidebarHeader {
           flex-basis: 67px;
-          background-color: #009CC3;
+          background-color: #E67E22;
           display: flex;
           flex-direction: row;
           align-items: center;
@@ -151,6 +128,13 @@
           .avatarContainer {
             flex-basis: 43px;
             height: 43px;
+            h2{
+              margin-top: 8px;
+              color: #fbfbfb;
+              font-size: 24px;
+              font-family: 'Abhaya Libre';
+              font-weight: 600;
+            }
             img {
               height: 100%;
             }
@@ -228,13 +212,13 @@
               img {
                 max-width: 100%;
                 width: 48px;
+                border-radius: 50%;
               }
             }
             .content {
-            
               border-bottom: 1px solid #e2e4e6;
               flex-grow: 1;
-              padding: 20px 0px;
+              padding: 10px 0px;
               padding-right: 10px;
               .conversationHeader {
                 display: flex;

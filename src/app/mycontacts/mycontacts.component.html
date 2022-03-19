@@ -4,7 +4,7 @@
   
 <div class="container" id="chatContainer">
     <div class="row">
-    <div class="col-md-12 col-lg-12" style="padding: 0px; margin: 0;">
+        <div class="col-md-12 col-lg-12" style="padding: 0px; margin: 0;">
 
             <div id="sidebar">
 
@@ -29,19 +29,23 @@
                 
                 </div>
                 
-                <div id="sidebarContent">
+                <div id="sidebarContent" (scroll)="onScroll($event)">
                 
+                    <div class="containtLoader" *ngIf="loadingstart">
+                        <div class="spinner"></div>
+                    </div>
+
                     <div class="conversation" *ngFor="let people of contactlist | filter:term">
                     
-                    <div class="picture">
-                        <img src="./../../assets/images/noPic.svg" />
-                    </div>
-                    
-                    <div class="content" [routerLink]="['./../personalchat', people.id]">
-                        <div class="conversationHeader">
-                        <div class="name"><a>{{people.firstName}} {{people.lastName}}</a></div>
+                        <div class="picture">
+                            <img src="./../../assets/images/noPic.svg" />
                         </div>
-                    </div>
+                        
+                        <div class="content" [routerLink]="['./../personalchat', people.id]">
+                            <div class="conversationHeader">
+                            <div class="name"><a>{{people.firstName}} {{people.lastName}}</a></div>
+                            </div>
+                        </div>
 
                     </div>
             
